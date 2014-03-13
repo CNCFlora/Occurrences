@@ -2,7 +2,7 @@
 
 # ruby, java, git, curl and couchdb
 apt-get update
-apt-get install aptitude wget curl git tmux vim libxslt-dev libxml2-dev ruby ruby1.9.1-dev libssl-dev -y
+apt-get install aptitude wget curl git tmux vim libxslt-dev libxml2-dev ruby ruby1.9.1-dev libssl-dev build-essential -y
 
 # config ruby gems to https
 gem sources -r http://rubygems.org
@@ -18,6 +18,7 @@ su vagrant -c 'git clone https://github.com/sstephenson/ruby-build.git /home/vag
 
 # initial config of app
 su vagrant -lc 'cd /vagrant && rbenv install $(cat .ruby-version) && rbenv rehash'
-su vagrant -lc 'cd /vagrant && bundle install'
+su vagrant -lc 'cd /vagrant && gem install bundler && rbenv rehash'
+su vagrant -lc 'cd /vagrant && bundle installi && rbenv rehash'
 su vagrant -lc 'cd /vagrant && [[ ! -e config.yml ]] && cp config.yml.dist config.yml'
 

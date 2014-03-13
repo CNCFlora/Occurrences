@@ -1,0 +1,15 @@
+development:
+    etcd: "http://192.168.50.2:4001"
+    couchdb_base: "cncflora"
+    lang: "pt"
+    base: ""
+test:
+    etcd: "http://192.168.50.2:4001"
+    lang: "pt"
+    couchdb_base: "cncflora_test"
+    base: ""
+production:
+    etcd: "http://192.168.50.2:4001"
+    couchdb_base: "cncflora"
+    lang: "pt"
+    base: ""

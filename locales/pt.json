@@ -1,0 +1,15 @@
+{
+    "login":"Login",
+    "logout":"Logout",
+    "families":"Familias",
+    "search":"Busca",
+    "no-result":"Sem resultados",
+    "save":"Salvar",
+    "metadata":"Metadados",
+    "occurrences":"Registros de ocorrências",
+    "results":"Resultados",
+    "upload":"Upload",
+    "sig":"Georeferenciamento",
+    "analysis":"Análise",
+    "validate":"Validar"
+} 

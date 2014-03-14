@@ -19,6 +19,6 @@ su vagrant -c 'git clone https://github.com/sstephenson/ruby-build.git /home/vag
 # initial config of app
 su vagrant -lc 'cd /vagrant && rbenv install $(cat .ruby-version) && rbenv rehash'
 su vagrant -lc 'cd /vagrant && gem install bundler && rbenv rehash'
-su vagrant -lc 'cd /vagrant && bundle installi && rbenv rehash'
+su vagrant -lc 'cd /vagrant && bundle install && rbenv rehash'
 su vagrant -lc 'cd /vagrant && [[ ! -e config.yml ]] && cp config.yml.dist config.yml'
 

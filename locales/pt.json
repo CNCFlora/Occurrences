@@ -11,5 +11,18 @@
     "upload":"Upload",
     "sig":"Georeferenciamento",
     "analysis":"Análise",
-    "validate":"Validar"
+    "validate":"Validar",
+    "start":"Início",
+    "validated":"Validado",
+    "total":"Total",
+    "reviewed":"Revisado",
+    "family":"Família",
+    "specie":"Espécie",
+    "templates":"Templates/Modelos",
+    "send":"Enviar",
+    "upload-file":"Enviar arquivo",
+    "inserted":"Inseridos",
+    "success":"Sucesso",
+    "errors":"Erros",
+    "species-inserted":"Espécies com novos registros"
 } 

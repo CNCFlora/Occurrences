@@ -3,13 +3,16 @@ development:
     couchdb_base: "cncflora"
     lang: "pt"
     base: ""
+    self: "http://192.168.50.12:9292"
 test:
     etcd: "http://192.168.50.2:4001"
     lang: "pt"
     couchdb_base: "cncflora_test"
     base: ""
+    self: "http://192.168.50.12:9292"
 production:
     etcd: "http://192.168.50.2:4001"
     couchdb_base: "cncflora"
     lang: "pt"
     base: ""
+    self: "http://192.168.50.12:9292"

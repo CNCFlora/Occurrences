@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-    <title>{{strings.risk-assessments}}</title>
+    <title>{{strings.occurrences}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="{{base}}/css/bootstrap.min.css" rel="stylesheet" >
     <link href="{{base}}/css/bootstrap-theme.min.css" rel="stylesheet" >
@@ -24,16 +24,14 @@
         </header>
         <nav class="navbar navbar-default col-md-12">
             <ul class="nav navbar-nav">
-                <li><a href="{{base}}/">{{strings.search}}</a></li>
+                <li><a href="{{base}}/">{{strings.start}}</a></li>
+                <li><a href="{{base}}/search">{{strings.search}}</a></li>
                 <li><a href="{{base}}/families">{{strings.families}}</a></li>
                 {{^logged}}
                 <li id='login'><a href="#">{{strings.login}}</a></li>
                 {{/logged}}
                 {{#logged}}
                 <li><a href="{{base}}/upload">{{strings.upload}}</a></li>
-                <li><a href="{{base}}/analysis">{{strings.analysis}}</a></li>
-                <li><a href="{{base}}/sig">{{strings.sig}}</a></li>
-                <li><a href="{{base}}/validate">{{strings.validate}}</a></li>
                 <li id='logout'><a href="#">{{strings.logout}}</a></li>
                 {{/logged}}
             </ul>

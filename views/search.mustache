@@ -1,0 +1,23 @@
+{{> header}}
+
+<h2 class='col-md-12'>{{strings.search}}</h2>
+
+<form action="{{base}}/search" class='col-md-12'>
+    <fieldset>
+        <p>
+            <input class="form-control" type="text" name="query" placeholder="{{strings.search}}..." value="{{query}}">
+        </p>
+        <p>
+            <button class="btn btn-primary" type="search"><span class='glyphicon glyphicon-search'></span> {{strings.search}}</button>
+        </p>
+    </fieldset>
+</form>
+
+<div class="col-md-12">
+    <h3>{{strings.results}}</h3>
+    {{^result}}
+        <p>{{strings.no-result}}</p>
+    {{/result}}
+</div>
+
+{{> footer}}

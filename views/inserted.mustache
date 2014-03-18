@@ -1,0 +1,13 @@
+{{> header}}
+
+<div class='col-md-12'>
+    <h2>{{strings.occurrences}} {{strings.inserted}}: {{count}}.</h2>
+    <p>{{strings.species-inserted}}:</p>
+    <ul>
+        {{#species}}
+            <li><a href="{{base}}/search?q=scientificName:'{{.}}'">{{.}}</a></li>
+        {{/species}}
+    </ul>
+</div>
+
+{{> footer}}

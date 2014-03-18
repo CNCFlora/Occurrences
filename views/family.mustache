@@ -1,13 +1,10 @@
 {{> header}}
 
-<h2 class='col-md-12'>{{strings.start}}</h2>
-
-{{#logged}}
 <div class="col-md-12">
+    <h2>{{family}}</h2>
     <table class="table">
         <thead>
             <tr>
-                <th>{{strings.family}}</th>
                 <th>{{strings.specie}}</th>
                 <th>{{strings.reviewed}}</th>
                 <th>{{strings.validated}}</th>
@@ -17,7 +14,6 @@
         <tbody>
             {{#species}}
             <tr>
-                <td>{{family}}</td>
                 <td><a href="{{base}}/search?q=scientificName:'{{scientificName}}'">{{scientificName}}</a></td>
                 <td>{{reviewed}}</td>
                 <td>{{validated}}</td>
@@ -27,8 +23,5 @@
         </tbody>
     </table>
 </div>
-{{/logged}}
-
-
 
 {{> footer}}

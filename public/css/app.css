@@ -1,0 +1,64 @@
+
+/* Map Search Result */
+
+#map {
+    height: 560px;
+    overflow: hidden;
+    border: 1px #ddd solid;
+    border-radius: 3px;
+}
+
+.leaflet-popup-content p {
+    margin: 0 !important;
+}
+
+.leaflet-popup-content .to-map {
+    display: none;
+}
+
+.leaflet-popup-content .actions{
+    display: none;
+}
+
+.occurrence {
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 13px;
+    border: 1px #ddd solid;
+}
+
+.occurrence { /* basic occurrence border */
+    border-left: 4px #F89406 solid;
+}
+
+.validated { /* been validated but is invalid */
+    border-left: 4px #DA4F49 solid;
+}
+
+.validated.valid { /* been validated and is valid */
+    border-left: 4px #20AE54 solid;
+}
+
+.missing {
+    font-weight: bold;
+}
+
+.alabel {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.alabel .label, .alabel.label{
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.validated .alabel{
+    border-color: #DA4F49;
+}
+
+.validated.valid .alabel {
+    border-color: #20AE54;
+}
+

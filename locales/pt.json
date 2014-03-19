@@ -24,5 +24,16 @@
     "inserted":"Inseridos",
     "success":"Sucesso",
     "errors":"Erros",
-    "species-inserted":"Espécies com novos registros"
+    "species-inserted":"Espécies com novos registros",
+    "missing-sig":"Falta revisão SIG",
+    "missing-validation":"Falta validar",
+    "view-in-map":"Ver no mapa",
+    "no-point":"Sem coordenadas",
+    "edit-validation":"Validar/Invalidar",
+    "edit-analysis":"Editar análise",
+    "edit-sig":"GIS",
+    "verified":"OK",
+    "valid":"Válido",
+    "invalid":"Inválido",
+    "at":"em"
 } 

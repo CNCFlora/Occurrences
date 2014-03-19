@@ -48,6 +48,9 @@ def view(page,data)
             @session_hash["role-#{role['role'].downcase}"] = true
         end
     end
+    @session_hash["role-analyst"]=true
+    @session_hash["role-sig"]=true
+    @session_hash["role-validator"]=true
     mustache page, {}, @config.merge(@session_hash).merge(data)
 end
 
@@ -173,5 +176,35 @@ get '/family/:family' do
     species= []
     # TODO: search species of family
     view :family, {:species=>species,:family=>family}
+end
+
+get '/search' do
+    occurrences = []
+    query = params[:q]
+
+    # TODO: perform serach
+    
+    occurrences.push({
+        :occurrenceID=> "123",
+        :decimalLatitude=> -40.10,
+        :decimalLongitude=> -20.20,
+        :valid=> false
+    })
+
+    occurrences.each{|occ| occ[:json] = JSON.dump(occ) }
+
+    view :search, {:result=>occurrences,:query=>query}
+end
+
+post '/occurrences/:id/sig' do
+    redirect "/search?q=#{URI.encode( params[:q] )}"
+end
+
+post '/occurrences/:id/analysis' do
+    redirect "/search?q=#{URI.encode( params[:q] )}"
+end
+
+post '/occurrences/:id/validate' do
+    redirect "/search?q=#{URI.encode(params[:q])}"
 end
 

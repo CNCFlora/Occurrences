@@ -18,6 +18,31 @@
     {{^result}}
         <p>{{strings.no-result}}</p>
     {{/result}}
+
+    <a name="map"></a>
+    <div id="map"></div>
+
+    <script type="text/javascript">
+        var occurrences = [] ;
+    </script>
+
+    {{#result}}
+        <a name="occ-{{occurrenceID}}-unit"></a>
+        <script>
+            occurrences.push({{{json}}});
+        </script>
+        <div id="occ-{{occurrenceID}}-unit" >
+            {{> unit}}
+        </div>
+    {{/result}}
+
 </div>
+
+<link rel="stylesheet" href="{{base}}/css/leaflet.css" />
+<link rel="stylesheet" href="{{base}}/css/MarkerCluster.css" />
+<link rel="stylesheet" href="{{base}}/css/MarkerCluster.Default.css" />
+<script type="text/javascript" src="{{base}}/js/leaflet.js"></script>
+<script type="text/javascript" src="{{base}}/js/leaflet.markercluster.js"></script>
+<script type="text/javascript" src='{{base}}/js/map.js'></script>
 
 {{> footer}}

@@ -1,0 +1,240 @@
+
+<div class="well occurrence {{#validationBy}} validated {{/validationBy}} {{#valid}} valid {{/valid}}" >
+
+    <div class='actions alabel'>
+
+        {{^georeferenceVerificationStatus}}
+        <span  class='label label-warning'>{{strings.missing-gis}}</span>
+        {{/georeferenceVerificationStatus}}
+
+        {{^validationVerificationStatus}}
+        <span class='label label-warning'>{{strings.missing-validation}}</span>
+        {{/validationVerificationStatus}}
+
+        {{#georeferenceVerificationStatus}}
+            {{^validationVerificationStatus}}
+                <span class="label label-primary">{{strings.verified}}</span>
+            {{/validationVerificationStatus}}
+        {{/georeferenceVerificationStatus}}
+
+        {{#valid}}
+            <span class="label label-success">{{strings.valid}}</span>
+        {{/valid}}
+        {{^valid}}
+            <span class="label label-danger">{{strings.invalid}}</span>
+        {{/valid}}
+
+        {{#decimalLatitude}}
+        <span>
+            <button class="to-map btn btn-xs" rel='{{occurrenceID}}'><i class='glyphicon glyphicon-eye-open'></i> {{strings.view-in-map}}</button>
+        </span>
+        {{/decimalLatitude}}
+
+        {{^decimalLatitude}}
+        <span class='label label-warning'>{{strings.no-points}}</span>
+        {{/decimalLatitude}}
+
+        {{#role-validator}}
+        <span>
+            <button data-target="#validate-{{occurrenceID}}" data-toggle="modal" class='btn btn-xs'><i class='glyphicon glyphicon-edit'></i> {{strings.edit-validation}}</button>
+        </span>
+        {{/role-validator}}
+
+        {{#role-analyst}}
+        <span>
+            <button data-target="#analysis-{{occurrenceID}}" data-toggle="modal" class='btn btn-xs'><i class='glyphicon glyphicon-edit'></i> {{strings.edit-analysis}}</button>
+        </span>
+        {{/role-analyst}}
+
+        {{#role-sig}}
+        <span>
+            <button data-target="#sig-{{occurrenceID}}" data-toggle="modal" class='btn btn-xs'><i class='glyphicon glyphicon-edit'></i> {{strings.edit-sig}}</button>
+        </span>
+        {{/role-sig}}
+
+    </div>
+
+    <p>
+        <strong>Occurrence ID</strong>: <a href="#occ-{{occurrenceID}}-unit">{{occurrenceID}}</a> ;
+        <strong>Taxon</strong>:{{family}} {{scientificName}}
+    </p>
+
+    <p>
+        <strong>Recorded by</strong>: {{recordedBy}} , 
+        <strong>Number</strong>: {{recordNumber}} ,
+        <strong>Collect Date</strong>: {{day}}-{{month}}-{{year}} ;
+    </p>
+
+    <p>
+        <strong>Collection</strong>: {{collectionCode}} ,  
+        <strong>Catalog</strong>: {{catalogNumber}} ,
+        <strong>Identified by</strong> {{identifiedBy}} ,
+        <strong>Identification Date</strong> {{identificationDate}} ;
+    </p>
+
+    <p>
+        <strong>State</strong>: {{stateProvince}} ;
+        <strong>City</strong>: {{municipality}} ;
+        <strong>Long/Lat</strong>: {{decimalLongitude}} {{decimalLatitude}} ;
+        <strong>Presence</strong>: {{presence}} ;
+        <strong>Locality</strong>: {{locality}}
+    </p>
+
+    <!--
+    <p>
+        <strong>Literature</strong>: {{bibliographicCitation}}
+    </p>
+    -->
+
+    <p>
+        <strong>Remarks</strong>: {{occurrenceRemarks}}
+    </p>
+
+    {{#georeferenceBy}}
+        <p><strong>Georeference Remarks</strong>: {{georeferenceBy}} - {{georeferenceRemarks}}</p>
+    {{/georeferenceBy}}
+
+    {{#analysisBy}}
+        <p><strong>Analysis Remarks</strong>: {{analysisBy}} - {{analysisRemarks}}</p>
+    {{/analysisBy}}
+
+    {{#validationBy}}
+    <p>
+        {{#role-analyst}}
+            <span class='label label-warning'>check</span>
+        {{/role-analyst}}
+        <strong>Validation Remarks</strong>: {{validationBy}} - {{validationVerificationStatus}}: {{validationRemarks}}
+    </p>
+    {{/validationBy}}
+
+    {{#role-validator}}
+    <div id="validate-{{occurrenceID}}" class="modal fade" role='dialog'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" action="{{base}}/occurrences/{{occurrenceID}}/validate">
+                    <fieldset>
+                        <input name="q" value="{{query}}" type="hidden" />
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h3>Validação</h3>
+                        </div>
+                        <div class='modal-body'>
+                            <p class='form-group'>
+                                <label for="valid">Valid:</label>
+                                <select name="valid" class='form-control'>
+                                    <option value="valid" {{#valid}} selected {{/valid}}>Valid</option>
+                                    <option value="invalid" {{#invalid}} selected {{/invalid}}>Invalid</option>
+                                </select>
+                            </p>
+                            <p class='form-group'>
+                                <label for="presence">Presence</label>
+                                <select name="presence" class='form-control'>
+                                    <option value="unkown" {{#presence-unkown}} selected {{/presence-unkown}}>unkown</option>
+                                    <option value="present" {{#presence-present}} selected {{/presence-present}}>present</option>
+                                    <option value="absent" {{#presence-absent}} selected {{/presence-absent}}>absent</option>
+                                </select>
+                            </p>
+                            <p class='form-group'>
+                                <label for="status">Status:</label>
+                                <select name="status" class='form-control'>
+                                    <option value="ok" {{#status-ok}} selected {{/status-ok}}>ok</option>
+                                    <option value="wrong taxonomy"  {{#status-wrong-taxonomy}} selected {{/status-wrong-taxonomy}}>wrong taxonomy</option>
+                                    <option value="uncertain taxonomy" {{#status-uncertain-taxonomy}} selected {{/status-uncertain-taxonomy}}>uncertain taxonomy</option>
+                                    <option value="wrong georeference" {{#status-wrong-georeference}} selected {{/status-wrong-georeference}}>wrong georeference</option>
+                                    <option value="duplicate" {{#status-duplicate}} selected {{/status-duplicate}}>duplicate</option>
+                                    <option value="cultivated" {{#status-cultivated}} selected {{/status-cultivated}}>cultivated</option>
+                                    <option value="other" {{#status-other}} selected {{/status-other}}>other</option>
+                                </select>
+                            </p>
+                            <p class="form-group">
+                                <label for="comment">Comment:</label>
+                                <textarea name="comment" class='form-control'>{{validationRemarks}}</textarea>
+                            </p>
+                        </div>
+                        <div class='modal-footer'>
+                            <button class="btn btn-success" type='submit'>Save</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{/role-validator}}
+
+    {{#role-analyst}}
+    <div id="analysis-{{occurrenceID}}" class="modal fade" role='dialog'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" action="{{base}}/occurrences/{{occurrenceID}}/analysis">
+                    <fieldset>
+                        <input name="q" value="{{query}}" type="hidden" />
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" >&times;</button>
+                            <h3>Análise</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p class="form-group">
+                                <label for="comment">Comments</label>
+                                <textarea name="comment" class='form-control'>{{analysisRemarks}}</textarea>
+                            </p>
+                        </div>
+                        <div class='modal-footer'>
+                            <button class="btn btn-success" type='submit'>Save</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{/role-analyst}}
+
+    {{#role-sig}}
+    <div id="sig-{{occurrenceID}}" class="modal fade" role='dialog'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" action="{{base}}/occurrences/{{occurrenceID}}/sig">
+                    <fieldset>
+                        <input name="q" value="{{query}}" type="hidden" />
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" >&times;</button>
+                            <h3>GIS</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p class='form-group'>
+                                <label for="valid">Valid:</label>
+                                <select name="valid" class='form-control'>
+                                    <option value="valid" {{#valid}} selected {{/valid}}>Valid</option>
+                                    <option value="invalid" {{#invalid}} selected {{/invalid}}>Invalid</option>
+                                </select>
+                            </p>
+                            <p class='form-group'>
+                                <label for="status">Status:</label>
+                                <select name="status" class='form-control'>
+                                    <option value="ok" {{#status-ok}} selected {{/status-ok}}>ok</option>
+                                    <option value="uncertain-locality" {{#status-uncertain-locality}} selected {{/status-uncertain-locality}}>uncertain locality</option>
+                                </select>
+                            </p>
+                            <p class="form-group">
+                                <label for="latitude">Latitude</label>
+                                <input name="latitude" value="{{decimalLatitude}}" class='form-control' type="text" />
+                            </p>
+                            <p class="form-group">
+                                <label for="longitude">longitude</label>
+                                <input name="longitude" value="{{decimalLongitude}}" class='form-control' type="text" />
+                            </p>
+                            <p class="form-group">
+                                <label for="comment">Comments</label>
+                                <textarea name="comment" class='form-control'>{{Remarks}}</textarea>
+                            </p>
+                        </div>
+                        <div class='modal-footer'>
+                            <button class="btn btn-success" type='submit'>Save</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{/role-sig}}
+
+</div>

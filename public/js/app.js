@@ -21,5 +21,9 @@ $(function(){
     $("#login a").click(function(){ Connect.login(); });
     $("#logout a").click(function(){ Connect.logout(); });
 
+    if(typeof map == 'function') {
+        map();
+    }
+
 });
 

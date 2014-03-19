@@ -1,8 +1,14 @@
 {{> header}}
 
-<h2 class='col-md-12'>{{strings.start}}</h2>
+
+{{^logged}}
+<h2 class="col-md-12">{{strings.must-login}}</h2>
+{{/logged}}
 
 {{#logged}}
+
+<h2 class='col-md-12'>{{strings.start}}</h2>
+
 <div class="col-md-12">
     <table class="table">
         <thead>

@@ -15,9 +15,35 @@
 
 <div class="col-md-12">
     <h3>{{strings.results}}</h3>
-    {{^result}}
-        <p>{{strings.no-result}}</p>
-    {{/result}}
+
+    {{#stats}}
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>{{strings.eoo}}</th>
+                <th>{{strings.aoo}}</th>
+                <th>{{strings.valid}}</th>
+                <th>{{strings.invalid}}</th>
+                <th>&nbsp;</th>
+                <th>{{strings.reviewed}}</th>
+                <th>{{strings.validated}}</th>
+                <th>{{strings.total}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{eoo}}</td>
+                <td>{{aoo}}</td>
+                <td>{{valid}}</td>
+                <td>{{invalid}}</td>
+                <td>&nbsp;</td>
+                <td>{{reviewed}}</td>
+                <td>{{validated}}</td>
+                <td>{{total}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {{/stats}}
 
     <a name="map"></a>
     <div id="map"></div>
@@ -34,6 +60,7 @@
         <div id="occ-{{occurrenceID}}-unit" >
             {{> unit}}
         </div>
+        {{> forms}}
     {{/result}}
 
 </div>

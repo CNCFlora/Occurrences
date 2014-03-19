@@ -14,14 +14,13 @@ var map = function() {
 
     var points  = {};
 
-    console.log(occurrences);
     for(var i in occurrences) {
         var feature = occurrences[i];
 
         if(!feature.decimalLatitude || !feature.decimalLongitude) continue;
 
         var marker = L.marker(new L.LatLng(feature.decimalLatitude,feature.decimalLongitude));
-        marker.bindPopup($("#occ-"+feature.occurrenceID+"-unit").html());
+        marker.bindPopup(document.getElementById("occ-"+feature.occurrenceID+"-unit").innerHTML);
 
         if(feature.valid) {
             markersOk.addLayer(marker);

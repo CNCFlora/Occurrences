@@ -11,47 +11,12 @@ require 'rest-client'
 require 'securerandom'
 require 'json'
 require 'uri'
+require 'net/http'
 
-config_file ENV['config'] || 'config.yml'
-use Rack::Session::Pool
-set :session_secret, '1flora2'
+require_relative 'setup'
 
-config = {}
-
-if settings.etcd
-    etcd = JSON.parse(RestClient.get("#{settings.etcd}/v2/keys/?recursive=true")) 
-    etcd['node']['nodes'].each {|node|
-        if node.has_key?('nodes')
-            node['nodes'].each {|entry|
-                if entry.has_key?('value') && entry['value'].length >= 1 
-                    key = entry['key'].gsub("/","_").downcase()[1..-1]
-                    config[key.to_sym] = entry['value']
-                end
-            }
-        end
-    }
-end
-
-config[:connect] = "http://#{config[:connect_host ]}:#{config[:connect_port]}"
-config[:strings] = JSON.parse(File.read("locales/#{settings.lang}.json", :encoding => "BINARY"))
-config[:services] = "http://192.168.50.30:3000/api/v1"
-config[:self] = settings.self
-config[:base] = settings.base
-
-set :config, config
-
-def view(page,data)
-    @config = settings.config
-    @session_hash = {:logged => session[:logged] || false, :user => session[:user] || '{}'}
-    if session[:logged] 
-        session[:user]['roles'].each do | role |
-            @session_hash["role-#{role['role'].downcase}"] = true
-        end
-    end
-    @session_hash["role-analyst"]=true
-    @session_hash["role-sig"]=true
-    @session_hash["role-validator"]=true
-    mustache page, {}, @config.merge(@session_hash).merge(data)
+if development?
+    also_reload "setup.rb"
 end
 
 post '/login' do
@@ -93,26 +58,30 @@ post '/upload' do
     begin
         if params.has_key?("file") 
             # convert to json
-            json = RestClient.post "#{config[:services]}/convert?from=#{params["type"]}&to=json", 
+            json = RestClient.post "#{settings.config[:services]}/convert?from=#{params["type"]}&to=json&fixes=true", 
                                 params["file"][:tempfile].read, :content_type => params["file"][:type], :accept => :json
 
             if json[0] != '[' # cause it must be an array back
                 errors.push json
             else
                 # validate
-                validation = RestClient.post "#{config[:services]}/validate", json,
+                validation = RestClient.post "#{settings.config[:services]}/validate", json,
                                     :content_type => params["file"][:type], :accept => :json
-                validation = JSON.parse(validation.to_str)
 
-                if validation.length > 0
+                if validation.class == Array
+                    puts 'validation is array'
                     validation.each{ |v|
-                        v.each { |vv|
-                            errors.push("#{vv['error']} #{vv['data']} #{vv['ref']}")
-                        }
+                        if validation.class == Array
+                            v.each { |vv|
+                                errors.push("#{vv['path']} #{vv['error']} #{vv['data']} #{vv['ref']}"
+                                            .gsub("=>"," ").gsub("["," ").gsub("]"," ").gsub("\"","").gsub("-"," ")
+                                            .gsub("}"," ").gsub("{"," "))
+                            }
+                        end
                     }
                 else
                     # also convert to geojson, to integrate with the editor
-                    geojson = RestClient.post "#{config[:services]}/convert?from=json&to=geojson", json,
+                    geojson = RestClient.post "#{settings.config[:services]}/convert?from=json&to=geojson", json,
                                                 :content_type => params["file"][:type], :accept => :json
                     File.open("#{file}.json",'w') { |f| f.write(json) }
                     File.open("#{file}.geojson",'w') { |f| f.write(geojson) }
@@ -139,72 +108,163 @@ end
 
 get '/insert' do
     data = JSON.parse(params[:data])
-
-    # TODO: insert into couchdb
-
     count = data.length
     species = []
+
     data.each {|occ|
-        puts occ
         species.push occ["scientificName"]
+        occ[:_id] = occ["occurrenceID"]
+        occ[:metadata] = {
+            # TODO: fill in
+            :type => "occurrence"
+        }
     }
-    view :inserted, {:count=>count,:species=>species}
+
+    http_post("#{settings.config[:datahub]}/occurrences/_bulk_docs",{"docs"=> data});
+
+    view :inserted, {:count=>count,:species=>species.uniq}
 end
 
 post '/insert' do
     data = JSON.parse(request.body.read.to_s)
-
-    # TODO: insert into couchdb
-
     count = data.length
     species = []
+
     data.each {|occ|
-        puts occ
         species.push occ["scientificName"]
+        occ["_id"] = occ["occurrenceID"]
+        occ[:metadata] = {
+            # TODO: fill in
+            :type => "occurrence"
+        }
     }
-    view :inserted, {:count=>count,:species=>species}
+
+    http_post("#{settings.config[:datahub]}/occurrences/_bulk_docs",{"docs"=> data});
+
+    view :inserted, {:count=>count,:species=>species.uniq}
 end
 
 get '/families' do
     families=[]
-    # TODO: search families
-    view :families, {:families=>families}
+
+    r = search("cncflora","taxonRank:'family'")
+    r.each{|taxon|
+        families.push r["family"]
+    }
+
+    view :families, {:families=>families.uniq}
 end
 
 get '/family/:family' do
     family = params[:family]
-    species= []
-    # TODO: search species of family
+    species= search("cncflora","taxonRank:'specie' OR taxonRank:'variety' OR taxonRank:'subspecie'")
     view :family, {:species=>species,:family=>family}
 end
 
 get '/search' do
-    occurrences = []
     query = params[:q]
+    occurrences = search("occurrences",query)
 
-    # TODO: perform serach
-    
-    occurrences.push({
-        :occurrenceID=> "123",
-        :decimalLatitude=> -40.10,
-        :decimalLongitude=> -20.20,
-        :valid=> false
-    })
+    valid=0
+    invalid=0
+    reviewed=0
+    validated=0
+    eoo="soon"
+    aoo="soon"
+    i=0
+    occurrences.each{ |occ| 
+        occ[:json] = JSON.dump(occ) 
+        occ[:occurrenceID2] = i
 
-    occurrences.each{|occ| occ[:json] = JSON.dump(occ) }
+        if occ.has_key?("georeferenceVerificationStatus") 
+            reviewed += 1;
+        end
 
-    view :search, {:result=>occurrences,:query=>query}
+        if occ.has_key?("validation")
+            validated += 1
+            if occ["validation"].has_key?("status")
+                if occ["validation"]["status"] === 'valid'
+                    valid += 1
+                    occ["valid"] = true
+                    occ["invalid"] = false 
+                elsif occ["validation"]["status"] === 'invalid'
+                    invalid += 1
+                    occ["valid"] = false
+                    occ["invalid"] = true
+                end
+            end
+            if occ["validation"].has_key?("reason")
+                occ["reason-#{occ["validation"]["reason"].gsub(" ","-")}".to_sym] = true
+            end
+            if occ.has_key?("occurrenceStatus")
+                occ["presence-#{occ["occurrenceStatus"]}".to_sym] = true
+            end
+        end
+
+        i += 1
+    }
+    total = i
+
+    data = {
+        :result=>occurrences,
+        :query=>query,
+        :stats=>{
+            :eoo=>eoo,
+            :aoo=>aoo,
+            :total=>total,
+            :valid=>valid,
+            :invalid=>invalid,
+            :reviewed=>reviewed,
+            :validated=>validated
+        }
+    }
+
+    view :search,data 
 end
 
 post '/occurrences/:id/sig' do
+    doc = http_get("#{settings.config[:datahub]}/occurrences/#{params[:id]}")
+
+    if !doc.has_key?("validation") 
+        doc["validation"] = {}
+    end
+
+    doc[:georeferencedBy] = session[:user]["name"]
+    doc["georeferenceVerificationStatus"] = "ok"
+    doc["georeferenceRemarks"] = params[:comment]
+    doc["decimalLatitude"] = params[:latitude].to_f
+    doc["decimalLongitude"] = params[:longitude].to_f
+    if params[:valid] && params[:valid].length >= 1
+        doc["validation"]["status"] = params[:valid]
+    end
+
+    r = http_post("#{settings.config[:datahub]}/occurrences",doc)
+
     redirect "/search?q=#{URI.encode( params[:q] )}"
 end
 
 post '/occurrences/:id/analysis' do
+    doc = http_get("#{settings.config[:datahub]}/occurrences/#{params[:id]}")
+
+    doc["comments"] = params[:comment]
+
+    r = http_post("#{settings.config[:datahub]}/occurrences",doc)
     redirect "/search?q=#{URI.encode( params[:q] )}"
 end
 
 post '/occurrences/:id/validate' do
-    redirect "/search?q=#{URI.encode(params[:q])}"
+    doc = http_get("#{settings.config[:datahub]}/occurrences/#{params[:id]}")
+
+    doc["validation"] = {
+        "status"=>params[:status],
+        "reason"=>params[:reason],
+        "remarks"=>params[:comment],
+        "by"=>session[:user]["name"]
+    }
+
+    doc["occurrenceStatus"] = params[:presence]
+
+    r = http_post("#{settings.config[:datahub]}/occurrences",doc)
+    redirect "/search?q=#{URI.encode( params[:q] )}"
 end
 

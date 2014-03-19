@@ -35,5 +35,8 @@
     "verified":"OK",
     "valid":"Válido",
     "invalid":"Inválido",
-    "at":"em"
+    "at":"em",
+    "must-login":"Necessário fazer login",
+    "eoo":"EOO",
+    "aoo":"AOO"
 } 

@@ -27,8 +27,10 @@ end
 
 config = {}
 
-if settings.etcd
-    etcd = http_get("#{settings.etcd}/v2/keys/?recursive=true") 
+config[:etcd] = ENV["ETCD"] || settings.etcd
+
+if config[:etcd]
+    etcd = http_get("#{config[:etcd]}/v2/keys/?recursive=true") 
     etcd['node']['nodes'].each {|node|
         if node.has_key?('nodes')
             node['nodes'].each {|entry|

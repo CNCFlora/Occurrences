@@ -37,7 +37,7 @@ get '/' do
         user_taxons = []
         session[:user]["roles"].each {|r|
             r["entities"].each {|e|
-                user_families.push(e["name"])
+                user_taxons.push(e["name"])
             }
         }
         # TODO: list according to user profile

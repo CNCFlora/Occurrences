@@ -43,7 +43,7 @@ if config[:etcd]
     }
 end
 
-config[:connect] = "http://#{config[:connect_host ]}:#{config[:connect_port]}"
+config[:connect] = "#{config[:connect_url]}"
 config[:datahub] = "http://#{config[:datahub_host ]}:#{config[:datahub_port]}"
 config[:elasticsearch] = "http://#{config[:elasticsearch_host ]}:#{config[:elasticsearch_port]}"
 config[:strings] = JSON.parse(File.read("locales/#{settings.lang}.json", :encoding => "BINARY"))

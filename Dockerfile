@@ -15,10 +15,8 @@ RUN useradd -g users -G www-data,sudo -s /bin/bash -m $APP_USER && \
 RUN mkdir /root/occurrences
 ADD . /root/occurrences
 RUN cd /root/occurrences && \
-    rbenv install $(cat .ruby-version) && \
-    rbenv rehash && \
-    gem install bundler && rbenv rehash && \
-    bundle install && rbenv rehash
+    gem install bundler && \
+    bundle install
 
 ADD start.sh /root/start.sh
 RUN chmod +x /root/start.sh

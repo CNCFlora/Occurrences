@@ -19,6 +19,7 @@ RUN cd /root/occurrences && \
     bundle install
 
 ENV ENV production
+ENV RACK_ENV production
 ADD start.sh /root/start.sh
 RUN chmod +x /root/start.sh
 

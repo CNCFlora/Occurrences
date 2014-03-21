@@ -69,7 +69,6 @@ post '/upload' do
                                     :content_type => params["file"][:type], :accept => :json
 
                 if validation.class == Array
-                    puts 'validation is array'
                     validation.each{ |v|
                         if validation.class == Array
                             v.each { |vv|
@@ -102,7 +101,7 @@ post '/upload' do
     if has_errors 
         view :upload, {:errors=>errors,:has_errors=>has_errors}
     else
-        redirect "/insert?data=#{URI.encode(json)}"
+        redirect "#{settings.config[:base]}/insert?data=#{URI.encode(json)}"
     end
 end
 
@@ -240,7 +239,7 @@ post '/occurrences/:id/sig' do
 
     r = http_post("#{settings.config[:datahub]}/occurrences",doc)
 
-    redirect "/search?q=#{URI.encode( params[:q] )}"
+    redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}"
 end
 
 post '/occurrences/:id/analysis' do
@@ -249,7 +248,7 @@ post '/occurrences/:id/analysis' do
     doc["comments"] = params[:comment]
 
     r = http_post("#{settings.config[:datahub]}/occurrences",doc)
-    redirect "/search?q=#{URI.encode( params[:q] )}"
+    redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}"
 end
 
 post '/occurrences/:id/validate' do
@@ -265,6 +264,6 @@ post '/occurrences/:id/validate' do
     doc["occurrenceStatus"] = params[:presence]
 
     r = http_post("#{settings.config[:datahub]}/occurrences",doc)
-    redirect "/search?q=#{URI.encode( params[:q] )}"
+    redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}"
 end
 

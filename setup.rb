@@ -44,10 +44,11 @@ if config[:etcd]
 end
 
 config[:connect] = "#{config[:connect_url]}"
+config[:datahub] = "#{config[:datahub_url]}"
 config[:datahub] = "http://#{config[:datahub_host ]}:#{config[:datahub_port]}"
 config[:elasticsearch] = "http://#{config[:elasticsearch_host ]}:#{config[:elasticsearch_port]}"
 config[:strings] = JSON.parse(File.read("locales/#{settings.lang}.json", :encoding => "BINARY"))
-config[:services] = "http://#{config[:dwc_services_host]}:#{config[:dwc_services_port]}/api/v1"
+config[:services] = "#{config[:dwc_services_url]}/api/v1"
 config[:self] = settings.self
 config[:base] = settings.base
 

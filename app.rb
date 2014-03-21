@@ -149,7 +149,7 @@ get '/families' do
 
     r = search("cncflora","taxonRank:'family'")
     r.each{|taxon|
-        families.push r["family"]
+        families.push taxon["family"]
     }
 
     view :families, {:families=>families.uniq}

@@ -1,10 +1,10 @@
 #!/bin/bash
 
-ENV=production
+cd /root/occurrences
 
-[[ ! -e /root/occurrences/config.yml ]] && cp /root/occurrences/config.yml.dist /root/occurrences/config.yml
+[[ ! -e config.yml ]] && cp config.yml.dist config.yml
 
-cd /root/occurrences && nohup rackup > rackup.log 2>&1 &
+nohup rackup > rackup.log 2>&1 &
 
 /usr/sbin/sshd -D
 

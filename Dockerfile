@@ -18,6 +18,7 @@ RUN cd /root/occurrences && \
     gem install bundler && \
     bundle install
 
+ENV ENV production
 ADD start.sh /root/start.sh
 RUN chmod +x /root/start.sh
 

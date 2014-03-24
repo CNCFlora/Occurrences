@@ -14,5 +14,5 @@ production:
     etcd: "http://192.168.50.2:4001"
     couchdb_base: "cncflora"
     lang: "pt"
-    base: ""
+    base: "/occurrences"
     self: "http://192.168.50.12:9292"

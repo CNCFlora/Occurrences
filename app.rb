@@ -32,17 +32,44 @@ post '/logout' do
 end
 
 get '/' do
-    species = []
+    species = {}
     if session[:logged]
-        user_taxons = []
         session[:user]["roles"].each {|r|
             r["entities"].each {|e|
-                user_taxons.push(e["name"])
+                species[e["name"]] = {
+                    :scientificName=>e["name"],
+                    :reviewed=>0,
+                    :validated=>0,
+                    :valid=>0,
+                    :invalid=>0,
+                    :total=>0
+                }
             }
         }
-        # TODO: list according to user profile
-        species.push( {:family=>'ACANTHACEAE',:scientificName=>'Aphelandra longiflora', :total=>20,:reviewed=>10,:validated=>5})
+
+        query = "'#{species.keys.join("' OR '")}'"
+        search("occurrences",query).each {|occ|
+            taxon = species[occ["scientificName"]]
+            taxon.total += 1;
+
+            if occ.has_key?("georeferenceVerificationStatus") 
+                taxon.reviewed += 1;
+            end
+
+            if occ.has_key?("validation")
+                if occ["validation"].has_key?("status")
+                    if occ["validation"]["status"] === 'valid'
+                        taxon.validated += 1
+                        taxon.valid += 1
+                    elsif occ["validation"]["status"] === 'invalid'
+                        taxon.validated += 1
+                        taxon.invalid += 1
+                    end
+                end
+            end
+        }
     end
+
     view :index,{:species=>species}
 end
 
@@ -67,6 +94,8 @@ post '/upload' do
                 # validate
                 validation = RestClient.post "#{settings.config[:services]}/validate", json,
                                     :content_type => params["file"][:type], :accept => :json
+
+                validation = JSON.parse(validation)
 
                 if validation.class == Array
                     validation.each{ |v|
@@ -151,12 +180,15 @@ get '/families' do
         families.push taxon["family"]
     }
 
-    view :families, {:families=>families.uniq}
+    view :families, {:families=>families.uniq.sort { |t1,t2|
+        t1["scientificName"] <=> t2["scientificName"]
+    }}
 end
 
 get '/family/:family' do
     family = params[:family]
-    species= search("cncflora","taxonRank:'specie' OR taxonRank:'variety' OR taxonRank:'subspecie'")
+    species= search("cncflora","family:'#{family} AND (taxonRank:'species' OR taxonRank:'variety' OR taxonRank:'subspecie')")
+                    .sort {|t1,t2| t1["scientificName"] <=> t2["scientificName"] }
     view :family, {:species=>species,:family=>family}
 end
 
@@ -180,13 +212,14 @@ get '/search' do
         end
 
         if occ.has_key?("validation")
-            validated += 1
             if occ["validation"].has_key?("status")
                 if occ["validation"]["status"] === 'valid'
+                    validated += 1
                     valid += 1
                     occ["valid"] = true
                     occ["invalid"] = false 
                 elsif occ["validation"]["status"] === 'invalid'
+                    validated += 1
                     invalid += 1
                     occ["valid"] = false
                     occ["invalid"] = true
@@ -239,7 +272,7 @@ post '/occurrences/:id/sig' do
 
     r = http_post("#{settings.config[:datahub]}/occurrences",doc)
 
-    redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}"
+    redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 
 post '/occurrences/:id/analysis' do
@@ -248,7 +281,7 @@ post '/occurrences/:id/analysis' do
     doc["comments"] = params[:comment]
 
     r = http_post("#{settings.config[:datahub]}/occurrences",doc)
-    redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}"
+    redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 
 post '/occurrences/:id/validate' do
@@ -264,6 +297,6 @@ post '/occurrences/:id/validate' do
     doc["occurrenceStatus"] = params[:presence]
 
     r = http_post("#{settings.config[:datahub]}/occurrences",doc)
-    redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}"
+    redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 

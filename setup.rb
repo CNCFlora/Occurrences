@@ -19,7 +19,7 @@ end
 def search(index,query)
     query="*" unless query != nil && query.length > 0
     result = []
-    http_get("#{settings.config[:elasticsearch]}/#{index}/_search?q=#{URI.encode(query)}")['hits']['hits'].each{|hit|
+    http_get("#{settings.config[:elasticsearch]}/#{index}/_search?size=9999&q=#{URI.encode(query)}")['hits']['hits'].each{|hit|
         result.push(hit["_source"])
     }
     result
@@ -45,8 +45,7 @@ end
 
 config[:connect] = "#{config[:connect_url]}"
 config[:datahub] = "#{config[:datahub_url]}"
-config[:datahub] = "http://#{config[:datahub_host ]}:#{config[:datahub_port]}"
-config[:elasticsearch] = "http://#{config[:elasticsearch_host ]}:#{config[:elasticsearch_port]}"
+config[:elasticsearch] = "#{config[:elasticsearch_url]}"
 config[:strings] = JSON.parse(File.read("locales/#{settings.lang}.json", :encoding => "BINARY"))
 config[:services] = "#{config[:dwc_services_url]}/api/v1"
 config[:self] = settings.self

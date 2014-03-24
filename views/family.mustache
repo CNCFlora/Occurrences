@@ -6,18 +6,22 @@
         <thead>
             <tr>
                 <th>{{strings.specie}}</th>
+                <!--
                 <th>{{strings.reviewed}}</th>
                 <th>{{strings.validated}}</th>
                 <th>{{strings.total}}</th>
+                -->
             </tr>
         </thead>
         <tbody>
             {{#species}}
             <tr>
                 <td><a href="{{base}}/search?q=scientificName:'{{scientificName}}'">{{scientificName}}</a></td>
+                <!--
                 <td>{{reviewed}}</td>
                 <td>{{validated}}</td>
                 <td>{{total}}</td>
+                -->
             </tr>
             {{/species}}
         </tbody>

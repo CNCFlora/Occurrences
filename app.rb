@@ -187,7 +187,7 @@ end
 
 get '/family/:family' do
     family = params[:family]
-    species= search("cncflora","family:'#{family}' AND (taxonRank:'species' OR taxonRank:'variety' OR taxonRank:'subspecie')")
+    species= search("cncflora","family:\"#{family}\" AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\")")
                     .sort {|t1,t2| t1["scientificName"] <=> t2["scientificName"] }
     view :family, {:species=>species,:family=>family}
 end

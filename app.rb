@@ -180,9 +180,7 @@ get '/families' do
         families.push taxon["family"]
     }
 
-    view :families, {:families=>families.uniq.sort { |t1,t2|
-        t1["scientificName"] <=> t2["scientificName"]
-    }}
+    view :families, {:families=>families.uniq.sort}
 end
 
 get '/family/:family' do

@@ -99,7 +99,7 @@ post '/upload' do
 
                 if validation.class == Array
                     validation.each{ |v|
-                        if validation.class == Array
+                        if v.class == Array
                             v.each { |vv|
                                 errors.push("#{vv['path']} #{vv['error']} #{vv['data']} #{vv['ref']}"
                                             .gsub("=>"," ").gsub("["," ").gsub("]"," ").gsub("\"","").gsub("-"," ")

@@ -260,7 +260,7 @@ post '/occurrences/:id/sig' do
     end
 
     doc[:georeferencedBy] = session[:user]["name"]
-    doc["georeferenceVerificationStatus"] = "ok"
+    doc["georeferenceVerificationStatus"] = params[:status]
     doc["georeferenceRemarks"] = params[:comment]
     doc["decimalLatitude"] = params[:latitude].to_f
     doc["decimalLongitude"] = params[:longitude].to_f

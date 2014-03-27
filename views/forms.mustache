@@ -22,6 +22,7 @@
                                 {{#valid}} $("select[name=status]").val('valid') {{/valid}}
                                 {{#invalid}} $("select[name=status]").val('invalid') {{/invalid}}
                                 </script>
+                                <span>Invalid: keep the occurrence record but remove from analysis/calculations.</span>
                             </p>
                             <p class='form-group'>
                                 <label for="presence">Presence</label>
@@ -34,13 +35,13 @@
                             <p class='form-group'>
                                 <label for="reason">Status:</label>
                                 <select name="reason" class='form-control'>
-                                    <option value="ok" {{#reason-ok}} selected {{/reason-ok}}>ok</option>
-                                    <option value="wrong taxonomy"  {{#reason-wrong-taxonomy}} selected {{/reason-wrong-taxonomy}}>wrong taxonomy</option>
-                                    <option value="uncertain taxonomy" {{#reason-uncertain-taxonomy}} selected {{/reason-uncertain-taxonomy}}>uncertain taxonomy</option>
-                                    <option value="wrong georeference" {{#reason-wrong-georeference}} selected {{/reason-wrong-georeference}}>wrong georeference</option>
-                                    <option value="duplicate" {{#reason-duplicate}} selected {{/reason-duplicate}}>duplicate</option>
-                                    <option value="cultivated" {{#reason-cultivated}} selected {{/reason-cultivated}}>cultivated</option>
-                                    <option value="other" {{#reason-other}} selected {{/reason-other}}>other</option>
+                                    <option value="ok" {{#reason-ok}} selected {{/reason-ok}}>ok (valid)</option>
+                                    <option value="uncertain taxonomy" {{#reason-uncertain-taxonomy}} selected {{/reason-uncertain-taxonomy}}>uncertain taxonomy (valid)</option>
+                                    <option value="wrong taxonomy"  {{#reason-wrong-taxonomy}} selected {{/reason-wrong-taxonomy}}>wrong taxonomy (invalid)</option>
+                                    <option value="wrong georeference" {{#reason-wrong-georeference}} selected {{/reason-wrong-georeference}}>wrong georeference (valid)</option>
+                                    <option value="duplicate" {{#reason-duplicate}} selected {{/reason-duplicate}}>duplicate (invalid)</option>
+                                    <option value="cultivated" {{#reason-cultivated}} selected {{/reason-cultivated}}>cultivated (invalid)</option>
+                                    <option value="other" {{#reason-other}} selected {{/reason-other}}>other (valid or invalid)</option>
                                 </select>
                             </p>
                             <p class="form-group">
@@ -109,7 +110,6 @@
                                 {{#invalid}} $("select[name=valid]").val('invalid') {{/invalid}}
                                 </script>
                             </p>
-                            <!--
                             <p class='form-group'>
                                 <label for="status">Status:</label>
                                 <select name="status" class='form-control'>
@@ -117,7 +117,6 @@
                                     <option value="uncertain-locality" {{#status-uncertain-locality}} selected {{/status-uncertain-locality}}>uncertain locality</option>
                                 </select>
                             </p>
-                            -->
                             <p class="form-group">
                                 <label for="latitude">Latitude</label>
                                 <input name="latitude" value="{{decimalLatitude}}" class='form-control' type="text" />

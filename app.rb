@@ -48,7 +48,7 @@ get '/' do
         }
 
         query = "'#{species.keys.join("' OR '")}'"
-        search("occurrences",query).each {|occ|
+        search("cncflora2",query).each {|occ|
             taxon = species[occ["scientificName"]]
             taxon.total += 1;
 
@@ -148,7 +148,7 @@ get '/insert' do
         }
     }
 
-    http_post("#{settings.config[:datahub]}/occurrences/_bulk_docs",{"docs"=> data});
+    http_post("#{settings.config[:datahub]}/cncflora2/_bulk_docs",{"docs"=> data});
 
     view :inserted, {:count=>count,:species=>species.uniq}
 end
@@ -167,7 +167,7 @@ post '/insert' do
         }
     }
 
-    http_post("#{settings.config[:datahub]}/occurrences/_bulk_docs",{"docs"=> data});
+    http_post("#{settings.config[:datahub]}/cncflora2/_bulk_docs",{"docs"=> data});
 
     view :inserted, {:count=>count,:species=>species.uniq}
 end
@@ -175,7 +175,7 @@ end
 get '/families' do
     families=[]
 
-    r = search("cncflora","taxonRank:'family'")
+    r = search("cncflora2","taxonRank:'family'")
     r.each{|taxon|
         families.push taxon["family"]
     }
@@ -185,14 +185,14 @@ end
 
 get '/family/:family' do
     family = params[:family]
-    species= search("cncflora","family:\"#{family}\" AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\")")
+    species= search("cncflora2","family:\"#{family}\" AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\")")
                     .sort {|t1,t2| t1["scientificName"] <=> t2["scientificName"] }
     view :family, {:species=>species,:family=>family}
 end
 
 get '/search' do
     query = params[:q]
-    occurrences = search("occurrences",query)
+    occurrences = search("cncflora2",query)
 
     valid=0
     invalid=0
@@ -253,7 +253,7 @@ get '/search' do
 end
 
 post '/occurrences/:id/sig' do
-    doc = http_get("#{settings.config[:datahub]}/occurrences/#{params[:id]}")
+    doc = http_get("#{settings.config[:datahub]}/cncflora2/#{params[:id]}")
 
     if !doc.has_key?("validation") 
         doc["validation"] = {}
@@ -268,22 +268,22 @@ post '/occurrences/:id/sig' do
         doc["validation"]["status"] = params[:valid]
     end
 
-    r = http_post("#{settings.config[:datahub]}/occurrences",doc)
+    r = http_post("#{settings.config[:datahub]}/cncflora2",doc)
 
     redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 
 post '/occurrences/:id/analysis' do
-    doc = http_get("#{settings.config[:datahub]}/occurrences/#{params[:id]}")
+    doc = http_get("#{settings.config[:datahub]}/cncflora2/#{params[:id]}")
 
     doc["comments"] = params[:comment]
 
-    r = http_post("#{settings.config[:datahub]}/occurrences",doc)
+    r = http_post("#{settings.config[:datahub]}/cncflora2",doc)
     redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 
 post '/occurrences/:id/validate' do
-    doc = http_get("#{settings.config[:datahub]}/occurrences/#{params[:id]}")
+    doc = http_get("#{settings.config[:datahub]}/cncflora2/#{params[:id]}")
 
     doc["validation"] = {
         "status"=>params[:status],
@@ -294,7 +294,7 @@ post '/occurrences/:id/validate' do
 
     doc["occurrenceStatus"] = params[:presence]
 
-    r = http_post("#{settings.config[:datahub]}/occurrences",doc)
+    r = http_post("#{settings.config[:datahub]}/cncflora2",doc)
     redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 

@@ -18,6 +18,7 @@ var map = function() {
         var feature = occurrences[i];
 
         if(!feature.decimalLatitude || !feature.decimalLongitude) continue;
+        if(feature.decimalLatitude == 0.0 || feature.decimalLongitude == 0.0) continue;
 
         var marker = L.marker(new L.LatLng(feature.decimalLatitude,feature.decimalLongitude));
         marker.bindPopup(document.getElementById("occ-"+feature.occurrenceID+"-unit").innerHTML);

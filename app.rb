@@ -177,7 +177,7 @@ end
 get '/families' do
     families=[]
 
-    r = search("cncflora2","taxonRank:\"family\"")
+    r = search("cncflora2","metadata.type=\"taxon\"")
     r.each{|taxon|
         families.push taxon["family"]
     }
@@ -206,6 +206,17 @@ get '/search' do
     occurrences.each{ |occ| 
         occ[:json] = JSON.dump(occ) 
         occ[:occurrenceID2] = i
+
+        if occ.has_key?("decimalLatitude")
+            if occ["decimalLatitude"] == 0.0
+                occ.delete("decimalLatitude")
+            end
+        end
+        if occ.has_key?("decimalLongitude")
+            if occ["decimalLongitude"] == 0.0
+                occ.delete("decimalLongitude")
+            end
+        end
 
         if occ.has_key?("georeferenceVerificationStatus") 
             reviewed += 1;

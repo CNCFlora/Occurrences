@@ -48,7 +48,6 @@ config[:datahub] = "#{config[:datahub_url]}"
 config[:elasticsearch] = "#{config[:elasticsearch_url]}"
 config[:strings] = JSON.parse(File.read("locales/#{settings.lang}.json", :encoding => "BINARY"))
 config[:services] = "#{config[:dwc_services_url]}/api/v1"
-config[:self] = settings.self
 config[:base] = settings.base
 
 set :config, config
@@ -61,8 +60,5 @@ def view(page,data)
             @session_hash["role-#{role['role'].downcase}"] = true
         end
     end
-    @session_hash["role-analyst"]=true
-    @session_hash["role-sig"]=true
-    @session_hash["role-validator"]=true
     mustache page, {}, @config.merge(@session_hash).merge(data)
 end

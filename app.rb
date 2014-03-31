@@ -51,20 +51,20 @@ get '/' do
         search("cncflora2",query).each {|occ|
             taxon = species[occ["scientificName"]]
             if taxon 
-                taxon.total += 1;
+                taxon[:total] += 1;
 
                 if occ.has_key?("georeferenceVerificationStatus") 
-                    taxon.reviewed += 1;
+                    taxon[:reviewed] += 1;
                 end
 
                 if occ.has_key?("validation")
                     if occ["validation"].has_key?("status")
                         if occ["validation"]["status"] === 'valid'
-                            taxon.validated += 1
-                            taxon.valid += 1
+                            taxon[:validated] += 1
+                            taxon[:valid] += 1
                         elsif occ["validation"]["status"] === 'invalid'
-                            taxon.validated += 1
-                            taxon.invalid += 1
+                            taxon[:validated] += 1
+                            taxon[:invalid] += 1
                         end
                     end
                 end

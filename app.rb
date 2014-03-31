@@ -177,7 +177,7 @@ end
 get '/families' do
     families=[]
 
-    r = search("cncflora2","taxonRank:'family'")
+    r = search("cncflora2","taxonRank:\"family\"")
     r.each{|taxon|
         families.push taxon["family"]
     }

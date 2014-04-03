@@ -58,44 +58,71 @@
 
     <p>
         <strong>Occurrence ID</strong>: <a href="#occ-{{occurrenceID}}-unit">{{occurrenceID}}</a> ;
-        <strong>Taxon</strong>:{{family}} {{scientificName}}
+    </p>
+    <p>
+        <strong>Taxon</strong>:{{family}} {{scientificName}};
     </p>
 
     <p>
         <strong>Recorded by</strong>: {{recordedBy}} , 
-        <strong>Number</strong>: {{recordNumber}} ,
+        <strong>Number</strong>: {{recordNumber}} ;
+    </p>
+
+    <p>
         <strong>Collect Date</strong>: {{day}}-{{month}}-{{year}} ;
     </p>
 
     <p>
         <strong>Collection</strong>: {{collectionCode}} ,  
-        <strong>Catalog</strong>: {{catalogNumber}} ,
-        <strong>Identified by</strong> {{identifiedBy}} ,
-        <strong>Identification Date</strong> {{identificationDate}} ;
+        <strong>Catalog</strong>: {{catalogNumber}};
     </p>
+
+    {{#identifiedBy}}
+        <p>
+            <strong>Identified by</strong> {{identifiedBy}} ,
+            <strong>Date</strong> {{identificationDate}} ;
+        </p>
+    {{/identifiedBy}}
 
     <p>
         <strong>State</strong>: {{stateProvince}} ;
         <strong>City</strong>: {{municipality}} ;
-        <strong>Long/Lat</strong>: {{decimalLongitude}} {{decimalLatitude}} ;
+    </p>
+
+    {{#locality}}
+    <p>
+        <strong>Locality</strong>: {{locality}} ;
+    </p>
+    {{/locality}}
+
+    {{#presence}}
+    <p>
         <strong>Presence</strong>: {{presence}} ;
-        <strong>Locality</strong>: {{locality}}
     </p>
+    {{/presence}}
 
     <p>
-        <strong>Literature</strong>: {{bibliographicCitation}}
+        <strong>Long/Lat</strong>: {{decimalLongitude}} {{decimalLatitude}} ;
     </p>
 
+    {{#bibliographicCitation}}
     <p>
-        <strong>Remarks</strong>: {{{occurrenceRemarks}}}
+        <strong>Literature</strong>: {{bibliographicCitation}};
     </p>
+    {{/bibliographicCitation}}
+
+    {{#occurrenceRemarks}}
+    <p>
+        <strong>Remarks</strong>: {{{occurrenceRemarks}}};
+    </p>
+    {{/occurrenceRemarks}}
 
     {{#georeferencedBy}}
-        <p><strong>Georeference Remarks</strong>: {{georeferencedBy}} - {{{georeferenceRemarks}}}</p>
+        <p><strong>Georeference Remarks</strong>: {{georeferencedBy}} - {{{georeferenceRemarks}}};</p>
     {{/georeferencedBy}}
 
     {{#comments}}
-        <p><strong>Analysis Remarks</strong>: {{{comments}}}</p>
+        <p><strong>Analysis Remarks</strong>: {{{comments}}};</p>
     {{/comments}}
 
     {{#validation.by}}
@@ -103,7 +130,7 @@
         {{#role-analyst}}
             <span class='label label-warning'>check</span>
         {{/role-analyst}}
-        <strong>Validation Remarks</strong>: {{validation.by}} - {{validation.reason}}: {{{validation.remarks}}}
+        <strong>Validation Remarks</strong>: {{validation.by}} - {{validation.reason}}: {{{validation.remarks}}};
     </p>
     {{/validation.by}}
 

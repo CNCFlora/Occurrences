@@ -132,7 +132,23 @@ post '/upload' do
     if has_errors 
         view :upload, {:errors=>errors,:has_errors=>has_errors}
     else
-        redirect "#{settings.config[:base]}/insert?data=#{URI.encode(json)}"
+        puts json
+        data = JSON.parse(json)
+        count = data.length
+        species = []
+
+        data.each {|occ|
+            species.push occ["scientificName"]
+            occ[:_id] = occ["occurrenceID"]
+            occ[:metadata] = {
+                # TODO: fill in
+                :type => "occurrence"
+            }
+        }
+
+        r=http_post("#{settings.config[:datahub]}/cncflora2/_bulk_docs",{"docs"=> data});
+
+        view :inserted, {:count=>count,:species=>species.uniq}
     end
 end
 
@@ -187,14 +203,92 @@ end
 
 get '/family/:family' do
     family = params[:family]
-    species= search("cncflora2","family:\"#{family}\" AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\")")
+    species= search("cncflora2","family:\"#{family}\" AND taxomicStatus:\"accepted\" AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\")")
                     .sort {|t1,t2| t1["scientificName"] <=> t2["scientificName"] }
     view :family, {:species=>species,:family=>family}
 end
 
+get '/specie/:name' do
+    query = "\"#{params[:name]}\""
+
+    search("cncflora2","acceptedNameUsage:\"#{params[:name]}\"").each {|t|
+        query << " OR \"#{t["scientificName"]}\""
+    }
+
+    occurrences = search("cncflora2","metadata.type=\"occurrence\" AND (#{query})")
+
+    valid=0
+    invalid=0
+    reviewed=0
+    validated=0
+    eoo="soon"
+    aoo="soon"
+    i=0
+    occurrences.each{ |occ| 
+        occ[:json] = JSON.dump(occ) 
+        occ[:occurrenceID2] = i
+
+        if occ.has_key?("decimalLatitude")
+            if occ["decimalLatitude"] == 0.0
+                occ.delete("decimalLatitude")
+            end
+        end
+        if occ.has_key?("decimalLongitude")
+            if occ["decimalLongitude"] == 0.0
+                occ.delete("decimalLongitude")
+            end
+        end
+
+        if occ.has_key?("georeferenceVerificationStatus") 
+            reviewed += 1;
+        end
+
+        if occ.has_key?("validation")
+            if occ["validation"].has_key?("status")
+                if occ["validation"]["status"] === 'valid'
+                    validated += 1
+                    valid += 1
+                    occ["valid"] = true
+                    occ["invalid"] = false 
+                elsif occ["validation"]["status"] === 'invalid'
+                    validated += 1
+                    invalid += 1
+                    occ["valid"] = false
+                    occ["invalid"] = true
+                end
+            end
+            if occ["validation"].has_key?("reason")
+                occ["reason-#{occ["validation"]["reason"].gsub(" ","-")}".to_sym] = true
+            end
+            if occ.has_key?("occurrenceStatus")
+                occ["presence-#{occ["occurrenceStatus"]}".to_sym] = true
+            end
+        end
+
+        i += 1
+    }
+    total = i
+
+    data = {
+        :result=>occurrences,
+        :query=>query,
+        :name=>params[:name],
+        :stats=>{
+            :eoo=>eoo,
+            :aoo=>aoo,
+            :total=>total,
+            :valid=>valid,
+            :invalid=>invalid,
+            :reviewed=>reviewed,
+            :validated=>validated
+        }
+    }
+
+    view :specie,data 
+end
 get '/search' do
-    query = params[:q]
-    occurrences = search("cncflora2",query)
+    query = params[:q] || "*"
+    occurrences = search("cncflora2","metadata.type=\"occurrence\" AND #{query}")
 
     valid=0
     invalid=0

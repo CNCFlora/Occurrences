@@ -1,0 +1,63 @@
+{{> header}}
+
+<h2 class='col-md-12'><i>{{name}}</i></h2>
+
+<div class="col-md-12">
+    {{#stats}}
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>{{strings.eoo}}</th>
+                <th>{{strings.aoo}}</th>
+                <th>{{strings.valid}}</th>
+                <th>{{strings.invalid}}</th>
+                <th>&nbsp;</th>
+                <th>{{strings.reviewed}}</th>
+                <th>{{strings.validated}}</th>
+                <th>{{strings.total}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{eoo}}</td>
+                <td>{{aoo}}</td>
+                <td>{{valid}}</td>
+                <td>{{invalid}}</td>
+                <td>&nbsp;</td>
+                <td>{{reviewed}}</td>
+                <td>{{validated}}</td>
+                <td>{{total}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {{/stats}}
+
+    <a name="map"></a>
+    <div id="map"></div>
+
+    <script type="text/javascript">
+        var occurrences = [] ;
+    </script>
+
+    {{#result}}
+        <a name="occ-{{occurrenceID}}-unit"></a>
+        <script>
+            occurrences.push({{{json}}});
+        </script>
+        <div id="occ-{{occurrenceID}}-unit" >
+            {{> unit}}
+        </div>
+        {{> forms}}
+    {{/result}}
+
+</div>
+
+<link rel="stylesheet" href="{{base}}/css/leaflet.css" />
+<link rel="stylesheet" href="{{base}}/css/MarkerCluster.css" />
+<link rel="stylesheet" href="{{base}}/css/MarkerCluster.Default.css" />
+<script type="text/javascript" src="{{base}}/js/leaflet.js"></script>
+<script type="text/javascript" src="{{base}}/js/leaflet.markercluster.js"></script>
+<script type="text/javascript" src='{{base}}/js/map.js'></script>
+
+{{> footer}}
+

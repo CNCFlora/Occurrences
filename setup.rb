@@ -19,7 +19,8 @@ end
 def search(index,query)
     query="*" unless query != nil && query.length > 0
     result = []
-    http_get("#{settings.config[:elasticsearch]}/#{index}/_search?size=9999&q=#{URI.encode(query)}")['hits']['hits'].each{|hit|
+    r = http_get("#{settings.config[:elasticsearch]}/#{index}/_search?size=9999&q=#{URI.encode(query)}")
+    r['hits']['hits'].each{|hit|
         result.push(hit["_source"])
     }
     result

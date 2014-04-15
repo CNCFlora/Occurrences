@@ -62,6 +62,11 @@
     <p>
         <strong>Taxon</strong>:{{family}} {{scientificName}};
     </p>
+    {{#identificationQualifier}}
+    <p>
+        <strong>{{strings.qualifier}}</strong>: {{identificationQualifier}}
+    </p>
+    {{/identificationQualifier}}
 
     <p>
         <strong>Recorded by</strong>: {{recordedBy}} , 

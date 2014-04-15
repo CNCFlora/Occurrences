@@ -72,8 +72,12 @@
                         </div>
                         <div class="modal-body">
                             <p class="form-group">
-                                <label for="comment">Comments</label>
-                                <textarea name="comment" class='form-control'>{{comment}}</textarea>
+                                <label for="qualifier">{{strings.qualifier}}</label>
+                                <input id="identificationQualifier" name="identificationQualifier" type="text" class="form-control" value="{{identificationQualifier}}" />
+                            </p>
+                            <p class="form-group">
+                                <label for="comments">Comments</label>
+                                <textarea name="comments" class='form-control'>{{comments}}</textarea>
                             </p>
                         </div>
                         <div class='modal-footer'>

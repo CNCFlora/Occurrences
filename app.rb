@@ -383,10 +383,11 @@ end
 post '/occurrences/:id/analysis' do
     doc = http_get("#{settings.config[:datahub]}/cncflora2/#{params[:id]}")
 
-    doc["comments"] = params[:comment]
+    doc["comments"] = params[:comments]
+    doc["identificationQualifier"] = params[:identificationQualifier]
 
     r = http_post("#{settings.config[:datahub]}/cncflora2",doc)
-    redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
+    redirect "#{settings.config[:base]}/search?q=#{URI.encode(params[:q])}#occ-#{params[:id]}-unit"
 end
 
 post '/occurrences/:id/validate' do

@@ -113,8 +113,8 @@ post '/upload' do
                     # also convert to geojson, to integrate with the editor
                     geojson = RestClient.post "#{settings.config[:services]}/convert?from=json&to=geojson", json,
                                                 :content_type => params["file"][:type], :accept => :json
-                    File.open("#{file}.json",'w') { |f| f.write(json) }
-                    File.open("#{file}.geojson",'w') { |f| f.write(geojson) }
+                    #File.open("#{file}.json",'w') { |f| f.write(json) }
+                    #File.open("#{file}.geojson",'w') { |f| f.write(geojson) }
                 end
             end
         else
@@ -291,7 +291,8 @@ get '/specie/:name' do
     view :specie,data 
 end
 get '/search' do
-    query = params[:q] || "*"
+    query = params[:q].gsub("&quot","\"") || "*"
+    puts query
     occurrences = search("cncflora2","metadata.type=\"occurrence\" AND #{query}")
 
     valid=0
@@ -408,5 +409,56 @@ post '/occurrences/:id/validate' do
 
     r = http_post("#{settings.config[:datahub]}/cncflora2",doc)
     redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
+end
+
+get '/editor' do
+    query = params[:q] || "*"
+    occurrences = search("cncflora2","metadata.type=\"occurrence\" AND #{query}")
+
+    view :recline,{:occurrences=>occurrences,:query=>query}
+end
+
+get "/json" do
+    query = params[:q] || "*"
+
+    occurrences = [ ]
+    search("cncflora2","metadata.type=\"occurrence\" AND #{query}").each {|occ|
+        occ["decimalLatitude"] = occ["decimalLatitude"].to_f
+        occ["decimalLongitude"] = occ["decimalLongitude"].to_f
+        occurrences << occ;
+    }
+
+    r=""
+    if params[:callback]
+        r << params[:callback]
+        r << "("
+    end
+    r << occurrences.to_json
+    if params[:callback]
+        r << ");"
+    end
+    r
+end
+
+post "/json" do
+    data = JSON.parse(params[:data]) 
+    keys = []
+    data.each{|r| keys << r['occurrenceID']}
+    r = http_post("#{settings.config[:datahub]}/cncflora2/_all_docs",{:keys=>keys})
+    docs = []
+
+    data.each{ |occ|
+        r["rows"].each {|row|
+            if row["id"] == occ["occurrenceID"]
+                occ["_rev"] = row["value"]["rev"]
+                occ["_id"] = row["id"]
+                docs << occ
+            end
+        }
+    }
+    r=http_post("#{settings.config[:datahub]}/cncflora2/_bulk_docs",{"docs"=> docs});
+
+    query = URI.encode(params[:q].gsub("&quot;","\""))
+    redirect "#{settings.config[:base]}/search?q=#{query}"
 end
 

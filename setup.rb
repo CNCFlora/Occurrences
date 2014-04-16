@@ -13,7 +13,8 @@ def http_post(uri,doc)
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri.request_uri, header)
     request.body = doc.to_json
-    http.request(request)
+    response = http.request(request)
+    JSON.parse(response.body)
 end
 
 def search(index,query)

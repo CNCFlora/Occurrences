@@ -123,6 +123,10 @@ post '/upload' do
     rescue Exception => e
         puts "Exception!"
         errors.push e.message
+        if e.respond_to? "response"
+            puts e.response.to_str
+            errors.push e.response.to_str
+        end
         puts e.message  
         puts e.backtrace.inspect  
     end

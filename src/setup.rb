@@ -1,7 +1,8 @@
 
-config_file ENV['config'] || 'config.yml'
+config_file ENV['config'] || '../config.yml'
 use Rack::Session::Pool
 set :session_secret, '1flora2'
+set :views, 'src/views'
 
 def http_get(uri)
     JSON.parse(Net::HTTP.get(URI(uri)))
@@ -48,7 +49,7 @@ end
 config[:connect] = "#{config[:connect_url]}"
 config[:datahub] = "#{config[:datahub_url]}"
 config[:elasticsearch] = "#{config[:elasticsearch_url]}"
-config[:strings] = JSON.parse(File.read("locales/#{settings.lang}.json", :encoding => "BINARY"))
+config[:strings] = JSON.parse(File.read("src/locales/#{settings.lang}.json", :encoding => "BINARY"))
 config[:services] = "#{config[:dwc_services_url]}/api/v1"
 config[:base] = settings.base
 
@@ -64,3 +65,4 @@ def view(page,data)
     end
     mustache page, {}, @config.merge(@session_hash).merge(data)
 end
+

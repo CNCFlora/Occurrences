@@ -4,7 +4,7 @@ ENV APP_USER cncflora
 ENV APP_PASS cncflora
 
 RUN cp /etc/apt/sources.list /etc/apt/sources.list.bkp && sed -e 's/http/ftp/g' /etc/apt/sources.list.bkp > /etc/apt/sources.list
-RUN apt-get update -y
+RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install curl git vim openssh-server tmux sudo aptitude screen wget -y
 
 RUN useradd -g users -G www-data,sudo -s /bin/bash -m $APP_USER && \

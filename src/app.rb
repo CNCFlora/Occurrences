@@ -48,7 +48,7 @@ get '/' do
         }
 
         query = "\"#{species.keys.join("\" OR \"")}\""
-        search("cncflora2",query).each {|occ|
+        search(settings.db,query).each {|occ|
             taxon = species[occ["scientificName"]]
             if taxon 
                 taxon[:total] += 1;
@@ -150,7 +150,7 @@ post '/upload' do
             }
         }
 
-        r=http_post("#{settings.config[:datahub]}/cncflora2/_bulk_docs",{"docs"=> data});
+        r=http_post("#{settings.config[:datahub]}/#{settings.db}/_bulk_docs",{"docs"=> data});
 
         view :inserted, {:count=>count,:species=>species.uniq}
     end
@@ -170,7 +170,7 @@ get '/insert' do
         }
     }
 
-    http_post("#{settings.config[:datahub]}/cncflora2/_bulk_docs",{"docs"=> data});
+    http_post("#{settings.config[:datahub]}/#{settings.db}/_bulk_docs",{"docs"=> data});
 
     view :inserted, {:count=>count,:species=>species.uniq}
 end
@@ -189,7 +189,7 @@ post '/insert' do
         }
     }
 
-    http_post("#{settings.config[:datahub]}/cncflora2/_bulk_docs",{"docs"=> data});
+    http_post("#{settings.config[:datahub]}/#{settings.db}/_bulk_docs",{"docs"=> data});
 
     view :inserted, {:count=>count,:species=>species.uniq}
 end
@@ -197,7 +197,7 @@ end
 get '/families' do
     families=[]
 
-    r = search("cncflora2","metadata.type=\"taxon\"")
+    r = search(settings.db,"metadata.type=\"taxon\"")
     r.each{|taxon|
         families.push taxon["family"]
     }
@@ -207,7 +207,7 @@ end
 
 get '/family/:family' do
     family = params[:family]
-    species= search("cncflora2","family:\"#{family}\" AND taxomicStatus:\"accepted\" AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\")")
+    species= search(settings.db,"family:\"#{family}\" AND taxomicStatus:\"accepted\" AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\")")
                     .sort {|t1,t2| t1["scientificName"] <=> t2["scientificName"] }
     view :family, {:species=>species,:family=>family}
 end
@@ -215,11 +215,11 @@ end
 get '/specie/:name' do
     query = "\"#{params[:name]}\""
 
-    search("cncflora2","acceptedNameUsage:\"#{params[:name]}\"").each {|t|
+    search(settings.db,"acceptedNameUsage:\"#{params[:name]}\"").each {|t|
         query << " OR \"#{t["scientificName"]}\""
     }
 
-    occurrences = search("cncflora2","metadata.type=\"occurrence\" AND (#{query})")
+    occurrences = search(settings.db,"metadata.type=\"occurrence\" AND (#{query})")
 
     valid=0
     invalid=0
@@ -291,9 +291,9 @@ get '/specie/:name' do
     view :specie,data 
 end
 get '/search' do
-    query = params[:q].gsub("&quot","\"") || "*"
+    query = (params[:q] || "*").gsub("&quot","\"")
     puts query
-    occurrences = search("cncflora2","metadata.type=\"occurrence\" AND #{query}")
+    occurrences = search(settings.db,"metadata.type=\"occurrence\" AND #{query}")
 
     valid=0
     invalid=0
@@ -365,7 +365,7 @@ get '/search' do
 end
 
 post '/occurrences/:id/sig' do
-    doc = http_get("#{settings.config[:datahub]}/cncflora2/#{params[:id]}")
+    doc = http_get("#{settings.config[:datahub]}/#{settings.db}/#{params[:id]}")
 
     if !doc.has_key?("validation") 
         doc["validation"] = {}
@@ -380,23 +380,23 @@ post '/occurrences/:id/sig' do
         doc["validation"]["status"] = params[:valid]
     end
 
-    r = http_post("#{settings.config[:datahub]}/cncflora2",doc)
+    r = http_post("#{settings.config[:datahub]}/#{settings.db}",doc)
 
     redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 
 post '/occurrences/:id/analysis' do
-    doc = http_get("#{settings.config[:datahub]}/cncflora2/#{params[:id]}")
+    doc = http_get("#{settings.config[:datahub]}/#{settings.db}/#{params[:id]}")
 
     doc["comments"] = params[:comments]
     doc["identificationQualifier"] = params[:identificationQualifier]
 
-    r = http_post("#{settings.config[:datahub]}/cncflora2",doc)
+    r = http_post("#{settings.config[:datahub]}/#{settings.db}",doc)
     redirect "#{settings.config[:base]}/search?q=#{URI.encode(params[:q])}#occ-#{params[:id]}-unit"
 end
 
 post '/occurrences/:id/validate' do
-    doc = http_get("#{settings.config[:datahub]}/cncflora2/#{params[:id]}")
+    doc = http_get("#{settings.config[:datahub]}/#{settings.db}/#{params[:id]}")
 
     doc["validation"] = {
         "status"=>params[:status],
@@ -407,13 +407,13 @@ post '/occurrences/:id/validate' do
 
     doc["occurrenceStatus"] = params[:presence]
 
-    r = http_post("#{settings.config[:datahub]}/cncflora2",doc)
+    r = http_post("#{settings.config[:datahub]}/#{settings.db}",doc)
     redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 
 get '/editor' do
     query = params[:q] || "*"
-    occurrences = search("cncflora2","metadata.type=\"occurrence\" AND #{query}")
+    occurrences = search(settings.db,"metadata.type=\"occurrence\" AND #{query}")
 
     view :recline,{:occurrences=>occurrences,:query=>query}
 end
@@ -422,7 +422,7 @@ get "/json" do
     query = params[:q] || "*"
 
     occurrences = [ ]
-    search("cncflora2","metadata.type=\"occurrence\" AND #{query}").each {|occ|
+    search(settings.db,"metadata.type=\"occurrence\" AND #{query}").each {|occ|
         occ["decimalLatitude"] = occ["decimalLatitude"].to_f
         occ["decimalLongitude"] = occ["decimalLongitude"].to_f
         occurrences << occ;
@@ -444,7 +444,7 @@ post "/json" do
     data = JSON.parse(params[:data]) 
     keys = []
     data.each{|r| keys << r['occurrenceID']}
-    r = http_post("#{settings.config[:datahub]}/cncflora2/_all_docs",{:keys=>keys})
+    r = http_post("#{settings.config[:datahub]}/#{settings.db}/_all_docs",{:keys=>keys})
     docs = []
 
     data.each{ |occ|
@@ -456,7 +456,7 @@ post "/json" do
             end
         }
     }
-    r=http_post("#{settings.config[:datahub]}/cncflora2/_bulk_docs",{"docs"=> docs});
+    r=http_post("#{settings.config[:datahub]}/#{settings.db}/_bulk_docs",{"docs"=> docs});
 
     query = URI.encode(params[:q].gsub("&quot;","\""))
     redirect "#{settings.config[:base]}/search?q=#{query}"

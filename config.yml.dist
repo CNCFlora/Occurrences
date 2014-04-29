@@ -1,15 +1,15 @@
 development:
-    etcd: "http://192.168.50.2:4001"
-    couchdb_base: "cncflora"
+    etcd: "http://localhost:4001"
+    db: "cncflora"
     lang: "pt"
     base: ""
 test:
-    etcd: "http://192.168.50.2:4001"
+    etcd: "http://localhost:4001"
     lang: "pt"
-    couchdb_base: "cncflora_test"
+    db: "cncflora_test"
     base: ""
 production:
     etcd: "http://cncflora.jbrj.gov.br/etcd"
-    couchdb_base: "cncflora"
+    db: "cncflora2"
     lang: "pt"
     base: "/occurrences"

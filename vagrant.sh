@@ -31,7 +31,7 @@ fi
 
 # docker register to etcd
 if [[ ! -e /usr/bin/docker2etcd ]]; then
-    wget https://gist.githubusercontent.com/diogok/9604900/raw/3c4f8efd9b41a70c41cdddbe603dab40464ae771/register-docker-to-etcd.sh \
+    wget https://gist.githubusercontent.com/diogok/9604900/raw/afcc71dbec207a4f7b12a98e695622d902b5b022/register-docker-to-etcd.sh \
           -O /usr/bin/docker2etcd 
     chmod +x /usr/bin/docker2etcd 
 fi

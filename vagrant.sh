@@ -9,7 +9,9 @@ apt-get install aptitude wget curl git tmux vim libxslt-dev libxml2-dev ruby1.9.
 if [[ ! -e /home/vagrant/.rbenv ]]; then
     su vagrant -lc 'git clone https://github.com/sstephenson/rbenv.git /home/vagrant/.rbenv'
     su vagrant -lc 'echo export PATH="/home/vagrant/.rbenv/bin:\$PATH" >> /home/vagrant/.profile'
+    su vagrant -lc 'echo export PATH="/home/vagrant/.rbenv/bin:\$PATH" >> /home/vagrant/.bashrc'
     su vagrant -lc 'echo eval \"\$\(rbenv init -\)\" >> /home/vagrant/.profile'
+    su vagrant -lc 'echo eval \"\$\(rbenv init -\)\" >> /home/vagrant/.bashrc'
     su vagrant -lc 'git clone https://github.com/sstephenson/ruby-build.git /home/vagrant/.rbenv/plugins/ruby-build'
 fi
 

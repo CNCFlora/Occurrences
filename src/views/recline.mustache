@@ -1,8 +1,8 @@
 
 <script type="text/javascript">
-    var from = 'http://'+location.host+'{{base}}/json?q='+encodeURIComponent('{{query}}');
-    var to = 'http://'+location.host+'{{base}}/json?q='+encodeURIComponent('{{query}}');
-    var editor = 'http://localhost:8000/index.html?from='+btoa(from)+'&to='+btoa(to);
+    var from = 'http://'+location.host+'{{base}}/json?q='+encodeURIComponent('{{{query}}}');
+    var to = 'http://'+location.host+'{{base}}/json?q='+encodeURIComponent('{{{query}}}');
+    var editor = '{{{editor}}}/index.html?from='+btoa(from)+'&to='+btoa(to);
     location.href=editor;
 </script>
 

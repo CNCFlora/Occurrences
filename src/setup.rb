@@ -48,6 +48,7 @@ end
 
 config[:connect] = "#{config[:connect_url]}"
 config[:datahub] = "#{config[:datahub_url]}"
+config[:couchdb] = "#{config[:couchdb_url]}"
 config[:elasticsearch] = "#{config[:elasticsearch_url]}"
 config[:strings] = JSON.parse(File.read("src/locales/#{settings.lang}.json", :encoding => "BINARY"))
 config[:services] = "#{config[:dwc_services_url]}/api/v1"

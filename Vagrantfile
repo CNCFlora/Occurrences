@@ -21,10 +21,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.network "private_network", ip: "192.168.50.12"
   config.vm.network :forwarded_port, host: 9292, guest: 9292, auto_correct: true
+  config.vm.network :forwarded_port, host: 8080, guest: 8080, auto_correct: true
 
   config.vm.provision "docker" do |d|
     d.run r("cncflora/etcd"), name: "etcd", args: "-p 8001:80 -p 4001:4001"
-    d.run r("cncflora/connect"), name: "connect", args: "-P -v /var/connect:/var/lib/floraconnect:rw"
+    d.run r("cncflora/connect"), name: "connect", args: "-P -v /var/connect:/var/floraconnect:rw"
     d.run r("bradrydzewski/couchdb:1.5"), name: "couchdb", args: "-p 5984:5984 -v /var/couchdb:/usr/local/var/lib/couchdb:rw"
     d.run r("dockerfile/elasticsearch"), name: "elasticsearch", args: "-p 9200:9200"
     d.run r("cncflora/bots"), name: "bots", cmd: "/root/run.sh http://192.168.16.12:5984 http://192.168.16.12:9200 cncflora2"

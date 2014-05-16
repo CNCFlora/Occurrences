@@ -21,7 +21,6 @@ if [[ ! -e /home/vagrant/.app_done ]]; then
     gem sources -r http://rubygems.org
     gem sources -r http://rubygems.org/
     gem sources -a https://rubygems.org
-    gem install bundler
 
     # initial config of app
     su vagrant -lc 'cd /vagrant && rbenv install $(cat .ruby-version) && rbenv rehash'

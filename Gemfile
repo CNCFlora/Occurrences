@@ -14,5 +14,5 @@ gem 'rspec'
 gem 'rspec-html-matchers'
 gem 'rack-test'
 
-gem 'thin'
+gem 'unicorn'
 

@@ -1,6 +1,6 @@
 
 get '/search' do
-    query = (params[:q] || "*").gsub("&quot","\"")
+    query = (params[:q] || "scientificName:'Aphelandra longiflora'").gsub("&quot","\"")
     occurrences = search(settings.db,"metadata.type=\"occurrence\" AND (#{query})")
 
     valid=0

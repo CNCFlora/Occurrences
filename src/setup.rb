@@ -19,9 +19,9 @@ def http_post(uri,doc)
 end
 
 def search(index,query)
-    query="*" unless query != nil && query.length > 0
+    query="scientificName:'Aphelandra longiflora'" unless query != nil && query.length > 0
     result = []
-    r = http_get("#{settings.config[:elasticsearch]}/#{index}/_search?size=9999&q=#{URI.encode(query)}")
+    r = http_get("#{settings.config[:elasticsearch]}/#{index}/_search?size=999&q=#{URI.encode(query)}")
     r['hits']['hits'].each{|hit|
         result.push(hit["_source"])
     }

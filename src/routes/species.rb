@@ -25,5 +25,5 @@ get '/specie/:name' do
         query << " OR \"#{t["scientificName"]}\""
     }
 
-    redirect "#{settings.config[:base]}/search?q=#{query}"
+    redirect "#{settings.config[:base]}/search?q=#{URI.encode( query )}"
 end

@@ -3,7 +3,6 @@ get '/editor' do
     query = (params[:q] || "*").gsub("&quot","\"")
     occurrences = search(settings.db,"metadata.type=\"occurrence\" AND (#{query})")
     editor = settings.config[:recline_editor_url];
-    puts settings.config
     view :recline,{:occurrences=>occurrences,:query=>query,:editor=>editor}
 end
 
@@ -45,6 +44,7 @@ post "/json" do
             end
         }
     }
+
     r=http_post("#{settings.config[:couchdb]}/#{settings.db}/_bulk_docs",{"docs"=> docs});
 
     query = URI.encode(params[:q].gsub("&quot;","\""))

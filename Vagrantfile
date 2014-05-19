@@ -28,7 +28,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.run r("cncflora/connect"), name: "connect", args: "-P -v /var/connect:/var/floraconnect:rw"
     d.run r("bradrydzewski/couchdb:1.5"), name: "couchdb", args: "-p 5984:5984 -v /var/couchdb:/usr/local/var/lib/couchdb:rw"
     d.run r("dockerfile/elasticsearch"), name: "elasticsearch", args: "-p 9200:9200"
-    d.run r("cncflora/bots"), name: "bots", cmd: "/root/run.sh http://192.168.16.12:5984 http://192.168.16.12:9200 cncflora2"
+    d.run r("cncflora/bots"), name: "bots", cmd: "/root/start.sh http://192.168.50.12:5984 http://192.168.50.12:9200 cncflora"
     d.run r("cncflora/dwc-services"), name: "dwc-services", args: "-P"
     d.run r("cncflora/recline-editor"), name: "recline-editor", args: "-P"
   end

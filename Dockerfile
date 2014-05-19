@@ -11,7 +11,7 @@ ENV RACK_ENV production
 ADD start.sh /root/start.sh
 RUN chmod +x /root/start.sh
 
-EXPOSE 3000
+EXPOSE 8080
 
 CMD ["/root/start.sh"]
 

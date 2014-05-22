@@ -31,15 +31,23 @@ end
 post "/json" do
     data = JSON.parse(params[:data]) 
     keys = []
-    data.each{|r| keys << r['occurrenceID']}
+    data.each{|r| 
+        keys << r['occurrenceID']
+        keys << "#{ r['occurrenceID'] }.0"
+    }
+    puts "keys= #{keys}"
     r = http_post("#{settings.config[:couchdb]}/#{settings.db}/_all_docs",{:keys=>keys})
     docs = []
 
+    puts r
     data.each{ |occ|
         r["rows"].each {|row|
-            if row["id"] == occ["occurrenceID"]
+            if row["id"] == occ["occurrenceID"] || row["id"] == "#{occ["occurrenceID"]}.0"
                 occ["_rev"] = row["value"]["rev"]
                 occ["_id"] = row["id"]
+                puts "--OCC--"
+                puts occ["_id"]
+                puts occ["_rev"]
                 docs << occ
             end
         }

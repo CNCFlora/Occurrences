@@ -3,7 +3,8 @@
     var from = encodeURIComponent( 'http://'+location.host+'{{base}}/json?q='+encodeURIComponent('{{{query}}}') );
     var to = encodeURIComponent( 'http://'+location.host+'{{base}}/json?q='+encodeURIComponent('{{{query}}}') );
     var fields = 'occurrenceID,family,scientificName,recordedBy:collector,recordNumber:collectorNumber,collectionCode:collection,catalogNumber,stateProvince:state,municipality:city,locality,remarks,decimalLatitude:latitude,decimalLongitude:longitude,georeferenceVerificationStatus:geoStatus,georeferenceProtocol:geoProtocol,coordinateUncertaintyInMeters:geoPrecision';
-    var editor = '{{{editor}}}/index.html?from='+from+'&to='+to+"&fields="+fields;
+    //var editor = '{{{editor}}}/index.html?from='+from+'&to='+to+"&fields="+fields;
+    var editor = '{{base}}/recline/index.html?from='+from+'&to='+to+'&fields='+fields;
     location.href=editor;
 </script>
 

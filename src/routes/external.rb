@@ -2,8 +2,7 @@
 get '/editor' do
     query = (params[:q] || "*").gsub("&quot","\"")
     occurrences = search(settings.db,"metadata.type=\"occurrence\" AND (#{query})")
-    editor = settings.config[:recline_editor_url];
-    view :recline,{:occurrences=>occurrences,:query=>query,:editor=>editor}
+    view :recline,{:occurrences=>occurrences,:query=>query}
 end
 
 get "/json" do

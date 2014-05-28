@@ -6,18 +6,37 @@ require 'sinatra/config_file'
 require 'sinatra/mustache'
 require "sinatra/reloader" if development?
 
-require 'rest-client'
-
-require 'securerandom'
-require 'json'
-require 'uri'
-require 'net/http'
-
 require_relative 'setup'
 
 if development?
-    also_reload "setup.rb"
     also_reload "routes/*"
+end
+
+config_file ENV['config'] || '../config.yml'
+use Rack::Session::Pool
+set :session_secret, '1flora2'
+set :views, 'src/views'
+
+config = etcd2settings(ENV["ETCD"] || settings.etcd)
+
+config[:connect] = "#{config[:connect_url]}"
+config[:datahub] = "#{config[:datahub_url]}"
+config[:couchdb] = "#{config[:datahub_url]}"
+config[:elasticsearch] = "#{config[:datahub_url]}"
+config[:strings] = JSON.parse(File.read("src/locales/#{settings.lang}.json", :encoding => "BINARY"))
+config[:services] = "#{config[:dwc_services_url]}/api/v1"
+config[:base] = settings.base
+set :elasticsearch, config[:elasticsearch]
+
+def view(page,data)
+    @config = settings.config
+    @session_hash = {:logged => session[:logged] || false, :user => session[:user] || '{}'}
+    if session[:logged] 
+        session[:user]['roles'].each do | role |
+            @session_hash["role-#{role['role'].downcase}"] = true
+        end
+    end
+    mustache page, {}, @config.merge(@session_hash).merge(data)
 end
 
 post '/login' do

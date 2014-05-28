@@ -1,4 +1,6 @@
 
+require 'rest-client'
+
 get '/upload' do
     view :upload,{}
 end
@@ -13,6 +15,7 @@ post '/upload' do
             # convert to json
             json = RestClient.post "#{settings.config[:services]}/convert?from=#{params["type"]}&to=json&fixes=true", 
                                 params["file"][:tempfile].read, :content_type => params["file"][:type], :accept => :json
+
 
             if json[0] != '[' # cause it must be an array back
                 errors.push json

@@ -1,31 +1,24 @@
 #!/usr/bin/env bash
 
 # basic stuff
+add-apt-repository ppa:brightbox/ruby-ng -y
 apt-get update
 apt-get upgrade -y
-apt-get install aptitude wget curl git tmux vim libxslt-dev libxml2-dev ruby1.9.1 ruby1.9.1-dev libssl-dev build-essential -y
-
-# add rbenv
-if [[ ! -e /home/vagrant/.rbenv ]]; then
-    su vagrant -lc 'git clone https://github.com/sstephenson/rbenv.git /home/vagrant/.rbenv'
-    su vagrant -lc 'echo export PATH="/home/vagrant/.rbenv/bin:\$PATH" >> /home/vagrant/.profile'
-    su vagrant -lc 'echo export PATH="/home/vagrant/.rbenv/bin:\$PATH" >> /home/vagrant/.bashrc'
-    su vagrant -lc 'echo eval \"\$\(rbenv init -\)\" >> /home/vagrant/.profile'
-    su vagrant -lc 'echo eval \"\$\(rbenv init -\)\" >> /home/vagrant/.bashrc'
-    su vagrant -lc 'git clone https://github.com/sstephenson/ruby-build.git /home/vagrant/.rbenv/plugins/ruby-build'
-fi
+apt-get install wget curl git ruby2.1 ruby2.1-dev -y
 
 # setup app deps
 if [[ ! -e /home/vagrant/.app_done ]]; then
     # config ruby gems to use https
-    gem sources -r http://rubygems.org
     gem sources -r http://rubygems.org/
-    gem sources -a https://rubygems.org
+    gem sources -a https://rubygems.org/
+
+    # uh?
+    gem install bundler
+    #cd /vagrant && bundle install
 
     # initial config of app
-    su vagrant -lc 'cd /vagrant && rbenv install $(cat .ruby-version) && rbenv rehash'
-    su vagrant -lc 'cd /vagrant && gem install bundler && rbenv rehash'
-    su vagrant -lc 'cd /vagrant && bundle install && rbenv rehash'
+    #su vagrant -lc 'cd /vagrant && gem install bundle'
+    #su vagrant -lc 'cd /vagrant && bundle install'
     su vagrant -lc 'cd /vagrant && [[ ! -e config.yml ]] && cp config.yml.dist config.yml'
     su vagrant -lc 'touch /home/vagrant/.app_done'
 fi
@@ -39,6 +32,6 @@ fi
 /usr/bin/docker2etcd
 
 # setup couchdb
-curl -X PUT http://localhost:5984/cncflora
-curl -X PUT http://localhost:5984/cncflora_history
+HUB=$(docker ps | grep datahub | awk '{ print $10 }' | grep -e '[0-9]\{5\}' -o)
+curl -X PUT http://localhost:$HUB/cncflora
 

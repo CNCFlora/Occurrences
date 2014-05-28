@@ -13,7 +13,7 @@ get '/insert' do
         }
     }
 
-    http_post("#{settings.config[:couchdb]}/#{settings.db}/_bulk_docs",{"docs"=> data});
+    http_post("#{settings.couchdb}/#{settings.db}/_bulk_docs",{"docs"=> data});
 
     view :inserted, {:count=>count,:species=>species.uniq}
 end
@@ -32,7 +32,7 @@ post '/insert' do
         }
     }
 
-    http_post("#{settings.config[:couchdb]}/#{settings.db}/_bulk_docs",{"docs"=> data});
+    http_post("#{settings.couchdb}/#{settings.db}/_bulk_docs",{"docs"=> data});
 
     view :inserted, {:count=>count,:species=>species.uniq}
 end

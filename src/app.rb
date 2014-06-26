@@ -6,8 +6,6 @@ require 'sinatra/config_file'
 require 'sinatra/mustache'
 require "sinatra/reloader" if development?
 
-require_relative 'setup'
-
 if development?
     also_reload "routes/*"
 end
@@ -17,20 +15,24 @@ use Rack::Session::Pool
 set :session_secret, '1flora2'
 set :views, 'src/views'
 
+require 'cncflora_commons'
+
+if ENV["base"] then
+    set :db, ENV["db"]
+end
+
 config = etcd2settings(ENV["ETCD"] || settings.etcd)
 
-config[:connect] = "#{config[:connect_url]}"
-config[:datahub] = "#{config[:datahub_url]}"
-config[:couchdb] = "#{config[:datahub_url]}"
-config[:elasticsearch] = "#{config[:datahub_url]}"
 config[:strings] = JSON.parse(File.read("src/locales/#{settings.lang}.json", :encoding => "BINARY"))
-config[:services] = "#{config[:dwc_services_url]}/api/v1"
+config[:elasticsearch] = "#{config[:datahub]}/#{settings.db}"
+config[:couchdb] = config[:datahub]
 config[:base] = settings.base
-set :elasticsearch, config[:elasticsearch]
+
+config.keys.each { |key| set key, config[key] }
 
 def view(page,data)
     @config = settings.config
-    @session_hash = {:logged => session[:logged] || false, :user => session[:user] || '{}'}
+    @session_hash = {:logged => session[:logged] || false, :user => session[:user] || {}, :user_json => session[:user].to_json }
     if session[:logged] 
         session[:user]['roles'].each do | role |
             @session_hash["role-#{role['role'].downcase}"] = true

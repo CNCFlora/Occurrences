@@ -26,6 +26,7 @@
     font-size: 12px;
     line-height: 13px;
     border: 1px #ddd solid;
+    min-height: 500px;
 }
 
 .occurrence { /* basic occurrence border */
@@ -60,5 +61,24 @@
 
 .validated.valid .alabel {
     border-color: #20AE54;
+}
+
+
+.well strong {
+    display:inline-block;
+    width: 120px;
+    text-align:right;
+}
+
+#file {
+    box-sizing: unset;
+}
+
+.form-group.input-group.col-md-6 .input-group-btn {
+    padding-left: 27px;
+}
+
+.form-group.input-group.col-md-6 .input-group-btn button {
+    height: 48px;
 }
 

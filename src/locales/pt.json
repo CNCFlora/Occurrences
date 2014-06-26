@@ -13,6 +13,7 @@
     "analysis":"Análise",
     "validate":"Validar",
     "start":"Início",
+    "summary":"Resumo",
     "validated":"Validado",
     "total":"Total",
     "reviewed":"Revisado",
@@ -40,5 +41,8 @@
     "eoo":"EOO",
     "aoo":"AOO",
     "qualifier":"Qualificador de identificação",
-    "table-editor":"Editor em tabela"
+    "table-editor":"Editor em tabela",
+    "send-occurrences":"Enviar ocorrências",
+    "not-validated":"Não validado",
+    "not-reviewed":"Não revisado"
 } 

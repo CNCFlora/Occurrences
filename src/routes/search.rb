@@ -1,15 +1,18 @@
 
 get '/search' do
     query = (params[:q] || "scientificName:'Aphelandra longiflora'").gsub("&quot","\"")
-    occurrences = search(settings.db,"metadata.type=\"occurrence\" AND (#{query})")
+    occurrences = search("occurrence",query)
 
     valid=0
     invalid=0
     reviewed=0
     validated=0
+    not_reviewed=0
+    not_validated=0
     eoo="soon"
     aoo="soon"
     i=0
+
     occurrences.each{ |occ| 
         occ[:json] = JSON.dump(occ) 
         occ[:occurrenceID2] = i
@@ -26,7 +29,9 @@ get '/search' do
         end
 
         if occ.has_key?("georeferenceVerificationStatus") 
-            reviewed += 1;
+            reviewed += 1
+        else
+            not_reviewed +1 
         end
 
         if occ.has_key?("validation")
@@ -41,6 +46,8 @@ get '/search' do
                     invalid += 1
                     occ["valid"] = false
                     occ["invalid"] = true
+                else 
+                    not_validated += 1
                 end
             end
             if occ["validation"].has_key?("reason")
@@ -65,7 +72,9 @@ get '/search' do
             :valid=>valid,
             :invalid=>invalid,
             :reviewed=>reviewed,
-            :validated=>validated
+            :validated=>validated,
+            :not_reviewed=>not_reviewed,
+            :not_validated=>not_validated
         }
     }
 

@@ -23,14 +23,13 @@
         </header>
         <nav class="navbar navbar-default col-md-12">
             <ul class="nav navbar-nav">
-                <li><a href="{{base}}/">{{strings.start}}</a></li>
-                <li><a href="{{base}}/search">{{strings.search}}</a></li>
-                <li><a href="{{base}}/families">{{strings.families}}</a></li>
                 {{^logged}}
                 <li id='login'><a href="#">{{strings.login}}</a></li>
                 {{/logged}}
                 {{#logged}}
-                <li><a href="{{base}}/upload">{{strings.upload}}</a></li>
+                <li><a href="{{base}}/">{{strings.summary}}</a></li>
+                <li><a href="{{base}}/families">{{strings.families}}</a></li>
+                <li><a href="{{base}}/upload">{{strings.send-occurrences}}</a></li>
                 <li id='logout'><a href="#">{{strings.logout}}</a></li>
                 {{/logged}}
             </ul>

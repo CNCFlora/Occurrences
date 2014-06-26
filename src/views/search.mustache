@@ -9,6 +9,12 @@
         </p>
         <p>
             <button class="btn btn-primary" type="search"><span class='glyphicon glyphicon-search'></span> {{strings.search}}</button>
+            {{#role-sig}}
+            <a href="{{base}}/editor?q={{query}}" class="btn btn-default btn-small">
+                <span class='glyphicon glyphicon-edit'></span>
+                {{strings.table-editor}}
+            </a>
+            {{/role-sig}}
         </p>
     </fieldset>
 </form>
@@ -24,9 +30,10 @@
                 <th>{{strings.aoo}}</th>
                 <th>{{strings.valid}}</th>
                 <th>{{strings.invalid}}</th>
-                <th>&nbsp;</th>
                 <th>{{strings.reviewed}}</th>
                 <th>{{strings.validated}}</th>
+                <th>{{strings.not-reviewed}}</th>
+                <th>{{strings.not-validated}}</th>
                 <th>{{strings.total}}</th>
             </tr>
         </thead>
@@ -36,20 +43,16 @@
                 <td>{{aoo}}</td>
                 <td>{{valid}}</td>
                 <td>{{invalid}}</td>
-                <td>&nbsp;</td>
                 <td>{{reviewed}}</td>
                 <td>{{validated}}</td>
+                <td>{{not_reviewed}}</td>
+                <td>{{not_validated}}</td>
                 <td>{{total}}</td>
             </tr>
         </tbody>
     </table>
     {{/stats}}
 
-    {{#role-sig}}
-    <p class="col-md-12">
-        <a href="{{base}}/editor?q={{query}}" class="btn btn-small">{{strings.table-editor}}</a>
-    </p>
-    {{/role-sig}}
 
     <a name="map"></a>
     <div id="map"></div>
@@ -63,7 +66,7 @@
         <script>
             occurrences.push({{{json}}});
         </script>
-        <div id="occ-{{occurrenceID}}-unit" >
+        <div id="occ-{{occurrenceID}}-unit" class='col-md-6' >
             {{> unit}}
         </div>
         {{> forms}}

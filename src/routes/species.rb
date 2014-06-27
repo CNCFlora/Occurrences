@@ -30,7 +30,9 @@ end
 
 get '/specie/:name/:status' do
 
-    query = "("
+    query = ""
+
+    #query << "("
 
     if params[:status] == 'validated' then
         #query << "validation.status:\"valid\" OR validation.status:\"invalid\""
@@ -42,7 +44,9 @@ get '/specie/:name/:status' do
         #query << "NOT validation.status:\"valid\" AND NOT validation.status:\"invalid\""
     end
 
-    query << ") AND (\"#{params[:name]}\""
+    #query << ") AND "
+    
+    query << "(\"#{params[:name]}\""
 
     search("taxon","acceptedNameUsage:\"#{params[:name]}\"").each {|t|
         query << " OR \"#{t["scientificName"]}\""

@@ -1,7 +1,7 @@
 
 get '/editor' do
     query = (params[:q] || "*").gsub("&quot","\"")
-    occurrences = search(settings.db,"metadata.type=\"occurrence\" AND (#{query})")
+    occurrences = search("occurrence","#{query}")
     view :recline,{:occurrences=>occurrences,:query=>query}
 end
 
@@ -9,7 +9,7 @@ get "/json" do
     query = (params[:q] || "*").gsub("&quot","\"")
 
     occurrences = []
-    search(settings.db,"metadata.type=\"occurrence\" AND (#{query})").each {|occ|
+    search("occurrence","#{query}").each {|occ|
         occ["decimalLatitude"] = occ["decimalLatitude"].to_f
         occ["decimalLongitude"] = occ["decimalLongitude"].to_f
         occurrences << occ;

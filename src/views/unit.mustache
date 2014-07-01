@@ -87,73 +87,73 @@
     {{/identificationQualifier}}
 
     <p>
-        <strong>Recorded by</strong> {{recordedBy}} , 
+        <strong>Recorded by</strong> {{recordedBy}}  
     </p>
     <p>
-        <strong>Number</strong> {{recordNumber}} ;
-    </p>
-
-    <p>
-        <strong>Collect Date</strong> {{day}}-{{month}}-{{year}} ;
+        <strong>Number</strong> {{recordNumber}}
     </p>
 
     <p>
-        <strong>Collection</strong> {{collectionCode}} ,  
+        <strong>Collect Date</strong> {{day}}-{{month}}-{{year}} 
+    </p>
+
+    <p>
+        <strong>Collection</strong> {{collectionCode}}  
     </p>
     <p>
-        <strong>Catalog</strong> {{catalogNumber}};
+        <strong>Catalog</strong> {{catalogNumber}}
     </p>
 
     {{#identifiedBy}}
         <p>
-            <strong>Identified by</strong> {{identifiedBy}} ,
+            <strong>Identified by</strong> {{identifiedBy}} 
     </p>
     <p>
-            <strong>Date</strong> {{identificationDate}} ;
+            <strong>Date</strong> {{identificationDate}} 
         </p>
     {{/identifiedBy}}
 
     <p>
-        <strong>State</strong> {{stateProvince}} ;
+        <strong>State</strong> {{stateProvince}} 
     </p>
     <p>
-        <strong>City</strong> {{municipality}} ;
+        <strong>City</strong> {{municipality}} 
     </p>
 
     {{#locality}}
     <p>
-        <strong>Locality</strong> {{locality}} ;
+        <strong>Locality</strong> {{locality}} 
     </p>
     {{/locality}}
 
     {{#presence}}
     <p>
-        <strong>Presence</strong> {{presence}} ;
+        <strong>Presence</strong> {{presence}}
     </p>
     {{/presence}}
 
     <p>
-        <strong>Long/Lat</strong> {{decimalLongitude}} {{decimalLatitude}} ;
+        <strong>Long/Lat</strong> {{decimalLongitude}} {{decimalLatitude}} 
     </p>
 
     {{#bibliographicCitation}}
     <p>
-        <strong>Literature</strong> {{bibliographicCitation}};
+        <strong>Literature</strong> {{bibliographicCitation}}
     </p>
     {{/bibliographicCitation}}
 
     {{#occurrenceRemarks}}
     <p>
-        <strong>Remarks</strong> {{{occurrenceRemarks}}};
+        <strong>Remarks</strong> {{{occurrenceRemarks}}}
     </p>
     {{/occurrenceRemarks}}
 
     {{#georeferencedBy}}
-        <p><strong>Georeference Remarks</strong> {{georeferencedBy}} - {{{georeferenceRemarks}}};</p>
+        <p><strong>Georeference Remarks</strong> {{georeferencedBy}} - {{{georeferenceRemarks}}}</p>
     {{/georeferencedBy}}
 
     {{#comments}}
-        <p><strong>Analysis Remarks</strong> {{{comments}}};</p>
+        <p><strong>Analysis Remarks</strong> {{{comments}}}</p>
     {{/comments}}
 
     {{#validation.by}}
@@ -161,7 +161,7 @@
         {{#role-analyst}}
             <span class='label label-warning'>check</span>
         {{/role-analyst}}
-        <strong>Validation Remarks</strong> {{validation.by}} - {{validation.reason}}: {{{validation.remarks}}};
+        <strong>Validation Remarks</strong> {{validation.by}} - {{validation.reason}}: {{{validation.remarks}}}
     </p>
     {{/validation.by}}
 

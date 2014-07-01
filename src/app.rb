@@ -17,7 +17,7 @@ set :views, 'src/views'
 
 require 'cncflora_commons'
 
-if ENV["base"] then
+if ENV["db"] then
     set :db, ENV["db"]
 end
 

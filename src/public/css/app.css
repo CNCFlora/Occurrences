@@ -67,13 +67,6 @@
     border-color: #20AE54;
 }
 
-
-.well strong {
-    display:inline-block;
-    width: 120px;
-    text-align:right;
-}
-
 #file {
     box-sizing: unset;
 }

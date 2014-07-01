@@ -12,45 +12,45 @@
                         </div>
                         <div class='modal-body'>
                             <p class='form-group'>
-                                <label for="status">Valid:</label>
+                                <label for="status">{{strings.valid}}:</label>
                                 <select name="status" class='form-control'>
                                     <option value=""></option>
-                                    <option value="valid" {{#valid}} selected {{/valid}}>Valid</option>
-                                    <option value="invalid" {{#invalid}} selected {{/invalid}}>Invalid</option>
+                                    <option value="valid" {{#valid}} selected {{/valid}}>{{strings.valid}}</option>
+                                    <option value="invalid" {{#invalid}} selected {{/invalid}}>{{strings.invalid}}</option>
                                 </select>
                                 <script type="text/javascript">
                                 {{#valid}} $("select[name=status]").val('valid') {{/valid}}
                                 {{#invalid}} $("select[name=status]").val('invalid') {{/invalid}}
                                 </script>
-                                <span>Invalid: keep the occurrence record but remove from analysis/calculations.</span>
                             </p>
-                            <p class='form-group'>
-                                <label for="presence">Presence</label>
-                                <select name="presence" class='form-control'>
-                                    <option value="unkown" {{#presence-unkown}} selected {{/presence-unkown}}>unkown</option>
-                                    <option value="present" {{#presence-present}} selected {{/presence-present}}>present</option>
-                                    <option value="absent" {{#presence-absent}} selected {{/presence-absent}}>absent</option>
+                            <p class='form-group' rel='both'>
+                            <label for="reason"><span rel='invalid'>{{strings.reason}}</span><span rel='valid'>{{strings.addendun}}</span>:</label>
+                                <select name="reason" class='form-control'>
+                                    <option value="N/A">N/A</option>
+                                    <option value="ok" rel='valid' {{#reason-ok}} selected {{/reason-ok}}>{{strings.data-is-ok}}</option>
+                                    <option value="wrong georeference" rel='valid' {{#reason-wrong-georeference}} selected {{/reason-wrong-georeference}}>{{strings.wrong-georeference}}</option>
+                                    <option value="uncertain taxonomy" rel='valid' {{#reason-uncertain-taxonomy}} selected {{/reason-uncertain-taxonomy}}>{{strings.uncertain-taxonomy}}</option>
+                                    <option value="wrong taxonomy" rel='invalid' {{#reason-wrong-taxonomy}} selected {{/reason-wrong-taxonomy}}>{{strings.wrong-taxonomy}}</option>
+                                    <option value="duplicate" rel='invalid' {{#reason-duplicate}} selected {{/reason-duplicate}}>{{strings.duplicated}}</option>
+                                    <option value="cultivated" rel='invalid' {{#reason-cultivated}} selected {{/reason-cultivated}}>{{strings.cultivated}}</option>
+                                    <option value="other" rel='invalid' {{#reason-other}} selected {{/reason-other}}>{{strings.other}}</option>
                                 </select>
                             </p>
-                            <p class='form-group'>
-                                <label for="reason">Status:</label>
-                                <select name="reason" class='form-control'>
-                                    <option value="ok" {{#reason-ok}} selected {{/reason-ok}}>ok (valid)</option>
-                                    <option value="uncertain taxonomy" {{#reason-uncertain-taxonomy}} selected {{/reason-uncertain-taxonomy}}>uncertain taxonomy (valid)</option>
-                                    <option value="wrong taxonomy"  {{#reason-wrong-taxonomy}} selected {{/reason-wrong-taxonomy}}>wrong taxonomy (invalid)</option>
-                                    <option value="wrong georeference" {{#reason-wrong-georeference}} selected {{/reason-wrong-georeference}}>wrong georeference (valid)</option>
-                                    <option value="duplicate" {{#reason-duplicate}} selected {{/reason-duplicate}}>duplicate (invalid)</option>
-                                    <option value="cultivated" {{#reason-cultivated}} selected {{/reason-cultivated}}>cultivated (invalid)</option>
-                                    <option value="other" {{#reason-other}} selected {{/reason-other}}>other (valid or invalid)</option>
+                            <p class='form-group' rel='valid'>
+                                <label for="presence">{{strings.presence}}:</label>
+                                <select name="presence" class='form-control'>
+                                    <option value="unkown" {{#presence-unkown}} selected {{/presence-unkown}}>{{strings.unkown}}</option>
+                                    <option value="present" {{#presence-present}} selected {{/presence-present}}>{{strings.present}}</option>
+                                    <option value="absent" {{#presence-absent}} selected {{/presence-absent}}>{{strings.absent}}</option>
                                 </select>
                             </p>
                             <p class="form-group">
-                                <label for="comment">Comment:</label>
+                                <label for="comment">{{strings.comment}}:</label>
                                 <textarea name="comment" class='form-control'>{{validation.remarks}}</textarea>
                             </p>
                         </div>
                         <div class='modal-footer'>
-                            <button class="btn btn-success" type='submit'>Save</button>
+                            <button class="btn btn-success" type='submit'>{{strings.save}}</button>
                         </div>
                     </fieldset>
                 </form>
@@ -76,12 +76,12 @@
                                 <input id="identificationQualifier" name="identificationQualifier" type="text" class="form-control" value="{{identificationQualifier}}" />
                             </p>
                             <p class="form-group">
-                                <label for="comments">Comments</label>
+                                <label for="comments">{{strings.comment}}</label>
                                 <textarea name="comments" class='form-control'>{{comments}}</textarea>
                             </p>
                         </div>
                         <div class='modal-footer'>
-                            <button class="btn btn-success" type='submit'>Save</button>
+                            <button class="btn btn-success" type='submit'>{{strings.save}}</button>
                         </div>
                     </fieldset>
                 </form>
@@ -103,11 +103,11 @@
                         </div>
                         <div class="modal-body">
                             <p class='form-group'>
-                                <label for="valid">Valid:</label>
+                                <label for="valid">{{strings.valid}}:</label>
                                 <select name="valid" class='form-control'>
                                     <option value=""></option>
-                                    <option value="valid" {{#valid}} selected {{/valid}}>Valid</option>
-                                    <option value="invalid" {{#invalid}} selected {{/invalid}}>Invalid</option>
+                                    <option value="valid" {{#valid}} selected {{/valid}}>{{strings.valid}}</option>
+                                    <option value="invalid" {{#invalid}} selected {{/invalid}}>{{strings.valid}}</option>
                                 </select>
                                 <script type="text/javascript">
                                 {{#valid}} $("select[name=valid]").val('valid') {{/valid}}
@@ -115,28 +115,28 @@
                                 </script>
                             </p>
                             <p class='form-group'>
-                                <label for="status">Status:</label>
+                                <label for="status">{{strings.status-sig}}:</label>
                                 <select name="status" class='form-control'>
-                                    <option value="ok" {{#status-ok}} selected {{/status-ok}}>ok</option>
-                                    <option value="nok" {{#status-nok}} selected {{/status-nok}}>not ok</option>
-                                    <option value="uncertain-locality" {{#status-uncertain-locality}} selected {{/status-uncertain-locality}}>uncertain locality</option>
+                                    <option value="ok" {{#status-ok}} selected {{/status-ok}}>{{strings.ok}}</option>
+                                    <option value="nok" {{#status-nok}} selected {{/status-nok}}>{{strings.not-ok}}</option>
+                                    <option value="uncertain-locality" {{#status-uncertain-locality}} selected {{/status-uncertain-locality}}>{{strings.uncertain-locality}}</option>
                                 </select>
                             </p>
                             <p class="form-group">
-                                <label for="latitude">Latitude</label>
+                                <label for="latitude">{{strings.latitude}}</label>
                                 <input name="latitude" value="{{decimalLatitude}}" class='form-control' type="text" />
                             </p>
                             <p class="form-group">
-                                <label for="longitude">longitude</label>
+                                <label for="longitude">{{strings.longitude}}</label>
                                 <input name="longitude" value="{{decimalLongitude}}" class='form-control' type="text" />
                             </p>
                             <p class="form-group">
-                                <label for="comment">Comments</label>
+                                <label for="comment">{{strings.comment}}</label>
                                 <textarea name="comment" class='form-control'>{{georeferenceRemarks}}</textarea>
                             </p>
                         </div>
                         <div class='modal-footer'>
-                            <button class="btn btn-success" type='submit'>Save</button>
+                            <button class="btn btn-success" type='submit'>{{strings.save}}</button>
                         </div>
                     </fieldset>
                 </form>

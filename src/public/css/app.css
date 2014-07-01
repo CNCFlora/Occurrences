@@ -29,6 +29,10 @@
     min-height: 500px;
 }
 
+.leaflet-popup-content .occurrence {
+    min-height: 0;
+}
+
 .occurrence { /* basic occurrence border */
     border-left: 4px #F89406 solid;
 }

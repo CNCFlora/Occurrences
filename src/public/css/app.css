@@ -20,6 +20,10 @@
     display: none;
 }
 
+.leaflet-popup-content .metadata{
+    display: none;
+}
+
 .occurrence {
     margin-top: 10px;
     padding: 10px;
@@ -77,5 +81,10 @@
 
 .form-group.input-group.col-md-6 .input-group-btn button {
     height: 48px;
+}
+
+.metadata {
+  float: right;
+  width: 250px;
 }
 

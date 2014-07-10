@@ -8,8 +8,12 @@ get '/insert' do
         species.push occ["scientificName"]
         occ[:_id] = occ["occurrenceID"]
         occ[:metadata] = {
-            # TODO: fill in
-            :type => "occurrence"
+            :type => "occurrence",
+            :created => Time.now.to_i,
+            :modified => Time.now.to_i
+            :creator => session[:user][:name]
+            :contributor => session[:user][:name]
+            :contact => session[:user][:email]
         }
     }
 
@@ -27,8 +31,12 @@ post '/insert' do
         species.push occ["scientificName"]
         occ["_id"] = occ["occurrenceID"]
         occ[:metadata] = {
-            # TODO: fill in
-            :type => "occurrence"
+            :type => "occurrence",
+            :created => Time.now.to_i,
+            :modified => Time.now.to_i
+            :creator => session[:user][:name]
+            :contributor => session[:user][:name]
+            :contact => session[:user][:email]
         }
     }
 

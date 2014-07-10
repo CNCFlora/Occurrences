@@ -73,6 +73,17 @@
 
     </div>
 
+    {{#metadata}}
+    <div class="metadata">
+      <p><strong>{{strings.creator}}</strong>: {{creator}}</p>
+      <p><strong>{{strings.contributor}}</strong>: {{contributor}}</p>
+      <p><strong>{{strings.contact}}</strong>: {{contact}}</p>
+      <p><strong>{{strings.created}}</strong>: {{created_date}}</p>
+      <p><strong>{{strings.modified}}</strong>: {{modified_date}}</p>
+      <p><strong>{{strings.status}}</strong>: {{status}}</p>
+    </div>
+    {{/metadata}}
+
     <p>
         <strong>Occurrence ID</strong> <a href="#occ-{{occurrenceID}}-unit">{{occurrenceID}}</a> ;
     </p>
@@ -156,6 +167,12 @@
         <p><strong>Analysis Remarks</strong> {{{comments}}}</p>
     {{/comments}}
 
+    {{#verbatimValidation.status}}
+    <p>
+        <strong>Previous validation Remarks</strong> {{validation.reason}}: {{{validation.remarks}}}
+    </p>
+    {{/verbatimValidation.status}}
+
     {{#validation.by}}
     <p>
         {{#role-analyst}}
@@ -164,6 +181,7 @@
         <strong>Validation Remarks</strong> {{validation.by}} - {{validation.reason}}: {{{validation.remarks}}}
     </p>
     {{/validation.by}}
+
 
 
 </div>

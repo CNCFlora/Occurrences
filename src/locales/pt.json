@@ -65,5 +65,11 @@
     "ok":"OK",
     "nok":"Não ok",
     "not-ok":"Não ok",
-    "uncertain-locality":"Localidade incerta"
+    "uncertain-locality":"Localidade incerta",
+    "creator":"Criador",
+    "contributor":"Contribuidor(es)",
+    "created":"Criado",
+    "modified":"Modificado",
+    "contact":"Contato",
+    "status":"Status",
 } 

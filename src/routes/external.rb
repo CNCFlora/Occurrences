@@ -44,9 +44,13 @@ post "/json" do
             if row["id"] == occ["occurrenceID"] || row["id"] == "#{occ["occurrenceID"]}.0"
                 occ["_rev"] = row["value"]["rev"]
                 occ["_id"] = row["id"]
-                puts "--OCC--"
-                puts occ["_id"]
-                puts occ["_rev"]
+                occ["metadata"]["modified"] = Time.now.to_i
+
+                if !occ["metadata"]["contributor"].match(session[:user]['name']) then
+                  occ["metadata"]["contributor"] = "#{session[:user]['name']} ; #{occ["metadata"]["contributor"]}"
+                  occ["metadata"]["contact"] = "#{session[:user]['email']} ; #{occ["metadata"]["contact"]}"
+                end
+
                 docs << occ
             end
         }

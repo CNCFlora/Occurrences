@@ -17,7 +17,7 @@ post '/occurrences/:id/sig' do
 
     doc["metadata"]["modified"] = Time.now.to_i
 
-    if !doc["metadata"]["contributor"].match(session[:user]['name']) then
+    if !doc["metadata"].has_key?("contributor") || !doc["metadata"]["contributor"].match(session[:user]['name']) then
       doc["metadata"]["contributor"] = "#{session[:user]['name']} ; #{doc["metadata"]["contributor"]}"
       doc["metadata"]["contact"] = "#{session[:user]['email']} ; #{doc["metadata"]["contact"]}"
     end
@@ -35,7 +35,7 @@ post '/occurrences/:id/analysis' do
 
     doc["metadata"]["modified"] = Time.now.to_i
 
-    if !doc["metadata"]["contributor"].match(session[:user]['name']) then
+    if !doc["metadata"].has_key?("contributor") || !doc["metadata"]["contributor"].match(session[:user]['name']) then
       doc["metadata"]["contributor"] = "#{session[:user]['name']} ; #{doc["metadata"]["contributor"]}"
       doc["metadata"]["contact"] = "#{session[:user]['email']} ; #{doc["metadata"]["contact"]}"
     end
@@ -58,7 +58,7 @@ post '/occurrences/:id/validate' do
 
     doc["metadata"]["modified"] = Time.now.to_i
 
-    if !doc["metadata"]["contributor"].match(session[:user]['name']) then
+    if !doc["metadata"].has_key?("contributor") || !doc["metadata"]["contributor"].match(session[:user]['name']) then
       doc["metadata"]["contributor"] = "#{session[:user]['name']} ; #{doc["metadata"]["contributor"]}"
       doc["metadata"]["contact"] = "#{session[:user]['email']} ; #{doc["metadata"]["contact"]}"
     end

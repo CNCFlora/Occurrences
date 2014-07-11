@@ -74,9 +74,9 @@ post '/upload' do
             occ[:metadata] = {
               :type => "occurrence",
               :created => Time.now.to_i,
-              :modified => Time.now.to_i
-              :creator => session[:user][:name]
-              :contributor => session[:user][:name]
+              :modified => Time.now.to_i,
+              :creator => session[:user][:name],
+              :contributor => session[:user][:name],
               :contact => session[:user][:email]
             }
         }

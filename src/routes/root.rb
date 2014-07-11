@@ -4,6 +4,7 @@ get '/' do
 
     if session[:logged]
 
+
         query = "(taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\") AND ("
         session[:user]["roles"].each {|r|
             r["entities"].each {|e|
@@ -12,6 +13,8 @@ get '/' do
         }
         query << ")"
 
+        puts query
+        puts settings.elasticsearch
         search("taxon",query).each { |e| 
             species[e["scientificName"]] = {
                 :family=>e["family"],

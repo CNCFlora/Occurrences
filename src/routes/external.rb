@@ -34,11 +34,9 @@ post "/json" do
         keys << r['occurrenceID']
         keys << "#{ r['occurrenceID'] }.0"
     }
-    puts "keys= #{keys}"
     r = http_post("#{settings.config[:couchdb]}/_all_docs",{:keys=>keys})
     docs = []
 
-    puts r
     data.each{ |occ|
         r["rows"].each {|row|
             if row["id"] == occ["occurrenceID"] || row["id"] == "#{occ["occurrenceID"]}.0"

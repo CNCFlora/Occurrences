@@ -2,6 +2,7 @@
 $(function(){
 
     Connect({
+        context: context,
         onlogin: function(user) {
             if(!logged) {
                 $.post(base+'/login','user='+JSON.stringify(user),function(){

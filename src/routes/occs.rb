@@ -1,6 +1,6 @@
 
 post '/occurrences/:id/sig' do
-    doc = http_get("#{settings.config[:couchdb]}/#{settings.db}/#{params[:id]}")
+    doc = http_get("#{settings.config[:couchdb]}/#{params[:id]}")
 
     if !doc.has_key?("validation") 
         doc["validation"] = {}
@@ -22,13 +22,13 @@ post '/occurrences/:id/sig' do
       doc["metadata"]["contact"] = "#{session[:user]['email']} ; #{doc["metadata"]["contact"]}"
     end
 
-    r = http_post("#{settings.config[:couchdb]}/#{settings.db}",doc)
+    r = http_post("#{settings.config[:couchdb]}",doc)
 
     redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 
 post '/occurrences/:id/analysis' do
-    doc = http_get("#{settings.config[:couchdb]}/#{settings.db}/#{params[:id]}")
+    doc = http_get("#{settings.config[:couchdb]}/#{params[:id]}")
 
     doc["comments"] = params[:comments]
     doc["identificationQualifier"] = params[:identificationQualifier]
@@ -40,12 +40,12 @@ post '/occurrences/:id/analysis' do
       doc["metadata"]["contact"] = "#{session[:user]['email']} ; #{doc["metadata"]["contact"]}"
     end
 
-    r = http_post("#{settings.config[:couchdb]}/#{settings.db}",doc)
+    r = http_post("#{settings.config[:couchdb]}",doc)
     redirect "#{settings.config[:base]}/search?q=#{URI.encode(params[:q])}#occ-#{params[:id]}-unit"
 end
 
 post '/occurrences/:id/validate' do
-    doc = http_get("#{settings.config[:couchdb]}/#{settings.db}/#{params[:id]}")
+    doc = http_get("#{settings.config[:couchdb]}/#{params[:id]}")
 
     doc["validation"] = {
         "status"=>params[:status],
@@ -63,7 +63,7 @@ post '/occurrences/:id/validate' do
       doc["metadata"]["contact"] = "#{session[:user]['email']} ; #{doc["metadata"]["contact"]}"
     end
 
-    r = http_post("#{settings.config[:couchdb]}/#{settings.db}",doc)
+    r = http_post("#{settings.config[:couchdb]}",doc)
     redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 

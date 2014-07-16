@@ -81,7 +81,7 @@ post '/upload' do
             }
         }
 
-        r=http_post("#{settings.config[:couchdb]}/#{settings.db}/_bulk_docs",{"docs"=> data});
+        r=http_post("#{settings.config[:couchdb]}/_bulk_docs",{"docs"=> data});
 
         view :inserted, {:count=>count,:species=>species.uniq}
     end

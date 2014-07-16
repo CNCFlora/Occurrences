@@ -13,8 +13,6 @@ get '/' do
         }
         query << ")"
 
-        puts query
-        puts settings.elasticsearch
         search("taxon",query).each { |e| 
             species[e["scientificName"]] = {
                 :family=>e["family"],

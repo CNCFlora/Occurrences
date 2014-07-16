@@ -3,13 +3,16 @@ development:
     db: "cncflora"
     lang: "pt"
     base: ""
+    context: "connect"
 test:
     etcd: "http://localhost:4001"
     lang: "pt"
     db: "cncflora_test"
     base: ""
+    context: "connect"
 production:
     etcd: "http://cncflora.jbrj.gov.br/etcd"
     db: "cncflora2"
     lang: "pt"
     base: "/occurrences"
+    context: "connect"

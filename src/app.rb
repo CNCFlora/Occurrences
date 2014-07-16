@@ -26,7 +26,9 @@ end
 
 post '/login' do
     session[:logged] = true
-    session[:user] = JSON.parse(params[:user])
+    preuser =  JSON.parse(params[:user])
+    user = http_get("#{settings.connect}/api/token?token=#{preuser["token"]}")
+    session[:user] = user
     204
 end
 

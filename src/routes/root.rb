@@ -4,14 +4,23 @@ get '/' do
 
     if session[:logged]
 
-
-        query = "(taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\") AND ("
+        ents=[]
         session[:user]["roles"].each {|r|
-            r["entities"].each {|e|
-                query << " \"#{e}\" "
-            }
+            if r.has_key? "entities" then
+                r["entities"].each {|e|
+                    ents.push(e)
+                }
+            end
         }
-        query << ")"
+
+        query = "NOTHING"
+
+        if ents.length >= 1 then
+            query << "(taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\") "
+            query << " AND ( "
+            ents.each{ |e| query << " \"#{e}\" " }
+            query << " ) "
+        end
 
         search("taxon",query).each { |e| 
             species[e["scientificName"]] = {
@@ -28,7 +37,6 @@ get '/' do
         }
 
         query = "\"#{species.keys.join("\" OR \"")}\""
-        puts query
         search("occurrence",query).each {|occ|
             taxon = species[occ["scientificName"]]
 

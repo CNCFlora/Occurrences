@@ -1,10 +1,11 @@
 FROM cncflora/ruby
 
+RUN gem install bundler
+
 RUN mkdir /root/occurrences
+ADD Gemfile /root/occurrences/Gemfile
+RUN cd /root/occurrences && bundle install
 ADD . /root/occurrences
-RUN cd /root/occurrences && \
-    gem install bundler && \
-    bundle install
 
 ENV ENV production
 ENV RACK_ENV production

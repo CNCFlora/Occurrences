@@ -21,6 +21,7 @@ def view(page,data)
             @session_hash["role-#{role['role'].downcase}"] = true
         end
     end
+    @session_hash["role-validator"]=true
     mustache page, {}, @config.merge(@session_hash).merge(data)
 end
 

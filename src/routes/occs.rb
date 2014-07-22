@@ -11,9 +11,6 @@ post '/occurrences/:id/sig' do
     doc["georeferenceRemarks"] = params[:comment]
     doc["decimalLatitude"] = params[:latitude].to_f
     doc["decimalLongitude"] = params[:longitude].to_f
-    if params[:valid] && params[:valid].length >= 1
-        doc["validation"]["status"] = params[:valid]
-    end
 
     doc["metadata"]["modified"] = Time.now.to_i
 
@@ -46,10 +43,16 @@ end
 
 post '/occurrences/:id/validate' do
     doc = http_get("#{settings.config[:couchdb]}/#{params[:id]}")
+    puts session["user"]
+   
 
     doc["validation"] = {
-        "status"=>params[:status],
-        "reason"=>params[:reason],
+        "taxonomy"=>params[:taxonomy],
+        "georeference"=>params[:georeference],
+        "native"=>params[:native],
+        "presence"=>params[:presence],
+        "duplicated"=>params[:duplicated],
+        "cultivated"=>params[:cultivated],
         "remarks"=>params[:comment],
         "by"=>session[:user]["name"]
     }

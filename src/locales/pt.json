@@ -48,7 +48,7 @@
     "presence":"Presença",
     "present":"Presente",
     "absent":"Abscente",
-    "unkown":"Sem dados",
+    "unknown":"Sem dados",
     "reason":"Justificativa",
     "data-is-ok":"Dados corretos",
     "uncertain-taxonomy":"Incerteza taxonomica",
@@ -71,5 +71,16 @@
     "created":"Criado",
     "modified":"Modificado",
     "contact":"Contato",
-   "status":"Status"
+    "status":"Status",
+    "valid-taxonomy":"A identificação taxonomica está correta?",
+    "valid-geo":"A localização está correta?",
+    "valid-presence":"A espécie ainda ocorre na localidade?",
+    "valid-native":"A espécie é nativa na localidade?",
+    "valid-cultivated":"É uma ocorrência cultivada?",
+    "valid-duplicated":"É um registro duplicado?",
+    "valid-comments":"Justifique e detalhe aqui as respostas.",
+    "yes":"Sim",
+    "no":"Não",
+    "native":"Nativa",
+    "non-native":"Introduzida"
 } 

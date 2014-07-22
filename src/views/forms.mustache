@@ -8,44 +8,101 @@
                         <input name="q" value="{{query}}" type="hidden" />
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h3>Validação</h3>
+                            <h3>{{strings.edit-validation}}</h3>
                         </div>
                         <div class='modal-body'>
                             <p class='form-group'>
-                                <label for="status">{{strings.valid}}:</label>
-                                <select name="status" class='form-control'>
-                                    <option value=""></option>
-                                    <option value="valid" {{#valid}} selected {{/valid}}>{{strings.valid}}</option>
-                                    <option value="invalid" {{#invalid}} selected {{/invalid}}>{{strings.invalid}}</option>
-                                </select>
-                                <script type="text/javascript">
-                                {{#valid}} $("select[name=status]").val('valid') {{/valid}}
-                                {{#invalid}} $("select[name=status]").val('invalid') {{/invalid}}
-                                </script>
+                                <strong>{{strings.valid-taxonomy}}</strong><br />
+                                <label class='radio-inline'>
+                                    <input name="taxonomy" type="radio" value="valid" {{#taxonomy-valid}} checked {{/taxonomy-valid}} /> 
+                                    {{strings.yes}}
+                                </label>
+                                <label class='radio-inline'>
+                                    <input name="taxonomy" type="radio" value="invalid"  {{#taxonomy-invalid}} checked {{/taxonomy-invalid}} /> 
+                                    {{strings.no}}
+                                </label>
+                                <label class='radio-inline'>
+                                    <input name="taxonomy" type="radio" value="unknown"  {{#taxonomy-unknown}} checked {{/taxonomy-unknown}} /> 
+                                    {{strings.unknown}}
+                                </label>
                             </p>
-                            <p class='form-group' rel='both'>
-                            <label for="reason"><span rel='invalid'>{{strings.reason}}</span><span rel='valid'>{{strings.addendun}}</span>:</label>
-                                <select name="reason" class='form-control'>
-                                    <option value="N/A">N/A</option>
-                                    <option value="ok" rel='valid' {{#reason-ok}} selected {{/reason-ok}}>{{strings.data-is-ok}}</option>
-                                    <option value="wrong georeference" rel='valid' {{#reason-wrong-georeference}} selected {{/reason-wrong-georeference}}>{{strings.wrong-georeference}}</option>
-                                    <option value="uncertain taxonomy" rel='valid' {{#reason-uncertain-taxonomy}} selected {{/reason-uncertain-taxonomy}}>{{strings.uncertain-taxonomy}}</option>
-                                    <option value="wrong taxonomy" rel='invalid' {{#reason-wrong-taxonomy}} selected {{/reason-wrong-taxonomy}}>{{strings.wrong-taxonomy}}</option>
-                                    <option value="duplicate" rel='invalid' {{#reason-duplicate}} selected {{/reason-duplicate}}>{{strings.duplicated}}</option>
-                                    <option value="cultivated" rel='invalid' {{#reason-cultivated}} selected {{/reason-cultivated}}>{{strings.cultivated}}</option>
-                                    <option value="other" rel='invalid' {{#reason-other}} selected {{/reason-other}}>{{strings.other}}</option>
-                                </select>
+                            <p class='form-group'>
+                                <strong>{{strings.valid-geo}}</strong><br />
+                                <label class='radio-inline'>
+                                    <input name="georeference" type="radio" value="valid" {{#georeference-valid}} checked {{/georeference-valid}} /> 
+                                    {{strings.yes}}
+                                </label>
+                                <label class='radio-inline'>
+                                    <input name="georeference" type="radio" value="invalid"  {{#georeference-invalid}} checked {{/georeference-invalid}} /> 
+                                    {{strings.no}}
+                                </label>
+                                <label class='radio-inline'>
+                                    <input name="georeference" type="radio" value="unknown"  {{#georeference-unknown}} checked {{/georeference-unknown}} /> 
+                                    {{strings.unknown}}
+                                </label>
                             </p>
                             <p class='form-group' rel='valid'>
-                                <label for="presence">{{strings.presence}}:</label>
-                                <select name="presence" class='form-control'>
-                                    <option value="unkown" {{#presence-unkown}} selected {{/presence-unkown}}>{{strings.unkown}}</option>
-                                    <option value="present" {{#presence-present}} selected {{/presence-present}}>{{strings.present}}</option>
-                                    <option value="absent" {{#presence-absent}} selected {{/presence-absent}}>{{strings.absent}}</option>
-                                </select>
+                                <strong>{{strings.valid-presence}}</strong><br />
+                                <label class='radio-inline'>
+                                    <input name="presence" type="radio" value="present" {{#presence-present}} checked {{/presence-present}} /> 
+                                    {{strings.yes}} ({{strings.present}})
+                                </label>
+                                <label class='radio-inline'>
+                                    <input name="presence" type="radio" value="absent" {{#presence-absent}} checked {{/presence-absent}} /> 
+                                    {{strings.no}} ({{strings.absent}})
+                                </label>
+                                <label class='radio-inline'>
+                                    <input name="presence" type="radio" value="unknown" {{#presence-unknown}} checked {{/presence-unknown}} /> 
+                                    {{strings.unknown}}
+                                </label>
+                            </p>
+                            <p class='form-group' rel='valid'>
+                                <strong>{{strings.valid-native}}</strong><br />
+                                <label class='radio-inline'>
+                                    <input name="native" type="radio" value="native" {{#native-native}} checked {{/native-native}} /> 
+                                    {{strings.yes}} ({{strings.native}})
+                                </label>
+                                <label class='radio-inline'>
+                                    <input name="native" type="radio" value="non-native" {{#native-non-native}} checked {{/native-non-native}} /> 
+                                    {{strings.no}} ({{strings.non-native}})
+                                </label>
+                                <label class='radio-inline'>
+                                    <input name="native" type="radio" value="unknown" {{#native-unknown}} checked {{/native-unknown}} /> 
+                                    {{strings.unknown}}
+                                </label>
+                            </p>
+                            <p class='form-group' rel='valid'>
+                                <strong>{{strings.valid-cultivated}}</strong><br />
+                                <label class='radio-inline'>
+                                    <input name="cultivated" type="radio" value="yes" {{#cultivated-yes}} checked {{/cultivated-yes}} /> 
+                                    {{strings.yes}}
+                                </label>
+                                <label class='radio-inline'>
+                                    <input name="cultivated" type="radio" value="no" {{#cultivated-no}} checked {{/cultivated-no}} /> 
+                                    {{strings.no}}
+                                </label>
+                                <label class='radio-inline'>
+                                    <input name="cultivated" type="radio" value="unknown" {{#cultivated-unknown}} checked {{/cultivated-unknown}} /> 
+                                    {{strings.unknown}}
+                                </label>
+                            </p>
+                            <p class='form-group' rel='valid'>
+                                <strong>{{strings.valid-duplicated}}</strong><br />
+                                <label class='radio-inline'>
+                                    <input name="duplicated" type="radio" value="yes" {{#duplicated-yes}} checked {{/duplicated-yes}} /> 
+                                    {{strings.yes}}
+                                </label>
+                                <label class='radio-inline'>
+                                    <input name="duplicated" type="radio" value="no" {{#duplicated-no}} checked {{/duplicated-no}} /> 
+                                    {{strings.no}}
+                                </label>
+                                <label class='radio-inline'>
+                                    <input name="duplicated" type="radio" value="unknown" {{#duplicated-unknown}} checked {{/duplicated-unknown}} /> 
+                                    {{strings.unknown}}
+                                </label>
                             </p>
                             <p class="form-group">
-                                <label for="comment">{{strings.comment}}:</label>
+                                <label for="comment">{{strings.valid-comments}}</label>
                                 <textarea name="comment" class='form-control'>{{validation.remarks}}</textarea>
                             </p>
                         </div>
@@ -68,7 +125,7 @@
                         <input name="q" value="{{query}}" type="hidden" />
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" >&times;</button>
-                            <h3>Análise</h3>
+                            <h3>{{strings.analysis}}</h3>
                         </div>
                         <div class="modal-body">
                             <p class="form-group">
@@ -99,21 +156,9 @@
                         <input name="q" value="{{query}}" type="hidden" />
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" >&times;</button>
-                            <h3>GIS</h3>
+                            <h3>{{strings.sig}}</h3>
                         </div>
                         <div class="modal-body">
-                            <p class='form-group'>
-                                <label for="valid">{{strings.valid}}:</label>
-                                <select name="valid" class='form-control'>
-                                    <option value=""></option>
-                                    <option value="valid" {{#valid}} selected {{/valid}}>{{strings.valid}}</option>
-                                    <option value="invalid" {{#invalid}} selected {{/invalid}}>{{strings.valid}}</option>
-                                </select>
-                                <script type="text/javascript">
-                                {{#valid}} $("select[name=valid]").val('valid') {{/valid}}
-                                {{#invalid}} $("select[name=valid]").val('invalid') {{/invalid}}
-                                </script>
-                            </p>
                             <p class='form-group'>
                                 <label for="status">{{strings.status-sig}}:</label>
                                 <select name="status" class='form-control'>

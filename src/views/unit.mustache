@@ -169,7 +169,7 @@
 
     {{#verbatimValidation.status}}
     <p>
-        <strong>Previous validation Remarks</strong> {{verbatimValidation.by}} - {{verbatimValidation.reason}}: {{{verbatimValidation.remarks}}}
+        <strong>Previous validation Remarks</strong> <strong>{{verbatimValidation.status}}</strong> {{{verbatimValidation.remarks}}}
     </p>
     {{/verbatimValidation.status}}
 
@@ -178,7 +178,14 @@
         {{#role-analyst}}
             <span class='label label-warning'>check</span>
         {{/role-analyst}}
-        <strong>Validation Remarks</strong> {{validation.by}} - {{validation.reason}}: {{{validation.remarks}}}
+        <strong>Validation by</strong> {{validation.by}} <br />
+            Taxonomy {{validation.taxonomy}} <br />
+            Georeference {{validation.georeference}} <br />
+            Presence {{validation.presence}} <br />
+            Native {{validation.native}} <br />
+            Cultivated {{validation.cultivated}} <br />
+            Duplicated {{validation.duplicated}} <br />
+            Remarks {{validation.remarks}} 
     </p>
     {{/validation.by}}
 

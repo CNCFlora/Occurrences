@@ -35,6 +35,15 @@ get '/search' do
         end
 
         if occ.has_key?("validation")
+
+            if occ["validation"].has_key?( "taxonomy" ) && occ["validation"].has_key?( "georeference" )
+                if occ["validation"]["georeference"] == 'valid' && occ['validation']['georeference'] == 'valid'
+                    occ["validation"]["status"]='valid';
+                else
+                    occ["validation"]["status"]='invalid';
+                end
+            end
+
             if occ["validation"].has_key?("status")
                 if occ["validation"]["status"] === 'valid'
                     validated += 1
@@ -50,13 +59,15 @@ get '/search' do
                     not_validated += 1
                 end
             end
-            if occ["validation"].has_key?("reason")
-                occ["reason-#{occ["validation"]["reason"].gsub(" ","-")}".to_sym] = true
-            end
-            if occ.has_key?("occurrenceStatus")
-                occ["presence-#{occ["occurrenceStatus"]}".to_sym] = true
-            end
+
+            occ["validation"].keys.each {|k|
+                val = occ["validation"][k]
+                if val.class == String then
+                    occ["#{k}-#{val}"]=true;
+                end
+            }
         end
+
 
         i += 1
     }

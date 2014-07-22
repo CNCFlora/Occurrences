@@ -26,23 +26,5 @@ $(function(){
         map();
     }
 
-    $("select[name=status]").change(function(){
-        var val = $(this).val();
-        var ctx = $(this).parent().parent();
-        if(val == 'valid') {
-            $("*[rel=valid]",ctx).show();
-            $("*[rel=invalid]",ctx).hide();
-        } else if(val =='invalid'){
-            $("*[rel=valid]",ctx).hide();
-            $("*[rel=invalid]",ctx).show();
-        } else {
-            $("select[name=reason]").val("N/A");
-            $("*[rel=valid]",ctx).hide();
-            $("*[rel=invalid]",ctx).hide();
-            $("*[rel=both]",ctx).hide();
-            $("select[name=reason] option:first").show();
-        }
-    });
-
 });
 

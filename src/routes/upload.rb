@@ -13,7 +13,7 @@ post '/upload' do
     begin
         if params.has_key?("file") 
             # convert to json
-            json = RestClient.post "#{settings.config[:services]}/convert?from=#{params["type"]}&to=json&fixes=true", 
+            json = RestClient.post "#{settings.config[:dwc_services]}/convert?from=#{params["type"]}&to=json&fixes=true", 
                                 params["file"][:tempfile].read, :content_type => params["file"][:type], :accept => :json
 
 
@@ -21,7 +21,7 @@ post '/upload' do
                 errors.push json
             else
                 # validate
-                validation = RestClient.post "#{settings.config[:services]}/validate", json,
+                validation = RestClient.post "#{settings.config[:dwc_services]}/validate", json,
                                     :content_type => params["file"][:type], :accept => :json
 
                 validation = JSON.parse(validation)
@@ -38,7 +38,7 @@ post '/upload' do
                     }
                 else
                     # also convert to geojson, to integrate with the editor
-                    geojson = RestClient.post "#{settings.config[:services]}/convert?from=json&to=geojson", json,
+                    geojson = RestClient.post "#{settings.config[:dwc_services]}/convert?from=json&to=geojson", json,
                                                 :content_type => params["file"][:type], :accept => :json
                     #File.open("#{file}.json",'w') { |f| f.write(json) }
                     #File.open("#{file}.geojson",'w') { |f| f.write(geojson) }

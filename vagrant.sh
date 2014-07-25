@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
 # basic stuff
-add-apt-repository ppa:brightbox/ruby-ng -y
-apt-get update
-apt-get upgrade -y
-apt-get install wget curl git ruby2.1 ruby2.1-dev -y
+if [[ ! -e /root/.apt_done ]]; then
+    add-apt-repository ppa:brightbox/ruby-ng -y
+    apt-get update
+    apt-get upgrade -y
+    apt-get install wget curl git ruby2.1 ruby2.1-dev -y
+    touch /root/.apt_done
+fi
 
 # setup app deps
 if [[ ! -e /root/.app_done ]]; then
@@ -24,14 +27,17 @@ if [[ ! -e /root/.app_done ]]; then
 fi
 
 # docker register to etcd
-if [[ ! -e /usr/bin/docker2etcd ]]; then
-    wget https://gist.githubusercontent.com/diogok/24cf050e880731783d40/raw/e0f0e05e532488fec803c68022d514975034e8d8/docker2etcd.rb \
-          -O /usr/bin/docker2etcd 
-    chmod +x /usr/bin/docker2etcd 
+if [[ ! -e /root/.ops_done ]]; then
+    gem install small-ops
+    docker2etcd
+    touch /root/.ops_done
 fi
-/usr/bin/docker2etcd
 
 # setup couchdb
-HUB=$(docker ps | grep datahub | awk '{ print $10 }' | grep -e '[0-9]\{5\}' -o)
-curl -X PUT http://localhost:$HUB/cncflora
+if [[ ! -e /root/.db_done ]]; then
+    HUB=$(docker ps | grep datahub | awk '{ print $10 }' | grep -e '[0-9]\{5\}' -o)
+    curl -X PUT http://localhost:$HUB/cncflora
+    curl -X PUT http://localhost:$HUB/cncflora_test
+    touch /root/.db_done
+fi
 

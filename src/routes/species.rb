@@ -23,7 +23,7 @@ get '/specie/:name' do
     query = "\"#{params[:name]}\""
 
     search("taxon","acceptedNameUsage:\"#{params[:name]}\"").each {|t|
-        query << " OR \"#{t["scientificName"]}\""
+        query << " OR \"#{t["scientificNameWithoutAuthorship"]}\""
     }
 
     redirect "#{settings.config[:base]}/search?q=#{URI.encode( query )}"
@@ -50,7 +50,7 @@ get '/specie/:name/:status' do
     query << "(\"#{params[:name]}\""
 
     search("taxon","acceptedNameUsage:\"#{params[:name]}\"").each {|t|
-        query << " OR \"#{t["scientificName"]}\""
+        query << " OR \"#{t["scientificNameWithoutAuthorship"]}\""
     }
 
     query << ")"

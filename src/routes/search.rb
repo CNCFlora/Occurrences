@@ -1,6 +1,6 @@
 
 get '/search' do
-    query = (params[:q] || "scientificName:'Aphelandra longiflora'").gsub("&quot","\"")
+    query = (params[:q] || "Aphelandra longiflora").gsub("&quot","\"")
     occurrences = search("occurrence",query)
 
     valid=0

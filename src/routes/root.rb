@@ -23,9 +23,10 @@ get '/' do
         end
 
         search("taxon",query).each { |e| 
-            species[e["scientificName"]] = {
+            spp = {
                 :family=>e["family"],
                 :scientificName=>e["scientificName"],
+                :scientificNameWithoutAuthorship=>e["scientificNameWithoutAuthorship"],
                 :reviewed=>0,
                 :not_reviewed=>0,
                 :validated=>0,
@@ -34,11 +35,13 @@ get '/' do
                 :invalid=>0,
                 :total=>0
             }
+            species[e["scientificNameWithoutAuthorship"]] = spp
+            species[e["scientificName"]] = spp
         }
 
         query = "\"#{species.keys.join("\" OR \"")}\""
         search("occurrence",query).each {|occ|
-            taxon = species[occ["scientificName"]]
+            taxon = species[occ["scientificName"]] || species[occ["scientificNameWithoutAuthorship"]]
 
             if taxon 
                 taxon[:total] += 1;

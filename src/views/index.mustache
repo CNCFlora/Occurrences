@@ -12,7 +12,6 @@
         <thead>
             <tr>
                 <th>{{strings.family}}</th>
-                <th>{{strings.specie}}</th>
                 <th>{{strings.reviewed}}</th>
                 <th>{{strings.validated}}</th>
                 <th>{{strings.not-reviewed}}</th>
@@ -21,10 +20,9 @@
             </tr>
         </thead>
         <tbody>
-            {{#species}}
+            {{#data}}
             <tr>
-                <td>{{family}}</td>
-                <td><a href="{{base}}/specie/{{scientificNameWithoutAuthorship}}">{{scientificNameWithoutAuthorship}}</a></td>
+                <td><a href="{{base}}/family/{{family}}">{{family}}</a></td>
                 <td>
                     {{reviewed}}
                 </td>
@@ -41,7 +39,7 @@
                     {{total}}
                 </td>
             </tr>
-            {{/species}}
+            {{/data}}
         </tbody>
     </table>
 </div>

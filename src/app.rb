@@ -11,6 +11,12 @@ if development?
     also_reload "routes/*"
 end
 
+if test? then
+    set :test , true
+else
+    set :test , false
+end
+
 setup '../config.yml'
 
 def view(page,data)
@@ -28,8 +34,13 @@ end
 post '/login' do
     session[:logged] = true
     preuser =  JSON.parse(params[:user])
-    user = http_get("#{settings.connect}/api/token?token=#{preuser["token"]}")
-    session[:user] = user
+
+    if settings.test then
+        session[:user] = preuser
+    else
+        user = http_get("#{settings.connect}/api/token?token=#{preuser["token"]}")
+        session[:user] = user
+    end
     204
 end
 

@@ -17,4 +17,5 @@ gem 'rspec-html-matchers'
 gem 'rack-test'
 
 gem 'unicorn'
+gem 'i18n'
 

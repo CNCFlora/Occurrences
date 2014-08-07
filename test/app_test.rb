@@ -147,7 +147,7 @@ describe "Web app Occurrence." do
         this_should_not_get_executed
     end
 
-    it "Gets spread sheet occurrences sending page." do
+    it "Gets occurrences upload sending page." do
         get "/upload"
         expect( last_response.status ).to eq( 200 )
         expect( last_response.body ).to have_form("/upload", :POST, with: { class: "col-md-12" } ) do

@@ -84,7 +84,7 @@ describe "Web app Occurrence." do
 
         post "/login", user
     end
-=begin
+
     it "Gets families." do
         get "/families"
         expect( last_response.status ).to eq( 200 )
@@ -146,13 +146,29 @@ describe "Web app Occurrence." do
         pending( "Not yet implemented. This route calls a service" )
         this_should_not_get_executed
     end
-=end
-    it "Sends spread sheet occurrences" do
+
+    it "Gets spread sheet occurrences sending page." do
         get "/upload"
         expect( last_response.status ).to eq( 200 )
-        expect( last_response.body ).to have_form("/upload", :POST, with: { class: "col-md-12" } )
-        #expect( last_response.body ).to have_form( "/upload", "post", with: { class:"col-md-12"})#, :with => { :action=>"/upload", :method=>"post" } )
-        #expect().to have_tag()
+        expect( last_response.body ).to have_form("/upload", :POST, with: { class: "col-md-12" } ) do
+            with_tag :legend, :text => "Enviar arquivo:"
+            expect( last_response.body ).to have_tag( "div.form-group.input-group.col-md-6") do
+                with_tag( "input.form-control", :with => { :id=>"file", :name=>"file", :type=>"file"  } )
+                expect( last_response.body ).to have_tag( "span.input-group-addon") do
+                    with_select( "type", :with => { :id=>"type"} )
+                    with_option( "XLSX", :value => "xlsx")
+                    with_option( "CSV", :value => "csv")
+                    with_option( "DWC-A", :value => "dwca" )                 
+                end
+                expect( last_response.body ).to have_tag( "span.input-group-btn"){
+                    with_button( "Enviar", :class=>"btn btn-success")
+                }
+                expect( last_response.body ).to have_tag( "p" ){
+                    with_tag "strong", "Templates/Modelos"
+                    with_tag "a", :wiht => { :href=>"templates/occurrences.xlsx", :text=>"occurrences.xlsx" }
+                }
+            end
+        end
     end
 
 end

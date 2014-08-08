@@ -15,7 +15,7 @@ get '/' do
         }
 
         query = "NOTHING"
-        puts ents
+        #puts ents
 
         if ents.length >= 1 then
             query =  "taxonomicStatus:\"accepted\""
@@ -26,12 +26,12 @@ get '/' do
 
         families = [];
 
-        puts query
+        #puts query
 
         search("taxon",query)
             .each { |e| families.push e['family'] }
 
-            puts families
+            #puts families
 
         families.uniq.each {|f|
             taxon = {

@@ -20,27 +20,43 @@ describe "Web app Occurrence." do
 
         @taxons = [
             {
-                "taxonID"=> "106006","family"=> "Apocynaceae","genus"=> "Minaria",
-                "scientificName"=> "Minaria diamantinensis (Fontella) T.U.P.Konno & Rapini","scientificNameAuthorship"=> "(Fontella) T.U.P.Konno & Rapini",
-                "scientificNameWithoutAuthorship"=> "Minaria diamantinensis","taxonomicStatus"=> "accepted",
-                "acceptedNameUsage"=> "Minaria diamantinensis (Fontella) T.U.P.Konno & Rapini","taxonRank"=> "species",
-                "higherClassification"=> "Flora;Angiospermas;Apocynaceae;Minaria T.U.P.Konno & Rapini;Minaria diamantinensis (Fontella) T.U.P.Konno & Rapini",
+                "taxonID"=>"106006", "family"=>"Apocynaceae", "genus"=>"Minaria",
+                "scientificName"=>"Minaria diamantinensis (Fontella) T.U.P.Konno & Rapini", "scientificNameAuthorship"=>"(Fontella) T.U.P.Konno & Rapini",
+                "scientificNameWithoutAuthorship"=>"Minaria diamantinensis", "taxonomicStatus"=>"accepted",
+                "acceptedNameUsage"=>"Minaria diamantinensis (Fontella) T.U.P.Konno & Rapini", "taxonRank"=>"species",
+                "higherClassification"=>"Flora;Angiospermas;Apocynaceae;Minaria T.U.P.Konno & Rapini;Minaria diamantinensis (Fontella) T.U.P.Konno & Rapini",
                 "metadata"=> {
                     "type"=> "taxon"
                 }
             },
+
+
             {
                      
-                "taxonID"=> "121962","family"=> "Balanophoraceae",
-                "genus"=> "Langsdorffia","scientificName"=> "Langsdorffia heterotepala L.J.T. Cardoso, R.J.V. Alves J.M.A. Braga",
-                "scientificNameAuthorship"=> "L.J.T. Cardoso, R.J.V. Alves  J.M.A. Braga",
-                "scientificNameWithoutAuthorship"=> "Langsdorffia heterotepala L.J.T. Cardoso, R.J.V. Alves J.M.A. Braga","taxonomicStatus"=> "accepted",
-                "acceptedNameUsage"=> "Langsdorffia heterotepala L.J.T. Cardoso, R.J.V. Alves J.M.A. Braga","taxonRank"=> "species",
-                "higherClassification"=> "Flora;Angiospermas;Balanophoraceae Rich.;Langsdorffia Mart.;Langsdorffia heterotepala L.J.T. Cardoso, R.J.V. Alves J.M.A. Braga",
+                "taxonID"=>"121962", "family"=>"Balanophoraceae",
+                "genus"=>"Langsdorffia", "scientificName"=>"Langsdorffia heterotepala L.J.T. Cardoso, R.J.V. Alves J.M.A. Braga",
+                "scientificNameAuthorship"=>"L.J.T. Cardoso, R.J.V. Alves  J.M.A. Braga",
+                "scientificNameWithoutAuthorship"=>"Langsdorffia heterotepala L.J.T. Cardoso, R.J.V. Alves J.M.A. Braga", "taxonomicStatus"=>"accepted",
+                "acceptedNameUsage"=>"Langsdorffia heterotepala L.J.T. Cardoso, R.J.V. Alves J.M.A. Braga", "taxonRank"=>"species",
+                "higherClassification"=>"Flora;Angiospermas;Balanophoraceae Rich.;Langsdorffia Mart.;Langsdorffia heterotepala L.J.T. Cardoso, R.J.V. Alves J.M.A. Braga",
                 "metadata"=> {
                     "type"=> "taxon"
                 }
             },
+
+
+            {
+                "taxonID"=>"106006","family"=>"Apocynaceae","genus"=>"Minaria",
+                "scientificName"=>"Minaria diamantinensis (Fontella) T.U.P.Konno & Rapini","scientificNameAuthorship"=>"(Fontella) T.U.P.Konno & Rapini",
+                "scientificNameWithoutAuthorship"=>"Minaria diamantinensis","taxonomicStatus"=>"accepted",
+                "acceptedNameUsage"=>"Minaria diamantinensis (Fontella) T.U.P.Konno & Rapini","taxonRank"=>"species",
+                "higherClassification"=>"Flora;Angiospermas;Apocynaceae;Minaria T.U.P.Konno & Rapini;Minaria diamantinensis (Fontella) T.U.P.Konno & Rapini",
+                "metadata"=> {
+                    "type"=> "taxon"
+                }
+            },
+
+
             {
                 "taxonID"=> "21641","family"=> "Acanthaceae","genus"=> "Aphelandra",
                 "scientificName"=> "Aphelandra aurantiaca (Scheidw.) Lindl. var. aurantiaca","scientificNameAuthorship"=> "(Scheidw.) Lindl.",
@@ -85,43 +101,93 @@ describe "Web app Occurrence." do
         post "/login", user
     end
 
+    it "Gets login page." do
+        #It's necessary make logout because there is "post '/login' at before(:each)."
+        post "/logout"
+        expect( last_response.status ).to eq( 204 )
+        get "/"
+        expect( last_response.body ).to have_tag( "nav.navbar.navbar-default.col-md-12" ){
+            expect( last_response.body ).to have_tag( "ul.nav.navbar-nav" ){
+                with_tag "li#login a", :with=>{ href: "#"}, :text=>"Login"
+                without_tag "li a", :with=>{ href: "/"}, :text=>"Resumo"
+                without_tag "li a", :with=>{ href: "/families"}, :text=>"Familias"
+                without_tag "li a", :with=>{ href: "/upload"}, :text=>"Enviar ocorrências"
+                without_tag "li a", :with=>{ href: "#"}, :text=>"Logout"
+            }
+        }
+        expect( last_response.body ).to have_tag( "h2.col-md-12", "Necessário fazer login" )
+
+    end
+
+
+    it "Goes to home page after login." do
+        get "/"
+        expect( last_response.status ).to eq( 200 )
+        expect( last_response.body ).to have_tag( "nav.navbar.navbar-default.col-md-12" ){
+            expect( last_response.body ).to have_tag( "ul.nav.navbar-nav" ){
+                with_tag "li a", :with=>{ href: "/"}, :text=>"Resumo"
+                with_tag "li a", :with=>{ href: "/families"}, :text=>"Famílias"
+                with_tag "li a", :with=>{ href: "/upload"}, :text=>"Enviar ocorrências"
+                with_tag "li#logout a", :with=>{ href: "#"}, :text=>"Logout"
+                without_tag "li#id a", :with=>{ href: "#"}, :text=>"Login"
+            }
+            expect( last_response.body ).to have_tag( "div.col-md-12"){
+                expect( last_response.body ).to have_tag( "table.table" ){
+                    with_tag "tr th", :text=>"Família"
+                    with_tag "tr th", :text=>"Revisado"
+                    with_tag "tr th", :text=>"Validado"
+                    with_tag "tr th", :text=>"Não revisado"
+                    with_tag "tr th", :text=>"Não validado"
+                    with_tag "tr th", :text=>"Total"
+                }
+            }
+        }
+
+    end
+
     it "Gets families." do
         get "/families"
         expect( last_response.status ).to eq( 200 )
-        sleep 1
-        @taxons.each do |taxon|
-            expect( last_response.body ).to have_tag( "a", with: { href: "/family/#{taxon["family"]}"}, text: "#{taxon["family"]}"  )
-        end
+        expect( last_response.body ).to have_tag( "div.col-md-12"){
+            with_tag "h2","Famílias"
+            @taxons.each do |taxon|
+                with_tag "ul li a", :with=>{ href: "/family/#{taxon["family"]}" }, :text=>"#{taxon["family"]}"
+            end
+        }
     end
 
     it "Gets a family." do
         get "/family/#{@taxons.last["family"]}"
         expect( last_response.status ).to eq( 200 )
-        expect( last_response.body ).to have_tag( :td ) do
-            with_tag :i
-            with_tag :a, with: { href: "/specie/#{@taxons.last["scientificNameWithoutAuthorship"]}"}
-        end
+        expect( last_response.body ).to have_tag( "div.col-md-12" ){
+            with_tag "h2", "#{@taxons.last["family"]}"
+            expect( last_response.body ).to have_tag( "table.table" ){
+                with_tag "thead tr th", :text=>"Espécie"
+                scientificName = @taxons.last["scientificNameAuthorship"]
+                with_tag "tbody tr td i a", :with=>{ href: "/specie/#{@taxons.last["scientificNameWithoutAuthorship"]}" }
+                # Missing td :text ' (Scheidw.) Lindl.'
+                #with_tag "tbody tr td i a", :with=>{ href: "/specie/#{@taxons.last["scientificNameWithoutAuthorship"]}" }, :text=>" #{scientificName}"??
+            }
+        }
     end
+
     it "Gets specie by name with sig profile." do
         taxon = @taxons.last["scientificNameWithoutAuthorship"]
         get "/specie/#{URI.encode( taxon )}"
         expect( last_response.status ).to eq( 302 )
         follow_redirect!
         expect( last_response.body ).to have_tag( "h2", :text => "Busca" )
-        expect( last_response.body ).to have_tag( "form", :with => { :action => '/search' } ) do
-            expect( last_response.body ).to have_tag( :p ) do
-                with_tag "input.form-control", :with => { :name=>"q", :type=>"text", :value=>"\"#{taxon}\"", :placeholder=>"Busca..." }
-                expect( last_response.body ).to have_tag( "button.btn.btn-primary", :text=>" Busca" ) do
-                    with_tag "span.glyphicon.glyphicon-search"
-                end
-                expect( last_response.body ).to have_tag( "a.btn.btn-default.btn-small",  with: { href: "/editor?q=\"#{taxon}\"" } ) do
-                    with_tag "span.glyphicon.glyphicon-edit"
-                end
-            end
-        end
+        expect( last_response.body ).to have_tag( "form", :with => { :action => '/search' } ){
+            expect( last_response.body ).to have_tag( "fieldset" ){
+                with_tag "p#input-taxon-search input.form-control", :with => { :name=>"q", :type=>"text", :value=>"\"#{taxon}\"", :placeholder=>"Busca..." }
+                with_tag "p#button-taxon-search button.btn.btn-primary", :text=>" Busca"
+                with_tag "p#button-taxon-search button.btn.btn-primary span.glyphicon.glyphicon-search"
+                with_tag "p#button-taxon-search a.btn.btn-default.btn-small",  :with=> { href: "/editor?q=\"#{taxon}\"" }
+            }
+        }
     end
 
-    it "Gets specie by name with sig profile" do
+    it "Gets specie by name without sig profile." do
         taxon = @taxons.last["scientificNameWithoutAuthorship"]
         post '/logout'
         post '/login', :user => '{ "name":"foo","email":"foo@cncflora.net", "roles":[ {"role":"assessor","entities":["ACANTHACEAE"]} ] }'

@@ -4,10 +4,10 @@
 
 <form action="{{base}}/search" class='col-md-12'>
     <fieldset>
-        <p>
+        <p id="input-taxon-search">
             <input class="form-control" type="text" name="q" placeholder="{{strings.search}}..." value="{{query}}">
         </p>
-        <p>
+        <p id="button-taxon-search">
             <button class="btn btn-primary" type="search"><span class='glyphicon glyphicon-search'></span> {{strings.search}}</button>
             {{#role-sig}}
             <a href="{{base}}/editor?q={{query}}" class="btn btn-default btn-small">

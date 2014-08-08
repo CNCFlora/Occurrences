@@ -85,11 +85,11 @@
     {{/metadata}}
 
     <p>
-        <strong>Occurrence ID</strong> <a href="#occ-{{occurrenceID}}-unit">{{occurrenceID}}</a> ;
+        <strong>{{strings.occurrence-id}}</strong> <a href="#occ-{{occurrenceID}}-unit">{{occurrenceID}}</a> ;
     </p>
 
     <p>
-        <strong>Taxon</strong> {{family}} {{scientificName}};
+        <strong>{{strings.taxon}}</strong> {{family}} {{scientificName}};
     </p>
     {{#identificationQualifier}}
     <p>
@@ -98,48 +98,48 @@
     {{/identificationQualifier}}
 
     <p>
-        <strong>Recorded by</strong> {{recordedBy}}  
+        <strong>{{strings.recorded-by}}</strong> {{recordedBy}}  
     </p>
     <p>
-        <strong>Number</strong> {{recordNumber}}
-    </p>
-
-    <p>
-        <strong>Collect Date</strong> {{day}}-{{month}}-{{year}} 
+        <strong>{{strings.record-number}}</strong> {{recordNumber}}
     </p>
 
     <p>
-        <strong>Collection</strong> {{collectionCode}}  
+        <strong>{{strings.collect-date}}</strong> {{day}}-{{month}}-{{year}} 
+    </p>
+
+    <p>
+        <strong>{{strings.collection-code}}</strong> {{collectionCode}}  
     </p>
     <p>
-        <strong>Catalog</strong> {{catalogNumber}}
+        <strong>{{strings.catalog-number}}</strong> {{catalogNumber}}
     </p>
 
     {{#identifiedBy}}
-        <p>
-            <strong>Identified by</strong> {{identifiedBy}} 
+    <p>
+            <strong>{{strings.identified-by}}</strong> {{identifiedBy}} 
     </p>
     <p>
-            <strong>Date</strong> {{identificationDate}} 
-        </p>
+        <strong>{{strings.identification-date}}</strong> {{identificationDate}} 
+    </p>
     {{/identifiedBy}}
 
     <p>
-        <strong>State</strong> {{stateProvince}} 
+        <strong>{{strings.state}}</strong> {{stateProvince}} 
     </p>
     <p>
-        <strong>City</strong> {{municipality}} 
+        <strong>{{strings.city}}</strong> {{municipality}} 
     </p>
 
     {{#locality}}
     <p>
-        <strong>Locality</strong> {{locality}} 
+        <strong>{{strings.locality}}</strong> {{locality}} 
     </p>
     {{/locality}}
 
     {{#presence}}
     <p>
-        <strong>Presence</strong> {{presence}}
+        <strong>{{strings.presence}}</strong> {{presence}}
     </p>
     {{/presence}}
 
@@ -149,27 +149,27 @@
 
     {{#bibliographicCitation}}
     <p>
-        <strong>Literature</strong> {{bibliographicCitation}}
+        <strong>{{strings.literature}}</strong> {{bibliographicCitation}}
     </p>
     {{/bibliographicCitation}}
 
     {{#occurrenceRemarks}}
     <p>
-        <strong>Remarks</strong> {{{occurrenceRemarks}}}
+        <strong>{{strings.remarks}}</strong> {{{occurrenceRemarks}}}
     </p>
     {{/occurrenceRemarks}}
 
     {{#georeferencedBy}}
-        <p><strong>Georeference Remarks</strong> {{georeferencedBy}} - {{{georeferenceRemarks}}}</p>
+        <p><strong>{{strings.georeference-remarks}}</strong> {{georeferencedBy}} - {{{georeferenceRemarks}}}</p>
     {{/georeferencedBy}}
 
     {{#comments}}
-        <p><strong>Analysis Remarks</strong> {{{comments}}}</p>
+        <p><strong>{{strings.analyst-remarks}}</strong> {{{comments}}}</p>
     {{/comments}}
 
     {{#verbatimValidation.status}}
     <p>
-        <strong>Previous validation Remarks</strong> <strong>{{verbatimValidation.status}}</strong> {{{verbatimValidation.remarks}}}
+        <strong>{{strings.verbatim-validation}}</strong> <strong>{{verbatimValidation.status}}</strong> {{{verbatimValidation.remarks}}}
     </p>
     {{/verbatimValidation.status}}
 
@@ -178,7 +178,7 @@
         {{#role-analyst}}
             <span class='label label-warning'>check</span>
         {{/role-analyst}}
-        <strong>Validation by</strong> {{validation.by}} <br />
+        <strong>{{strings.validation-by}}</strong> {{validation.by}} <br />
             Taxonomy {{validation.taxonomy}} <br />
             Georeference {{validation.georeference}} <br />
             Presence {{validation.presence}} <br />

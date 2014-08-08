@@ -33,7 +33,7 @@
     "edit-validation":"Validar/Invalidar",
     "edit-analysis":"Editar análise",
     "edit-sig":"GIS",
-    "verified":"OK",
+    "verified":"SIG OK",
     "valid":"Válido",
     "invalid":"Inválido",
     "at":"em",
@@ -82,5 +82,27 @@
     "yes":"Sim",
     "no":"Não",
     "native":"Nativa",
-    "non-native":"Introduzida"
+    "non-native":"Introduzida",
+    "occurrence-id":"ID da ocorrência",
+    "taxon":"Espécie",
+    "recorded-by":"Coletor",
+    "record-number":"Número de coletor",
+    "collect-date":"Data da coleta",
+    "collection-code":"Código da coleção",
+    "catalog-number":"Número de catalogo",
+    "identified-by":"Identificado por",
+    "identification-date":"Data de identificação",
+    "state":"Estado",
+    "city":"Cidade",
+    "locality":"Localidade",
+    "presence":"Presença",
+    "literature":"Literatura",
+    "remarks":"Observações",
+    "georeference-remarks":"Obs. de SIG",
+    "analyst-remarks":"Obs. do analista",
+    "verbatim-validation":"Validação passada",
+    "validation-by":"Validado por"
+
+
+
 } 

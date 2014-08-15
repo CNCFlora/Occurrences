@@ -46,18 +46,6 @@ describe "Web app Occurrence." do
 
 
             {
-                "taxonID"=>"106006","family"=>"Apocynaceae","genus"=>"Minaria",
-                "scientificName"=>"Minaria diamantinensis (Fontella) T.U.P.Konno & Rapini","scientificNameAuthorship"=>"(Fontella) T.U.P.Konno & Rapini",
-                "scientificNameWithoutAuthorship"=>"Minaria diamantinensis","taxonomicStatus"=>"accepted",
-                "acceptedNameUsage"=>"Minaria diamantinensis (Fontella) T.U.P.Konno & Rapini","taxonRank"=>"species",
-                "higherClassification"=>"Flora;Angiospermas;Apocynaceae;Minaria T.U.P.Konno & Rapini;Minaria diamantinensis (Fontella) T.U.P.Konno & Rapini",
-                "metadata"=> {
-                    "type"=> "taxon"
-                }
-            },
-
-
-            {
                 "taxonID"=> "21641","family"=> "Acanthaceae","genus"=> "Aphelandra",
                 "scientificName"=> "Aphelandra aurantiaca (Scheidw.) Lindl. var. aurantiaca","scientificNameAuthorship"=> "(Scheidw.) Lindl.",
                 "scientificNameWithoutAuthorship"=> "Aphelandra aurantiaca  var. aurantiaca","taxonomicStatus"=> "accepted",
@@ -80,11 +68,14 @@ describe "Web app Occurrence." do
 
     end
 
+
     after(:each) do
         @ids.each do |e|
-             http_delete( "#{@uri}/#{e["id"]}?rev=#{e["rev"]}")
+            http_delete( "#{@uri}/#{e["id"]}?rev=#{e["rev"]}")
         end
+        sleep 2
     end
+
 
     before(:each) do
         user = {
@@ -100,6 +91,7 @@ describe "Web app Occurrence." do
 
         post "/login", user
     end
+
 
     it "Gets login page." do
         #It's necessary make logout because there is "post '/login' at before(:each)."
@@ -145,31 +137,40 @@ describe "Web app Occurrence." do
 
     end
 
+
     it "Gets families." do
         get "/families"
         expect( last_response.status ).to eq( 200 )
         expect( last_response.body ).to have_tag( "div.col-md-12"){
             with_tag "h2","Famílias"
             @taxons.each do |taxon|
-                with_tag "ul li a", :with=>{ href: "/family/#{taxon["family"]}" }, :text=>"#{taxon["family"]}"
+                puts "family: #{taxon["family"]}"
+                #with_tag "ul li a", :with=>{ href: "/family/#{taxon["family"]}" }, :text=>"#{taxon["family"]}"
+                with_tag "ul li a", :with=>{ href: "/family/#{taxon["family"]}" }
             end
         }
     end
 
+
     it "Gets a family." do
-        get "/family/#{@taxons.last["family"]}"
+        taxon = @taxons.last
+        get "/family/#{taxon["family"]}"
+        sleep 2
         expect( last_response.status ).to eq( 200 )
         expect( last_response.body ).to have_tag( "div.col-md-12" ){
-            with_tag "h2", "#{@taxons.last["family"]}"
+            with_tag "h2", "#{taxon["family"]}"
             expect( last_response.body ).to have_tag( "table.table" ){
                 with_tag "thead tr th", :text=>"Espécie"
-                scientificName = @taxons.last["scientificNameAuthorship"]
-                with_tag "tbody tr td i a", :with=>{ href: "/specie/#{@taxons.last["scientificNameWithoutAuthorship"]}" }
+                @taxons.each{ |taxon|
+                    puts "taxon: #{taxon["scientificNameWithoutAuthorship"]}"
+                    #with_tag "tbody tr td i a", :with=>{ href: "/specie/#{taxon["scientificNameWithoutAuthorship"]}" }
+                }
                 # Missing td :text ' (Scheidw.) Lindl.'
                 #with_tag "tbody tr td i a", :with=>{ href: "/specie/#{@taxons.last["scientificNameWithoutAuthorship"]}" }, :text=>" #{scientificName}"??
             }
         }
     end
+
 
     it "Gets specie by name with sig profile." do
         taxon = @taxons.last["scientificNameWithoutAuthorship"]
@@ -186,6 +187,7 @@ describe "Web app Occurrence." do
             }
         }
     end
+
 
     it "Gets specie by name without sig profile." do
         taxon = @taxons.last["scientificNameWithoutAuthorship"]
@@ -204,14 +206,14 @@ describe "Web app Occurrence." do
                 expect( last_response.body ).not_to have_tag( "a.btn.btn-default.btn-small",  with: { href: "/editor?q=\"#{taxon}\"" } )
             end
         end
-
-
     end
+
 
     it "Gets specie by name and status." do
         pending( "Not yet implemented. This route calls a service" )
         this_should_not_get_executed
     end
+
 
     it "Gets occurrences upload sending page." do
         get "/upload"
@@ -237,4 +239,33 @@ describe "Web app Occurrence." do
         end
     end
 
+
+    it "Does upload xlsx file" do
+        post "/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_aurantiaca_test1.xlsx"), "type"=>"xlsx"
+        
+
+        docs = http_get( "#{@uri}/_all_docs?include_docs=true" )
+
+        occurrences = []
+        docs["rows"].each{ |row|
+            if ( row["doc"]["metadata"]["type"] == "occurrence" )
+
+                occurrences.push( {"id"=>row["doc"]["_id"], "rev"=>row["doc"]["_rev"], "scientificName"=>row["doc"]["scientificName"] } )
+            end
+        }
+
+
+        expect( last_response.body ).to have_tag( "div.col-md-12" ){
+            with_tag( "h2", :text=>"Registros de ocorrências Inseridos: #{occurrences.count}." )
+            occurrences.each{ |occurrence|
+                expect( last_response.body ).to have_tag( "ul li a", :with=>{ :href=>"/search?q=\"#{occurrence["scientificName"]}\"" }, :text=>occurrence["scientificName"] )
+            }
+        }
+
+
+        # Delete all registers included on post action above.
+        occurrences.each{ |occurrence|
+            result = http_delete( "#{@uri}/#{occurrence["id"]}?rev=#{occurrence["rev"]}" )
+        }
+    end
 end

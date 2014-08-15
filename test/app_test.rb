@@ -73,7 +73,6 @@ describe "Web app Occurrence." do
         @ids.each do |e|
             http_delete( "#{@uri}/#{e["id"]}?rev=#{e["rev"]}")
         end
-        sleep 2
     end
 
 
@@ -144,9 +143,7 @@ describe "Web app Occurrence." do
         expect( last_response.body ).to have_tag( "div.col-md-12"){
             with_tag "h2","Famílias"
             @taxons.each do |taxon|
-                puts "family: #{taxon["family"]}"
-                #with_tag "ul li a", :with=>{ href: "/family/#{taxon["family"]}" }, :text=>"#{taxon["family"]}"
-                with_tag "ul li a", :with=>{ href: "/family/#{taxon["family"]}" }
+                with_tag "ul li a", :with=>{ href: "/family/#{taxon["family"]}" }, :text=>"#{taxon["family"]}"
             end
         }
     end
@@ -155,16 +152,12 @@ describe "Web app Occurrence." do
     it "Gets a family." do
         taxon = @taxons.last
         get "/family/#{taxon["family"]}"
-        sleep 2
         expect( last_response.status ).to eq( 200 )
         expect( last_response.body ).to have_tag( "div.col-md-12" ){
             with_tag "h2", "#{taxon["family"]}"
             expect( last_response.body ).to have_tag( "table.table" ){
                 with_tag "thead tr th", :text=>"Espécie"
-                @taxons.each{ |taxon|
-                    puts "taxon: #{taxon["scientificNameWithoutAuthorship"]}"
-                    #with_tag "tbody tr td i a", :with=>{ href: "/specie/#{taxon["scientificNameWithoutAuthorship"]}" }
-                }
+                with_tag "tbody tr td i a", :with=>{ href: "/specie/#{taxon["scientificNameWithoutAuthorship"]}" }
                 # Missing td :text ' (Scheidw.) Lindl.'
                 #with_tag "tbody tr td i a", :with=>{ href: "/specie/#{@taxons.last["scientificNameWithoutAuthorship"]}" }, :text=>" #{scientificName}"??
             }

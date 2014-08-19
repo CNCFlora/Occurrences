@@ -13,7 +13,7 @@ post '/upload' do
     begin
         if params.has_key?("file") 
             # convert to json
-            puts params["file"]
+            #puts params["file"]
             json = RestClient.post "#{settings.config[:dwc_services]}/api/v1/convert?from=#{params["type"]}&to=json&fixes=true", 
                                 params["file"][:tempfile].read, :content_type => params["file"][:type], :accept => :json
 
@@ -64,7 +64,7 @@ post '/upload' do
     if has_errors 
         view :upload, {:errors=>errors,:has_errors=>has_errors}
     else
-        puts json
+        #puts json
         data = JSON.parse(json)
         count = data.length
         species = []
@@ -76,12 +76,11 @@ post '/upload' do
               :type => "occurrence",
               :created => Time.now.to_i,
               :modified => Time.now.to_i,
-              :creator => session[:user][:name],
-              :contributor => session[:user][:name],
-              :contact => session[:user][:email]
+              :creator => session[:user]["name"],
+              :contributor => session[:user]["name"],
+              :contact => session[:user]["email"]
             }
         }
-
         r=http_post("#{settings.config[:couchdb]}/_bulk_docs",{"docs"=> data});
 
         view :inserted, {:count=>count,:species=>species.uniq}

@@ -31,13 +31,13 @@ get '/search' do
         if occ.has_key?("georeferenceVerificationStatus") 
             reviewed += 1
         else
-            not_reviewed +1 
+            not_reviewed += 1 
         end
 
         if occ.has_key?("validation")
 
             if occ["validation"].has_key?( "taxonomy" ) && occ["validation"].has_key?( "georeference" )
-                if occ["validation"]["georeference"] == 'valid' && occ['validation']['georeference'] == 'valid'
+               if occ["validation"]["taxonomy"] == 'valid' && occ['validation']['georeference'] == 'valid'
                     occ["validation"]["status"]='valid';
                 else
                     occ["validation"]["status"]='invalid';
@@ -59,6 +59,23 @@ get '/search' do
                     not_validated += 1
                 end
             end
+
+=begin 
+            if occ["validation"].has_key?("status")
+                validated += 1
+                if occ["validation"]["status"] === 'valid'
+                    valid += 1
+                    occ["valid"] = true
+                    occ["invalid"] = false 
+                else
+                    invalid += 1
+                    occ["valid"] = false
+                    occ["invalid"] = true
+                end
+            else
+                not_validated += 1
+            end
+=end
 
             occ["validation"].keys.each {|k|
                 val = occ["validation"][k]

@@ -22,7 +22,7 @@ if [[ ! -e /root/.app_done ]]; then
     # initial config of app
     su vagrant -lc 'cd /vagrant && gem install bundler'
     su vagrant -lc 'cd /vagrant && bundle install'
-    su vagrant -lc 'cd /vagrant && [[ ! -e config.yml ]] && cp config.yml.dist config.yml'
+    #su vagrant -lc 'cd /vagrant && [[ ! -e config.yml ]] && cp config.yml.dist config.yml'
     touch /root/.app_done
 fi
 

@@ -6,8 +6,8 @@ development:
     context: "connect"
 test:
     etcd: "http://localhost:4001"
-    lang: "pt"
     db: "cncflora_test"
+    lang: "pt"
     base: ""
     context: "connect"
 production:

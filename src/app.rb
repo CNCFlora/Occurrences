@@ -38,6 +38,7 @@ post '/login' do
         session[:user] = preuser
     else
         user = http_get("#{settings.connect}/api/token?token=#{preuser["token"]}")
+        puts user
         session[:user] = user
     end
     204

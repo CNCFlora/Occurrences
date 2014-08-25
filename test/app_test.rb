@@ -70,9 +70,11 @@ describe "Web app Occurrence." do
 
 
     after(:each) do
-        @ids.each do |e|
-            http_delete( "#{@uri}/#{e["id"]}?rev=#{e["rev"]}")
-        end
+        docs = http_get("#{@uri}/_all_docs")["rows"]
+        docs.each{ |e|
+            deleted = http_delete( "#{@uri}/#{e["id"]}?rev=#{e["value"]["rev"]}")
+        }
+        sleep 1
     end
 
 
@@ -90,7 +92,6 @@ describe "Web app Occurrence." do
 
         post "/login", user
     end
-
 
     it "Gets login page." do
         #It's necessary make logout because there is "post '/login' at before(:each)."
@@ -143,7 +144,7 @@ describe "Web app Occurrence." do
         expect( last_response.body ).to have_tag( "div.col-md-12"){
             with_tag "h2","Famílias"
             @taxons.each do |taxon|
-                with_tag "ul li a", :with=>{ href: "/family/#{taxon["family"]}" }, :text=>"#{taxon["family"]}"
+                with_tag "ul li a", :with=>{ href: "/family/#{taxon["family"].upcase}" }, :text=>"#{taxon["family"].upcase}"
             end
         }
     end
@@ -207,7 +208,7 @@ describe "Web app Occurrence." do
         this_should_not_get_executed
     end
 
-
+    
     it "Gets occurrences upload sending page." do
         get "/upload"
         expect( last_response.status ).to eq( 200 )
@@ -232,7 +233,6 @@ describe "Web app Occurrence." do
         end
     end
 
-
     it "Does upload xlsx file" do
         post "/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_aurantiaca_test1.xlsx"), "type"=>"xlsx"
         
@@ -242,11 +242,9 @@ describe "Web app Occurrence." do
         occurrences = []
         docs["rows"].each{ |row|
             if ( row["doc"]["metadata"]["type"] == "occurrence" )
-
                 occurrences.push( {"id"=>row["doc"]["_id"], "rev"=>row["doc"]["_rev"], "scientificName"=>row["doc"]["scientificName"] } )
             end
         }
-
 
         expect( last_response.body ).to have_tag( "div.col-md-12" ){
             with_tag( "h2", :text=>"Registros de ocorrências Inseridos: #{occurrences.count}." )
@@ -260,5 +258,117 @@ describe "Web app Occurrence." do
         occurrences.each{ |occurrence|
             result = http_delete( "#{@uri}/#{occurrence["id"]}?rev=#{occurrence["rev"]}" )
         }
+    end
+
+
+    it "Gets validation form of occurrence page after uploading file." do
+        # Upload occurrence file with one specie: 'Aphelandra aurantiaca var. aurantiaca'.
+        post "/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_aurantiaca_test1.xlsx"), "type"=>"xlsx"
+        sleep 1
+
+        # Search occurrences inserted.
+        docs = http_get( "#{@uri}/_all_docs?include_docs=true" )
+        occurrences = []
+        docs["rows"].each{ |row|
+            if ( row["doc"]["metadata"]["type"] == "occurrence" )
+                doc = row["doc"]
+                hash = {}
+                doc.keys.each{ |key|
+                    hash[key] = doc[key]
+                    #puts "k: #{key}"
+                }
+
+                #occurrences.push( {"id"=>doc["_id"], "rev"=>doc["_rev"], "scientificName"=>doc["scientificName"], "family"=>doc["family"] } )
+                occurrences.push( hash )
+            end
+        }
+        occurrence = occurrences[0]
+        #puts "occ['recordNumber']: #{occurrence["recordNumber"]}"
+        #puts "classe:#{occurrence["recordNumber"].class} "
+
+        # Clicks on the specie link.
+        get "/specie/#{URI.encode(occurrence["scientificName"])}"
+        expect( last_response.status ).to eq( 302 )
+        follow_redirect!
+
+        expect( last_response.body ).to have_tag( "div[class^='well occurrence']" ){
+            expect( last_response.body ).to have_tag( "div[class='actions alabel']"){
+                expect( last_response.body ).to have_tag( "span[class='label label-warning']" ){
+                    # Missing place text of span
+                    expect( last_response.body ).to have_tag( "span[class='glyphicon glyphicon-globe']" )
+                }
+                # Missing place buttons
+            }
+
+            expect( last_response.body ).to have_tag( "p a", :with=>{ :href=>"#occ-#{occurrence["_id"]}-unit" }, :text=>occurrence["_id"] )
+            expect( last_response.body ).to have_tag( "p", :text=>"Número de coletor" )
+
+            # Missing solve blank spaces to match.
+            #expect( last_response.body ).to have_tag( "p#scientificName", :text=>" #{occurrence["family"]} #{occurrence["scientificName"]}" )
+
+        }
+        
+    end
+
+    it "Gets Results of validates occurrence" do
+
+        post "/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_aurantiaca_test1.xlsx"), "type"=>"xlsx"
+        sleep 1
+        result = http_get( "#{@uri}/_all_docs?include_docs=true")["rows"]
+        occurrence = result.find { |e| e["doc"]["metadata"]["type"] == "occurrence"}["doc"]
+
+        validation = {
+            # The query by scientificName
+            :q=>occurrence["scientificName"],
+            "taxonomy"=>"valid", 
+            "georeference"=>"valid"
+        }
+
+        post "/occurrences/#{occurrence["_id"]}/validate", validation
+        sleep 1 
+        expect( last_response.status ).to eq(302)
+        follow_redirect!
+        expect( last_response.body ).to have_tag( "div.col-md-12"){
+            expect( last_response.body ).to have_tag( "h3", :text=>"Resultados")
+            expect( last_response.body ).to have_tag( "table.table" ){
+                    with_tag "tr td#eoo", :text=>"soon"
+                    with_tag "tr td#aoo", :text=>"soon"
+                    with_tag "tr td#valid", :text=>1
+                    with_tag "tr td#invalid", :text=>0
+                    with_tag "tr td#reviewed", :text=>0
+                    with_tag "tr td#validated", :text=>1
+                    with_tag "tr td#not_reviewed", :text=>1
+                    with_tag "tr td#not_validated", :text=>0
+                    with_tag "tr td#total", :text=>1
+            }
+        }
+
+    end
+
+
+    it "Gets validation form of occurrence" do
+        
+        post "/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_aurantiaca_test1.xlsx"), "type"=>"xlsx"
+        sleep 1
+        result = http_get( "#{@uri}/_all_docs?include_docs=true")["rows"]
+        occurrence = result.find { |e| e["doc"]["metadata"]["type"] == "occurrence"}["doc"]
+
+        validation = {
+            # The query by scientificName
+            :q=>occurrence["scientificName"],
+            "taxonomy"=>"valid", 
+            "georeference"=>"valid"
+        }
+
+        post "/occurrences/#{occurrence["_id"]}/validate", validation
+        sleep 1
+        expect( last_response.status ).to eq(302)
+        follow_redirect!
+        #expect( last_response.body ).to have_tag( "div", :with=>{ :id=>"occ-#{occurrence["occurrenceID"]}-unit"} )
+
+        expect( last_response.body ).to have_tag( "div", :with=>{ :class=>"col-md-6", :id=>"occ-#{occurrence["occurrenceID"]}-unit"} ){
+            
+        }
+        #expect( last_response.body ).to have_tag( "div#\'#{div_id}\'" )
     end
 end

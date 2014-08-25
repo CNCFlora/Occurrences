@@ -4,7 +4,7 @@ get '/families' do
 
     r = search("taxon","taxonomicStatus:\"accepted\"")
     r.each{|taxon|
-        families.push taxon["family"]
+        families.push taxon["family"].upcase
     }
 
     view :families, {:families=>families.uniq.sort}

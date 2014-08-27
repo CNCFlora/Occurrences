@@ -1,6 +1,9 @@
 
 get '/search' do
     query = (params[:q] || "Aphelandra longiflora").gsub("&quot","\"")
+
+    species = search("taxon",query)
+
     occurrences = search("occurrence",query)
 
     valid=0
@@ -16,6 +19,13 @@ get '/search' do
     occurrences.each{ |occ| 
         occ[:json] = JSON.dump(occ) 
         occ[:occurrenceID2] = i
+
+        occ[:taxon] = {}
+        species.each {|s|
+            if s[:scientificNameWithoutAuthorship] == occ[:scientificName] or s[:scientificName] == occ[:scientificName]
+                occ[:taxon] = s
+            end
+        }
 
         if occ.has_key?("decimalLatitude")
             if occ["decimalLatitude"] == 0.0
@@ -60,35 +70,35 @@ get '/search' do
                 end
             end
 
-=begin 
-            if occ["validation"].has_key?("status")
-                validated += 1
-                if occ["validation"]["status"] === 'valid'
-                    valid += 1
-                    occ["valid"] = true
-                    occ["invalid"] = false 
-                else
-                    invalid += 1
-                    occ["valid"] = false
-                    occ["invalid"] = true
-                end
-            else
-                not_validated += 1
-            end
-=end
-
             occ["validation"].keys.each {|k|
                 val = occ["validation"][k]
                 if val.class == String then
                     occ["#{k}-#{val}"]=true;
                 end
             }
+        else
+            not_validated += 1
         end
-
 
         i += 1
     }
     total = i
+
+    if session[:logged]
+        ents=[]
+        session[:user]["roles"].each {|r|
+            if r.has_key? "entities" then
+                r["entities"].each {|e|
+                    ents.push(e)
+                }
+            end
+        }
+        occurrences.each {|o|
+            s=o[:taxon]
+            o["can_validate"] = (ents.include?(s["scientificNameWithoutAuthorship"]) or ents.include?(s["family"]))
+        }
+    end
+
 
     data = {
         :result=>occurrences,

@@ -15,6 +15,21 @@ get '/family/:family' do
     species= search("taxon","family:\"#{family}\" AND taxonomicStatus:\"accepted\" 
                     AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\")")
                     .sort {|t1,t2| t1["scientificName"] <=> t2["scientificName"] }
+
+    if session[:logged]
+        ents=[]
+        session[:user]["roles"].each {|r|
+            if r.has_key? "entities" then
+                r["entities"].each {|e|
+                    ents.push(e)
+                }
+            end
+        }
+        species.each {|s|
+            s[ "permission" ] = (ents.include?(s["scientificNameWithoutAuthorship"]) or ents.include?(s["family"]))
+        }
+    end
+
     view :family, {:species=>species,:family=>family}
 end
 

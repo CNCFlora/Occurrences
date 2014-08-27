@@ -31,9 +31,10 @@ get '/' do
         search("taxon",query)
             .each { |e| families.push e['family'] }
 
-            #puts families
+        #puts families
 
         families.uniq.each {|f|
+            puts "family #{f}"
             taxon = {
                 :family=>f,
                 :reviewed=>0,
@@ -47,12 +48,15 @@ get '/' do
 
             occs=[]
             names=[]
-            search("taxon","family:\"#{f}\" AND taxonomicStatus:\"accepted\"")
+            search("taxon","family:\"#{f}\" AND taxonomicStatus:\"accepted\" AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecies\")")
                 .each {|s|
-                    names.push(s['scientificNameWithoutAuthorship'])
-                    search("taxon","taxonomicStatus:\"synonym\" AND acceptedNameUsage:\"#{s['scientificNameWithoutAuthorship']}*\"")
-                    .each {|ss| names.push ss['scientificNameWithoutAuthorship']}
+                    if ents.include?(s["scientificNameWithoutAuthorship"])  or ents.include?(s["family"])
+                        names.push(s['scientificNameWithoutAuthorship'])
+                        search("taxon","taxonomicStatus:\"synonym\" AND acceptedNameUsage:\"#{s['scientificNameWithoutAuthorship']}*\"")
+                        .each {|ss| names.push ss['scientificNameWithoutAuthorship']}
+                    end
                 }
+
             search("occurrence","\"#{ names.select {|n| n != nil }.join("\" OR \"") }\"")
                 .each {|occ|
                     taxon[:total] += 1;
@@ -64,17 +68,13 @@ get '/' do
                     end
 
                     if occ.has_key?("validation")
-                        if occ["validation"].has_key?("status")
-                            if occ["validation"]["status"] === 'valid'
-                                taxon[:validated] += 1
-                                taxon[:valid] += 1
-                            elsif occ["validation"]["status"] === 'invalid'
-                                taxon[:validated] += 1
-                                taxon[:invalid] += 1
-                            else
-                                taxon[:not_validated] += 1
-                            end
+                        if occ["validation"].has_key?("by")
+                            taxon[:validated] += 1
+                        else
+                            taxon[:not_validated] += 1
                         end
+                    else
+                        taxon[:not_validated] += 1
                     end
                 }
             

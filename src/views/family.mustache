@@ -16,7 +16,15 @@
         <tbody>
             {{#species}}
             <tr>
-                <td><i><a href='{{base}}/specie/{{scientificNameWithoutAuthorship}}'>{{scientificNameWithoutAuthorship}}</a></i> {{scientificNameAuthorship}}</td>
+                <td>
+                    <i>
+                        {{#permission}}<strong><span class='glyphicon glyphicon-chevron-right'></span>{{/permission}}
+                        <a href='{{base}}/specie/{{scientificNameWithoutAuthorship}}'>
+                            {{scientificNameWithoutAuthorship}}
+                        </a>
+                        {{#permission}}</strong>{{/permission}}
+                </i> 
+                {{scientificNameAuthorship}}</td>
                 <!--
                 <td>{{reviewed}}</td>
                 <td>{{validated}}</td>

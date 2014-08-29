@@ -89,16 +89,15 @@ get '/search' do
         session[:user]["roles"].each {|r|
             if r.has_key? "entities" then
                 r["entities"].each {|e|
-                    ents.push(e)
+                    ents.push(e.upcase)
                 }
             end
         }
         occurrences.each {|o|
             s=o[:taxon]
-            o["can_validate"] = (ents.include?(s["scientificNameWithoutAuthorship"]) or ents.include?(s["family"]))
+            o["can_validate"] = (ents.include?(s["scientificNameWithoutAuthorship"].upcase) or ents.include?(s["family"].upcase))
         }
     end
-
 
     data = {
         :result=>occurrences,

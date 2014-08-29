@@ -9,7 +9,7 @@ get '/' do
         session[:user]["roles"].each {|r|
             if r.has_key? "entities" then
                 r["entities"].each {|e|
-                    ents.push(e)
+                    ents.push(e.upcase)
                 }
             end
         }
@@ -50,7 +50,7 @@ get '/' do
             names=[]
             search("taxon","family:\"#{f}\" AND taxonomicStatus:\"accepted\" AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecies\")")
                 .each {|s|
-                    if ents.include?(s["scientificNameWithoutAuthorship"])  or ents.include?(s["family"])
+                    if ents.include?(s["scientificNameWithoutAuthorship"].upcase)  or ents.include?(s["family"].upcase)
                         names.push(s['scientificNameWithoutAuthorship'])
                         search("taxon","taxonomicStatus:\"synonym\" AND acceptedNameUsage:\"#{s['scientificNameWithoutAuthorship']}*\"")
                         .each {|ss| names.push ss['scientificNameWithoutAuthorship']}

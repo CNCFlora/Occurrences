@@ -48,7 +48,7 @@ $(function(){
         $(".form-group",form).hide();
         taxonomy.parent().parent().show();
         comments.parent().show();
-        taxonomy.change(function(){
+        function changedv()  {
             var taxonomy_sel = $("input[name=taxonomy]:checked",form);
             if(taxonomy_sel.val() == "invalid") {
                 $(".form-group",form).hide();
@@ -57,7 +57,11 @@ $(function(){
             }  else {
                 $(".form-group",form).show();
             }
+        };
+        taxonomy.change(function(){
+            changedv();
         });
+        changedv();
     });
 
 });

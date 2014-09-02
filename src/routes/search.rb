@@ -12,9 +12,11 @@ get '/search' do
     validated=0
     not_reviewed=0
     not_validated=0
-    eoo="soon"
-    aoo="soon"
+    eoo="n/a"
+    aoo="n/a"
     i=0
+
+    to_calc=[]
 
     occurrences.each{ |occ| 
         occ[:json] = JSON.dump(occ) 
@@ -60,6 +62,7 @@ get '/search' do
                     valid += 1
                     occ["valid"] = true
                     occ["invalid"] = false 
+                    to_calc.push occ
                 elsif occ["validation"]["status"] === 'invalid'
                     validated += 1
                     invalid += 1
@@ -97,6 +100,13 @@ get '/search' do
             s=o[:taxon]
             o["can_validate"] = (ents.include?(s["scientificNameWithoutAuthorship"].upcase) or ents.include?(s["family"].upcase))
         }
+    end
+
+    if to_calc.length >= 1 
+        eoo_meters = http_post("#{ settings.dwc_services }/api/v1/analysis/eoo",to_calc),
+        aoo_meters = http_post("#{ settings.dwc_services }/api/v1/analysis/aoo",to_calc)
+        eoo = "#{eoo_meters/1000}km²"
+        aoo = "#{aoo_meters/1000}km²"
     end
 
     data = {

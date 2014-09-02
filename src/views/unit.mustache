@@ -54,9 +54,11 @@
         {{/decimalLatitude}}
 
         {{#role-validator}}
+        {{#can_validate}}
         <span>
             <button data-target="#validate-{{occurrenceID2}}" data-toggle="modal" class='btn btn-default btn-xs'><i class='glyphicon glyphicon-edit'></i> {{strings.edit-validation}}</button>
         </span>
+        {{/can_validate}}
         {{/role-validator}}
 
         {{#role-analyst}}

@@ -18,4 +18,5 @@ gem 'rack-test'
 
 gem 'unicorn'
 gem 'i18n'
+gem 'sinatra-advanced-routes'
 

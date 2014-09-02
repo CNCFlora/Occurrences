@@ -1,5 +1,7 @@
 
 get '/families' do
+    require_logged_in
+
     families=[]
 
     r = search("taxon","taxonomicStatus:\"accepted\"")
@@ -11,6 +13,8 @@ get '/families' do
 end
 
 get '/family/:family' do
+    require_logged_in
+
     family = params[:family]
     species= search("taxon","family:\"#{family}\" AND taxonomicStatus:\"accepted\" 
                     AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\")")
@@ -20,6 +24,8 @@ end
 
 
 get '/specie/:name' do
+    require_logged_in
+
     query = "\"#{params[:name]}\""
 
     search("taxon","acceptedNameUsage:\"#{params[:name]}\"").each {|t|
@@ -30,6 +36,7 @@ get '/specie/:name' do
 end
 
 get '/specie/:name/:status' do
+    require_logged_in
 
     query = ""
 

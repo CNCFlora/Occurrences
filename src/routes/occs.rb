@@ -1,5 +1,7 @@
 
 post '/occurrences/:id/sig' do
+    require_logged_in
+    
     doc = http_get("#{settings.config[:couchdb]}/#{params[:id]}")
 
     if !doc.has_key?("validation") 
@@ -25,6 +27,8 @@ post '/occurrences/:id/sig' do
 end
 
 post '/occurrences/:id/analysis' do
+    require_logged_in
+
     doc = http_get("#{settings.config[:couchdb]}/#{params[:id]}")
 
     doc["comments"] = params[:comments]
@@ -42,6 +46,8 @@ post '/occurrences/:id/analysis' do
 end
 
 post '/occurrences/:id/validate' do
+    require_logged_in
+
     doc = http_get("#{settings.config[:couchdb]}/#{params[:id]}")
     puts session["user"]
    

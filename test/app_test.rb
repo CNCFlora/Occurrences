@@ -1,5 +1,6 @@
 ENV['RACK_ENV'] = 'test'
 
+require 'sinatra/advanced_routes'
 require_relative '../src/app'
 require 'rspec'
 require 'rack/test'
@@ -109,6 +110,40 @@ describe "Web app Occurrence." do
         }
         expect( last_response.body ).to have_tag( "h2.col-md-12", "Necessário fazer login" )
 
+    end
+
+    it "Gets routes without logon" do
+        #It's necessary make logout because there is "post '/login' at before(:each)."
+        post "/logout"
+        expect( last_response.status ).to eq( 204 )
+
+        taxon  = http_get( "#{@uri}/_all_docs?include_docs=true" )["rows"].first["doc"]
+        routes_keys = { "id"=>taxon["_id"],"family"=>taxon["family"].upcase,"name"=>taxon["scientificNameWithoutAuthorship"] }
+        routes_no_test = ["/", "/login", "/logout", "/specie/:name/:status"]
+        verb_no_test = ["HEAD","POST"]
+
+        Sinatra::Application.each_route {|element|
+            path = element.path
+            if (!verb_no_test.include?element.verb.upcase) && (!routes_no_test.include?element.path)
+                path = element.path 
+                verb = element.verb.downcase
+                param = element.keys[0] unless element.keys.count != 1 
+
+                route = { "path"=>path }
+                route["verb"] = verb
+                route["param"] = param
+
+                if element.keys.count > 0
+
+                    if route["verb"] == "get"
+                        path[":#{param}"] = URI.encode(routes_keys[param])
+                        eval("#{verb} '#{path}'")
+                        expect( last_response.status ).to eq(302)
+                        expect( last_response.header['location'] ).to eq("http://example.org/")
+                    end
+                end
+            end
+        }
     end
 
 

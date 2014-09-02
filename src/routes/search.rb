@@ -1,5 +1,7 @@
 
 get '/search' do
+    require_logged_in
+
     query = (params[:q] || "Aphelandra longiflora").gsub("&quot","\"")
     occurrences = search("occurrence",query)
 

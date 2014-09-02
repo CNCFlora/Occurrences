@@ -2,10 +2,14 @@
 require 'rest-client'
 
 get '/upload' do
+    require_logged_in
+
     view :upload,{}
 end
 
 post '/upload' do
+    require_logged_in
+
     errors = []
     file = "./public/uploads/#{SecureRandom.uuid()}"
     json = ""

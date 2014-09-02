@@ -1,11 +1,15 @@
 
 get '/editor' do
+    require_logged_in
+
     query = (params[:q] || "*").gsub("&quot","\"")
     occurrences = search("occurrence","#{query}")
     view :recline,{:occurrences=>occurrences,:query=>query}
 end
 
 get "/json" do
+    require_logged_in
+
     query = (params[:q] || "*").gsub("&quot","\"")
 
     occurrences = []
@@ -28,6 +32,8 @@ get "/json" do
 end
 
 post "/json" do
+    require_logged_in
+
     data = JSON.parse(params[:data]) 
     keys = []
     data.each{|r| 

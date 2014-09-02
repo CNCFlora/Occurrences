@@ -1,5 +1,7 @@
 
 get '/insert' do
+    require_logged_in
+
     data = JSON.parse(params[:data])
     count = data.length
     species = []
@@ -23,6 +25,8 @@ get '/insert' do
 end
 
 post '/insert' do
+    require_logged_in
+
     data = JSON.parse(request.body.read.to_s)
     count = data.length
     species = []

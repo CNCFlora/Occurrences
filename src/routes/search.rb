@@ -14,6 +14,8 @@ get '/search' do
     not_validated=0
     eoo="n/a"
     aoo="n/a"
+    eoo_poli=nil
+    aoo_poli=nil
     i=0
 
     to_calc=[]
@@ -113,12 +115,16 @@ get '/search' do
                 to_send.push(:decimalLatitude=>o["decimalLatitude"].to_f,:decimalLongitude=>o["decimalLongitude"].to_f)
             end
         }
-        eoo_meters = RestClient.post "#{settings.dwc_services}/api/v1/analysis/eoo",
+        eoo_r = RestClient.post "#{settings.dwc_services}/api/v1/analysis/eoo",
                        JSON.dump(to_send), :content_type => "json", :accept => :json
-        aoo_meters = RestClient.post "#{settings.dwc_services}/api/v1/analysis/aoo",
+        aoo_r = RestClient.post "#{settings.dwc_services}/api/v1/analysis/aoo",
                        JSON.dump(to_send), :content_type => "json", :accept => :json
+        eoo_meters = eoo_r.area
+        aoo_meters = aoo_r.area
         eoo_kmeters = (eoo_meters.to_f/1000).round(2)
         aoo_kmeters = (aoo_meters.to_f/1000).round(2)
+        eoo_poli = eoo_r.polygon
+        aoo_poli = aoo_r.polygon
         eoo = "#{eoo_kmeters}km²"
         aoo = "#{aoo_kmeters}km²"
     end
@@ -128,7 +134,9 @@ get '/search' do
         :query=>query,
         :stats=>{
             :eoo=>eoo,
+            :eoo_poli=>eoo_poli,
             :aoo=>aoo,
+            :aoo_poli=>aoo_poli,
             :total=>total,
             :valid=>valid,
             :invalid=>invalid,

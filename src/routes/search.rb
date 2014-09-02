@@ -19,7 +19,6 @@ get '/search' do
     to_calc=[]
 
     occurrences.each{ |occ| 
-        occ[:json] = JSON.dump(occ) 
         occ[:occurrenceID2] = i
 
         occ[:taxon] = {}
@@ -69,6 +68,8 @@ get '/search' do
                     occ["valid"] = false
                     occ["invalid"] = true
                 else 
+                    occ["valid"] = false
+                    occ["invalid"] = false
                     not_validated += 1
                 end
             end
@@ -80,9 +81,12 @@ get '/search' do
                 end
             }
         else
+            occ["valid"] = false
+            occ["invalid"] = false
             not_validated += 1
         end
 
+        occ[:json] = JSON.dump(occ) 
         i += 1
     }
     total = i
@@ -103,10 +107,20 @@ get '/search' do
     end
 
     if to_calc.length >= 1 
-        eoo_meters = http_post("#{ settings.dwc_services }/api/v1/analysis/eoo",to_calc),
-        aoo_meters = http_post("#{ settings.dwc_services }/api/v1/analysis/aoo",to_calc)
-        eoo = "#{eoo_meters/1000}km²"
-        aoo = "#{aoo_meters/1000}km²"
+        to_send=[]
+        to_calc.each {|o|
+            if o.has_key?("decimalLatitude") and o.has_key?("decimalLongitude") and o["decimalLatitude"] != nil and o["decimalLongitude"] != nil
+                to_send.push(:decimalLatitude=>o["decimalLatitude"].to_f,:decimalLongitude=>o["decimalLongitude"].to_f)
+            end
+        }
+        eoo_meters = RestClient.post "#{settings.dwc_services}/api/v1/analysis/eoo",
+                       JSON.dump(to_send), :content_type => "json", :accept => :json
+        aoo_meters = RestClient.post "#{settings.dwc_services}/api/v1/analysis/aoo",
+                       JSON.dump(to_send), :content_type => "json", :accept => :json
+        eoo_kmeters = (eoo_meters.to_f/1000).round(2)
+        aoo_kmeters = (aoo_meters.to_f/1000).round(2)
+        eoo = "#{eoo_kmeters}km²"
+        aoo = "#{aoo_kmeters}km²"
     end
 
     data = {

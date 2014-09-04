@@ -117,18 +117,20 @@ get '/search' do
                 to_send.push(:decimalLatitude=>o["decimalLatitude"].to_f,:decimalLongitude=>o["decimalLongitude"].to_f)
             end
         }
-        eoo_r = RestClient.post "#{settings.dwc_services}/api/v1/analysis/eoo",
-                       JSON.dump(to_send), :content_type => "json", :accept => :json
-        aoo_r = RestClient.post "#{settings.dwc_services}/api/v1/analysis/aoo",
-                       JSON.dump(to_send), :content_type => "json", :accept => :json
-        eoo_meters = eoo_r.area
-        aoo_meters = aoo_r.area
-        eoo_kmeters = (eoo_meters.to_f/1000).round(2)
-        aoo_kmeters = (aoo_meters.to_f/1000).round(2)
-        eoo_poli = eoo_r.polygon
-        aoo_poli = aoo_r.polygon
-        eoo = "#{eoo_kmeters}km²"
-        aoo = "#{aoo_kmeters}km²"
+        if to_send.length >= 1
+            eoo_r = RestClient.post "#{settings.dwc_services}/api/v1/analysis/eoo",
+                           JSON.dump(to_send), :content_type => "json", :accept => :json
+            aoo_r = RestClient.post "#{settings.dwc_services}/api/v1/analysis/aoo",
+                           JSON.dump(to_send), :content_type => "json", :accept => :json
+            eoo_meters = eoo_r.area
+            aoo_meters = aoo_r.area
+            eoo_kmeters = (eoo_meters.to_f/1000).round(2)
+            aoo_kmeters = (aoo_meters.to_f/1000).round(2)
+            eoo_poli = eoo_r.polygon
+            aoo_poli = aoo_r.polygon
+            eoo = "#{eoo_kmeters}km²"
+            aoo = "#{aoo_kmeters}km²"
+        end
     end
 
     data = {

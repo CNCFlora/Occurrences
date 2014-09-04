@@ -49,7 +49,6 @@ post '/occurrences/:id/validate' do
     require_logged_in
 
     doc = http_get("#{settings.config[:couchdb]}/#{params[:id]}")
-    puts session["user"]
    
 
     doc["validation"] = {

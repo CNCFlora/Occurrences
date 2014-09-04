@@ -34,7 +34,6 @@ get '/' do
         #puts families
 
         families.uniq.each {|f|
-            puts "family #{f}"
             taxon = {
                 :family=>f,
                 :reviewed=>0,

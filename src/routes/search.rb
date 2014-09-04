@@ -16,8 +16,8 @@ get '/search' do
     not_validated=0
     eoo="n/a"
     aoo="n/a"
-    eoo_poli=nil
-    aoo_poli=nil
+    eoo_poli="null"
+    aoo_poli="null"
     i=0
 
     to_calc=[]
@@ -118,29 +118,33 @@ get '/search' do
             end
         }
         if to_send.length >= 1
-            eoo_r = RestClient.post "#{settings.dwc_services}/api/v1/analysis/eoo",
+            eoo_j = RestClient.post "#{settings.dwc_services}/api/v1/analysis/eoo",
                            JSON.dump(to_send), :content_type => "json", :accept => :json
-            aoo_r = RestClient.post "#{settings.dwc_services}/api/v1/analysis/aoo",
+            aoo_j = RestClient.post "#{settings.dwc_services}/api/v1/analysis/aoo",
                            JSON.dump(to_send), :content_type => "json", :accept => :json
-            eoo_meters = eoo_r.area
-            aoo_meters = aoo_r.area
+            eoo_r = JSON.parse(eoo_j)
+            aoo_r = JSON.parse(aoo_j)
+            eoo_meters = eoo_r["area"]
+            aoo_meters = aoo_r["area"]
             eoo_kmeters = (eoo_meters.to_f/1000).round(2)
             aoo_kmeters = (aoo_meters.to_f/1000).round(2)
-            eoo_poli = eoo_r.polygon
-            aoo_poli = aoo_r.polygon
+            eoo_poli = {"type"=>"Feature","geometry"=> eoo_r["polygon"] }.to_json
+            aoo_poli = {"type"=>"Feature","geometry"=> aoo_r["polygon"] }.to_json
+            puts eoo_r["polygon"]
             eoo = "#{eoo_kmeters}km²"
             aoo = "#{aoo_kmeters}km²"
         end
     end
 
+
     data = {
         :result=>occurrences,
         :query=>query,
+        :eoo_poli=>eoo_poli,
+        :aoo_poli=>aoo_poli,
         :stats=>{
             :eoo=>eoo,
-            :eoo_poli=>eoo_poli,
             :aoo=>aoo,
-            :aoo_poli=>aoo_poli,
             :total=>total,
             :valid=>valid,
             :invalid=>invalid,

@@ -37,6 +37,18 @@ var map = function() {
     map.addLayer(markersOk);
     map.addLayer(markersNok);
 
+    /*
+    var coords = eoo.geometry.coordinates;
+    var eool = L.polygon(coords).addTo(map)
+
+    var aool  = new L.layerGroup();
+    for(var ai in aoo.geometry.coordinates) {
+        var coords = aoo.geometry.coordinates[ai];
+        aool.addLayer(L.polygon(coords));
+    }
+    aool.addTo(map);
+    */
+
     var base = {
         Landscape: land,
         OpenCycleMap: ocm,
@@ -48,6 +60,8 @@ var map = function() {
         'Valid points clustered': markersOk,
         'Non-valid points': pointsNok,
         'Non-valid points clustered': markersNok,
+        //'EOO':eool,
+        //'AOO':aool
     };
 
     L.control.layers(base,layers).addTo(map);

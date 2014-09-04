@@ -59,6 +59,8 @@
 
     <script type="text/javascript">
         var occurrences = [] ;
+        var eoo = {{{eoo_poli}}};
+        var aoo = {{{aoo_poli}}};
     </script>
 
     {{#result}}
@@ -79,6 +81,7 @@
 <link rel="stylesheet" href="{{base}}/css/MarkerCluster.Default.css" />
 <script type="text/javascript" src="{{base}}/js/leaflet.js"></script>
 <script type="text/javascript" src="{{base}}/js/leaflet.markercluster.js"></script>
+<script type="text/javascript" src='{{base}}/js/proj4.js'></script>
 <script type="text/javascript" src='{{base}}/js/map.js'></script>
 
 {{> footer}}

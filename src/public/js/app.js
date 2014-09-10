@@ -26,7 +26,7 @@ $(function(){
         map();
     }
 
-    $(".glyphicon-question-sign,.glyphicon-remove-sign,.glyphicon-ok-sign").tooltip({});
+    $(".glyphicon-question-sign,.glyphicon-remove-circle,.glyphicon-ok-circle").tooltip({});
 
     $(".validation-form").each(function(i,e){
         var form = $(e);

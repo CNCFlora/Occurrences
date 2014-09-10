@@ -30,7 +30,9 @@
                 {{#logged}}
                 <li><a href="{{base}}/">{{strings.summary}}</a></li>
                 <li><a href="{{base}}/families">{{strings.families}}</a></li>
+                {{#role-analyst}}
                 <li><a href="{{base}}/upload">{{strings.send-occurrences}}</a></li>
+                {{/role-analyst}}
                 <li id='logout'><a href="#">{{strings.logout}}</a></li>
                 {{/logged}}
             </ul>

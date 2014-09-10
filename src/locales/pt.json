@@ -101,8 +101,13 @@
     "georeference-remarks":"Obs. de SIG",
     "analyst-remarks":"Obs. do analista",
     "verbatim-validation":"Validação passada",
-    "validation-by":"Validado por"
-
-
-
+    "validation-by":"Validado por",
+    "help-ok":"Mantem o registro nos calculos de EOO e AOO.",
+    "help-remove":"Retira o registro dos calculos de EOO e AOO.",
+    "help-taxonomy":"Informar se o registro está determinado corretamente.",
+    "help-geo":"Informa se os dados do local de coleta e georeferenciamento estão corretos.",
+    "help-presence":"Informa se atualmente a espécie ainda ocorre na localidade",
+    "help-native":"Informa se a espécie ocorre naturalmente ou se foi introduzida ou encontra-se em processo de invasão na localidade",
+    "help-cultivated":"Informa se a coleta é oriunda de cultivo em jardim botânico, viveiro, arboreto, jardim",
+    "help-duplicated":"Infroma se este registro é uma duplicata de outro registro"
 } 

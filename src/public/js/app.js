@@ -26,6 +26,8 @@ $(function(){
         map();
     }
 
+    $(".glyphicon-question-sign,.glyphicon-remove-sign,.glyphicon-ok-sign").tooltip({});
+
     $(".validation-form").each(function(i,e){
         var form = $(e);
         var taxonomy = $("input[name=taxonomy]",form);

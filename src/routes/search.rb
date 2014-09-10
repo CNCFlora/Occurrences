@@ -52,7 +52,7 @@ get '/search' do
         if occ.has_key?("validation")
 
             if occ["validation"].has_key?( "taxonomy" ) && occ["validation"].has_key?( "georeference" )
-               if occ["validation"]["taxonomy"] == 'valid' && occ['validation']['georeference'] == 'valid'
+               if occ["validation"]["taxonomy"] == 'valid' && occ['validation']['georeference'] == 'valid' && ( occ['validation']['native'] != 'non-native' ) && ( occ['validation']['presence'] != 'absent' ) && ( occ['validation']['cultivated'] != 'yes' ) && ( occ['validation']['duplicated'] != 'yes' )
                     occ["validation"]["status"]='valid';
                 else
                     occ["validation"]["status"]='invalid';

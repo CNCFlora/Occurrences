@@ -135,7 +135,7 @@ get '/search' do
                     eoo_meters = eoo_r["area"]
                     eoo_kmeters = (eoo_meters.to_f/1000).round(2)
                     eoo_poli = {"type"=>"Feature","geometry"=> eoo_r["polygon"] }.to_json
-                    eoo = "#{eoo_kmeters}km²"
+                    eoo = "#{eoo_kmeters.to_s.reverse.gsub(".",",").gsub(/(\d{3})(?=\d)/, '\\1.').reverse}km²"
                 rescue Exception => e
                     puts "EOO exception #{e.message}"
                 end
@@ -147,7 +147,7 @@ get '/search' do
                     aoo_meters = aoo_r["area"]
                     aoo_kmeters = (aoo_meters.to_f/1000).round(2)
                     aoo_poli = {"type"=>"Feature","geometry"=> aoo_r["polygon"] }.to_json
-                    aoo = "#{aoo_kmeters}km²"
+                    aoo = "#{aoo_kmeters.to_s.reverse.gsub(".",",").gsub(/(\d{3})(?=\d)/, '\\1.').reverse}km²"
                 rescue Exception => e
                     puts "AOO exception #{e.message}"
                 end

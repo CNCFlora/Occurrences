@@ -34,6 +34,7 @@
     "edit-analysis":"Editar análise",
     "edit-sig":"GIS",
     "verified":"SIG OK",
+    "verified-bad":"SIG NOT OK",
     "valid":"Válido",
     "invalid":"Inválido",
     "at":"em",

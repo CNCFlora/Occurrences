@@ -3,13 +3,6 @@
 
     <div class='actions alabel'>
 
-        {{^georeferenceVerificationStatus}}
-        <span  class='label label-warning'>
-            <span class="glyphicon glyphicon-globe"></span>
-            {{strings.missing-sig}}
-        </span>
-        {{/georeferenceVerificationStatus}}
-
         {{^validation.status}}
             <span class='label label-warning'>
                 <span class="glyphicon glyphicon-question-sign"></span>
@@ -26,19 +19,32 @@
             {{/valid}}
             {{#invalid}}
                 <span class="label label-danger">
-                    <span class="glyphicon glyphicon-cancel-sign"></span>
+                    <span class="glyphicon glyphicon-remove-sign"></span>
                     {{strings.invalid}}
                 </span>
             {{/invalid}}
         {{/validation.status}}
 
+        {{^georeferenceVerificationStatus}}
+        <span  class='label label-warning'>
+            <span class="glyphicon glyphicon-globe"></span>
+            {{strings.missing-sig}}
+        </span>
+        {{/georeferenceVerificationStatus}}
+
         {{#georeferenceVerificationStatus}}
-            {{#validation.status}}
-                <span class="label label-primary">
-                    <span class="glyphicon glyphicon-globe"></span>
-                    {{strings.verified}}
-                </span>
-            {{/validation.status}}
+            {{#sig-ok}}
+            <span class="label label-primary">
+                <span class="glyphicon glyphicon-globe"></span>
+                {{strings.verified}}
+            </span>
+            {{/sig-ok}}
+            {{^sig-ok}}
+            <span class="label label-danger">
+                <span class="glyphicon glyphicon-globe"></span>
+                {{strings.verified-bad}}
+            </span>
+            {{/sig-ok}}
         {{/georeferenceVerificationStatus}}
         
         <br /><br />

@@ -12,7 +12,7 @@ RUN cd /root/occurrences && bundle install
 
 ADD supervisord.conf /etc/supervisor/conf.d/proxy.conf
 
-ADD . /root/occurrences
+CMD ["supervisord"]
 
 ENV ENV production
 ENV RACK_ENV production
@@ -20,5 +20,5 @@ ENV RACK_ENV production
 EXPOSE 8080
 EXPOSE 9001
 
-CMD ["supervisord"]
+ADD . /root/occurrences
 

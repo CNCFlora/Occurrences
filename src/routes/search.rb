@@ -133,7 +133,7 @@ get '/search' do
                                    :payload=>JSON.dump(to_send), :headers=>{ :content_type => "json", :accept => :json }, :timeout => 15)
                     eoo_r = JSON.parse(eoo_j)
                     eoo_meters = eoo_r["area"]
-                    eoo_kmeters = (eoo_meters.to_f/1000).round(2)
+                    eoo_kmeters = (eoo_meters.to_f).round(2)
                     eoo_poli = {"type"=>"Feature","geometry"=> eoo_r["polygon"] }.to_json
                     eoo = "#{eoo_kmeters.to_s.reverse.gsub(".",",").gsub(/(\d{3})(?=\d)/, '\\1.').reverse}km²"
                 rescue Exception => e

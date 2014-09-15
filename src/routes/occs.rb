@@ -72,6 +72,7 @@ post '/occurrences/:id/validate' do
     end
 
     r = http_post("#{settings.config[:couchdb]}",doc)
+    sleep 3
     redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 

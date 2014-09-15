@@ -74,7 +74,7 @@
     "contact":"Contato",
     "status":"Status",
     "valid-taxonomy":"A identificação taxonomica está correta?",
-    "valid-geo":"A localização do ponto está correta?",
+    "valid-geo":"A localização do registro está correta?",
     "valid-presence":"A espécie ainda ocorre na localidade?",
     "valid-native":"A espécie é nativa na localidade?",
     "valid-cultivated":"É uma ocorrência cultivada ex sito?",
@@ -105,10 +105,14 @@
     "validation-by":"Validado por",
     "help-ok":"Mantem o registro nos calculos de EOO e AOO.",
     "help-remove":"Retira o registro dos calculos de EOO e AOO.",
-    "help-taxonomy":"Informar se o registro está determinado corretamente.",
+    "help-remove-geo":"Justifica o motivo. O erro será corrigido e o registro mantido nos cálculos de EOO e AOO.",
+    "help-remove-loc":"Justifique os possíveis motivos da ausência. Ex.: construção de barragem, estradas, pecuária, etc. Serão gerados cálculos de EOO e AOO considerando a ocorrência histórica e atual da espécie.",
+    "help-remove-native":"Serão calculados EOO e AOO considerando a distribuição original da espécie (excluindo o registro) e a atual (incluindo o registro).",
+    "help-remove-dup": "Informe do \"ID da ocorrência\" do qual o registro é duplicata. Apenas um dos registros será considerado para os cálculos de EOO e AOO.",
+    "help-taxonomy":"Informa se o registro está determinado corretamente.",
     "help-geo":"Informa se os dados do local de coleta e georeferenciamento estão corretos.",
     "help-presence":"Informa se atualmente a espécie ainda ocorre na localidade",
     "help-native":"Informa se a espécie ocorre naturalmente ou se foi introduzida ou encontra-se em processo de invasão na localidade",
     "help-cultivated":"Informa se a coleta é oriunda de cultivo em jardim botânico, viveiro, arboreto, jardim",
-    "help-duplicated":"Infroma se este registro é uma duplicata de outro registro"
+    "help-duplicated":"Informa se este registros é duplicata de outro já no sistema. As duplicatas serão georreferenciadas com a mesma coordenada."
 } 

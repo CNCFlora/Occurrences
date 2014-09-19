@@ -50,7 +50,10 @@ post "/json" do
                 occ["_id"] = row["id"]
                 occ["metadata"]["modified"] = Time.now.to_i
 
-                if !occ["metadata"]["contributor"].match(session[:user]['name']) then
+                if occ["metadata"]["contributor"].nil? then
+                  occ["metadata"]["contributor"] = "#{session[:user]['name']}"
+                  occ["metadata"]["contact"] = "#{session[:user]['email']}"
+                elsif !occ["metadata"]["contributor"].match(session[:user]['name']) then
                   occ["metadata"]["contributor"] = "#{session[:user]['name']} ; #{occ["metadata"]["contributor"]}"
                   occ["metadata"]["contact"] = "#{session[:user]['email']} ; #{occ["metadata"]["contact"]}"
                 end

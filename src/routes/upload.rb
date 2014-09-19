@@ -80,9 +80,9 @@ post '/upload' do
               :type => "occurrence",
               :created => Time.now.to_i,
               :modified => Time.now.to_i,
-              :creator => session[:user]["name"],
-              :contributor => session[:user]["name"],
-              :contact => session[:user]["email"]
+              :creator => session[:user]["name"] or "",
+              :contributor => session[:user]["name"] or "", 
+              :contact => session[:user]["email"] or ""
             }
         }
         r=http_post("#{settings.config[:couchdb]}/_bulk_docs",{"docs"=> data});

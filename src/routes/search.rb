@@ -6,6 +6,8 @@ get '/search' do
 
     species = search("taxon",query)
 
+    profiles = species.select {|doc| doc['taxonomicStatus']=='accepted'}
+
     occurrences = search("occurrence",query)
 
     valid=0
@@ -60,8 +62,13 @@ get '/search' do
 
         if occ.has_key?("validation")
 
-            if occ["validation"].has_key?( "taxonomy" ) && occ["validation"].has_key?( "georeference" )
-               if occ["validation"]["taxonomy"] == 'valid' && occ['validation']['georeference'] == 'valid' && ( occ['validation']['native'] != 'non-native' ) && ( occ['validation']['presence'] != 'absent' ) && ( occ['validation']['cultivated'] != 'yes' ) && ( occ['validation']['duplicated'] != 'yes' )
+            if occ["validation"]["status"].nil?
+               if (occ["validation"]["taxonomy"].nil? || occ["validation"]["taxonomy"] == 'valid') && 
+                  (occ["validation"]["georeference"].nil? || occ['validation']['georeference'] == 'valid') &&
+                  (occ['validation']['native'] != 'non-native') &&
+                  (occ['validation']['presence'] != 'absent') &&
+                  (occ['validation']['cultivated'] != 'yes') &&
+                  (occ['validation']['duplicated'] != 'yes') 
                     occ["validation"]["status"]='valid';
                 else
                     occ["validation"]["status"]='invalid';
@@ -165,6 +172,7 @@ get '/search' do
         :query=>query,
         :eoo_poli=>eoo_poli,
         :aoo_poli=>aoo_poli,
+        :to_profiles=>profiles,
         :stats=>{
             :eoo=>eoo,
             :aoo=>aoo,

@@ -114,5 +114,7 @@
     "help-presence":"Informa se atualmente a espécie ainda ocorre na localidade",
     "help-native":"Informa se a espécie ocorre naturalmente ou se foi introduzida ou encontra-se em processo de invasão na localidade",
     "help-cultivated":"Informa se a coleta é oriunda de cultivo em jardim botânico, viveiro, arboreto, jardim",
-    "help-duplicated":"Informa se este registro é duplicata de outro já no sistema. As duplicatas serão georreferenciadas com a mesma coordenada."
+    "help-duplicated":"Informa se este registro é duplicata de outro já no sistema. As duplicatas serão georreferenciadas com a mesma coordenada.",
+    "profile":"Perfil da espécie",
+    "assessment":"Avaliação da espécie"
 } 

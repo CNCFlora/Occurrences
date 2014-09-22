@@ -2,6 +2,21 @@
 
 <h2 class='col-md-12'>{{strings.search}}</h2>
 
+<div class="col-md-12">
+    {{#to_profiles}}
+    <p>
+        <a href="{{profiles}}/specie/{{scientificNameWithoutAuthorship}}" class='btn btn-default'>
+            <span class='glyphicon glyphicon-leaf'></span>
+            {{strings.profile}} <i>{{scientificNameWithoutAuthorship}}</i>
+        </a>
+        <a href="{{assessment}}/specie/{{scientificNameWithoutAuthorship}}" class='btn btn-default'>
+            <span class='glyphicon glyphicon-record'></span>
+            {{strings.assessment}} <i>{{scientificNameWithoutAuthorship}}</i>
+        </a>
+    </p>
+    {{/to_profiles}}
+</div>
+
 <form action="{{base}}/search" class='col-md-12'>
     <fieldset>
         <p id="input-taxon-search">

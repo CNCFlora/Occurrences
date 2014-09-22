@@ -12,6 +12,9 @@ var map = function() {
     var markersNok = new L.MarkerClusterGroup(); // clustered invalid points
     var pointsNok  = new L.layerGroup(); // invalid points
 
+    var markersUnk = new L.MarkerClusterGroup(); // clustered unkown points
+    var pointsUnk  = new L.layerGroup(); // unkown points
+
     var points  = {};
 
     for(var i in occurrences) {
@@ -23,12 +26,27 @@ var map = function() {
         var marker = L.marker(new L.LatLng(feature.decimalLatitude,feature.decimalLongitude));
         marker.bindPopup(document.getElementById("occ-"+feature.occurrenceID+"-unit").innerHTML);
 
-        if(feature.valid) {
-            markersOk.addLayer(marker);
-            pointsOk.addLayer(marker);
+        if(typeof feature.validation == 'object') {
+            if(typeof feature.validation.status == 'string') {
+                if(feature.validation.status == 'valid') {
+                    markersOk.addLayer(marker);
+                    pointsOk.addLayer(marker);
+                } else if(feature.validation.status == 'invalid') {
+                    markersNok.addLayer(marker);
+                    pointsNok.addLayer(marker);
+                } else {
+                    markersUnk.addLayer(marker);
+                    pointsUnk.addLayer(marker);
+                }
+            } else {
+                console.log('unk');
+                markersUnk.addLayer(marker);
+                pointsUnk.addLayer(marker);
+            }
         } else {
-            markersNok.addLayer(marker);
-            pointsNok.addLayer(marker);
+            console.log('unk');
+            markersUnk.addLayer(marker);
+            pointsUnk.addLayer(marker);
         }
 
         points[feature.occurrenceID] = marker;
@@ -36,18 +54,7 @@ var map = function() {
 
     map.addLayer(markersOk);
     map.addLayer(markersNok);
-
-    /*
-    var coords = eoo.geometry.coordinates;
-    var eool = L.polygon(coords).addTo(map)
-
-    var aool  = new L.layerGroup();
-    for(var ai in aoo.geometry.coordinates) {
-        var coords = aoo.geometry.coordinates[ai];
-        aool.addLayer(L.polygon(coords));
-    }
-    aool.addTo(map);
-    */
+    map.addLayer(markersUnk);
 
     var base = {
         Landscape: land,
@@ -60,9 +67,26 @@ var map = function() {
         'Valid points clustered': markersOk,
         'Non-valid points': pointsNok,
         'Non-valid points clustered': markersNok,
-        //'EOO':eool,
-        //'AOO':aool
+        'Non-validated points': pointsUnk,
+        'Non-validated points clustered': markersUnk
     };
+
+    if(typeof eoo == 'object') {
+        var eool = L.geoJson(eoo).addTo(map);
+        layers.EOO = eool
+    }
+
+    /*
+    if(typeof aoo =='object' ) {
+        var aool = L.geoJson(aoo).addTo(map);
+        for(var ai in aoo.geometry.coordinates) {
+            var coords = aoo.geometry.coordinates[ai];
+            aool.addLayer(L.polygon(coords));
+        }
+        aool.addTo(map);
+        layers.AOO = aool;
+    }
+    */
 
     L.control.layers(base,layers).addTo(map);
     L.control.scale().addTo(map);

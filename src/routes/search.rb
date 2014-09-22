@@ -86,6 +86,8 @@ get '/search' do
                     occ["invalid"] = false
                     not_validated += 1
                 end
+            else
+                to_calc.push occ
             end
 
             occ["validation"].keys.each {|k|
@@ -116,19 +118,21 @@ get '/search' do
             end
         }
         occurrences.each {|o|
-            s=o[:taxon]
-            o["can_validate"] = (ents.include?(s["scientificNameWithoutAuthorship"].upcase) or ents.include?(s["family"].upcase))
+            s=o
+            o["can_validate"] = (ents.include?(s["scientificName"].upcase) or ents.include?(s["family"].upcase))
         }
     end
 
     if to_calc.length >= 1 
         to_send=[]
         to_calc.each {|o|
-            if o.has_key?("decimalLatitude") and o.has_key?("decimalLongitude") and o["decimalLatitude"] != nil and o["decimalLongitude"] != nil and o["sig-ok"] = true
-                to_send.push(:decimalLatitude=>o["decimalLatitude"].to_f,:decimalLongitude=>o["decimalLongitude"].to_f)
+            if o.has_key?("decimalLatitude") and o.has_key?("decimalLongitude") and o["decimalLatitude"] != nil and o["decimalLongitude"] != nil and o["sig-ok"] == true 
+                po = {:decimalLatitude=>o["decimalLatitude"].to_f,:decimalLongitude=>o["decimalLongitude"].to_f}
+                if po[:decimalLatitude] != 0.0 and po[:decimalLongitude] != 0.0
+                    to_send.push(po)
+                end
             end
         }
-        puts to_send[0]
         if to_send.length >= 1
             begin
                 eoo_j = RestClient::Request.execute(:method=>:post,:url=> "#{settings.dwc_services}/api/v1/analysis/eoo",

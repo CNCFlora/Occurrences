@@ -125,8 +125,12 @@ get '/search' do
             end
         }
         occurrences.each {|o|
-            s=o
-            o["can_validate"] = (ents.include?(s["scientificName"].upcase) or ents.include?(s["family"].upcase))
+            if !o['family'].nil? && ents.include?(o['family'].upcase)
+                o["can_validate"] = true
+            end
+            if !o['scientificName'].nil? && ents.include?(o['scientificName'].upcase)
+                o["can_validate"] = true
+            end
         }
     end
 

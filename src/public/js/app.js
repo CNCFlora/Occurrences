@@ -36,7 +36,11 @@ $(function(){
         form.submit(function(){
             var taxonomy_sel = $("input[name=taxonomy]:checked",form);
             var georeference_sel = $("input[name=georeference]:checked",form);
-            if(taxonomy_sel.val()=="invalid" || georeference_sel.val() == "invalid") {
+            var presence_sel = $("input[name=presence]:checked",form);
+            var duplicated_sel = $("input[name=duplicated]:checked",form);
+            var georeference_sel = $("input[name=georeference]:checked",form);
+            if(taxonomy_sel.val()=="invalid" || georeference_sel.val() == "invalid" ||
+                presence_sel.val() == 'absent' || duplicated_sel.val() == 'yes') {
                 if(comments.val().length <= 3) {
                     alert("Necessária justificativa.");
                     return false;

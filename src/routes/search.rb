@@ -131,6 +131,15 @@ get '/search' do
             if !o['scientificName'].nil? && ents.include?(o['scientificName'].upcase)
                 o["can_validate"] = true
             end
+            if o.has_key?(:taxon)
+                if !o[:taxon]['scientificNameWithoutAuthorship'].nil? && ents.include?(o[:taxon]['scientificNameWithoutAuthorship'].upcase)
+                    o["can_validate"] = true
+                end
+                o[:taxon]['acceptedNameUsage'] = o[:taxon]['acceptedNameUsage'].gsub(o[:taxon]["scientificNameAuthorship"],"");
+                if !o[:taxon]['acceptedNameUsage'].nil? && ents.include?(o[:taxon]['acceptedNameUsage'].upcase)
+                    o["can_validate"] = true
+                end
+            end
         }
     end
 

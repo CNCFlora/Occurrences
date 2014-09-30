@@ -17,6 +17,8 @@ var map = function() {
 
     var points  = {};
 
+    var calc = [];
+
     for(var i in occurrences) {
         var feature = occurrences[i];
 
@@ -31,22 +33,24 @@ var map = function() {
                 if(feature.validation.status == 'valid') {
                     markersOk.addLayer(marker);
                     pointsOk.addLayer(marker);
+                    calc.push(feature);
                 } else if(feature.validation.status == 'invalid') {
                     markersNok.addLayer(marker);
                     pointsNok.addLayer(marker);
                 } else {
                     markersUnk.addLayer(marker);
                     pointsUnk.addLayer(marker);
+                    calc.push(feature);
                 }
             } else {
-                console.log('unk');
                 markersUnk.addLayer(marker);
                 pointsUnk.addLayer(marker);
+                calc.push(feature);
             }
         } else {
-            console.log('unk');
             markersUnk.addLayer(marker);
             pointsUnk.addLayer(marker);
+            calc.push(feature);
         }
 
         points[feature.occurrenceID] = marker;
@@ -102,4 +106,37 @@ var map = function() {
         location.hash="";
     });
 
+    $("#download-csv").click(function(){
+        var csvContent = "data:text/csv;charset=utf8,";
+
+        var fields = [];
+        if(calc.length >= 1) {
+            for(var k in calc[0]) {
+                if(typeof calc[0][k] == 'string') {
+                    fields.push(k);
+                }
+            }
+        }
+        console.log(fields);
+
+        csvContent += "\""+fields.join("\";\"")+"\"\n";
+        for(var i in calc) {
+            var vals = []
+            for(var ii in fields) {
+                var f = fields[ii];
+                if(typeof calc[i][f] == 'string') {
+                    vals.push(calc[i][f].replace("\n","").replace(/'/g,"").replace(/"/g,""));
+                } else {
+                    vals.push('');
+                }
+            }
+            csvContent += "\""+vals.join("\";\"")+"\"\n";
+        }
+
+        var encodedUri = encodeURI(csvContent);
+        $(this).attr("href",encodedUri);
+        return true;
+    });
+
 };
+

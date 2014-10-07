@@ -8,7 +8,7 @@ get '/search' do
 
     profiles = species.select {|doc| doc['taxonomicStatus']=='accepted'}
 
-    occurrences = search("occurrence",query)
+    occurrences = search("occurrence",query).sort_by {|x| x["occurrenceID"]}
 
     valid=0
     invalid=0

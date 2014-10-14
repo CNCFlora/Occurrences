@@ -29,7 +29,7 @@ get '/' do
         #puts query
 
         search("taxon",query)
-            .each { |e| families.push e['family'] }
+            .each { |e| families.push e['family'].upcase }
 
         #puts families
 

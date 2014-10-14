@@ -32,7 +32,16 @@ post '/occurrences/:id/analysis' do
     doc = http_get("#{settings.config[:couchdb]}/#{params[:id]}")
 
     doc["comments"] = params[:comments]
-    doc["identificationQualifier"] = params[:identificationQualifier]
+    #doc["identificationQualifier"] = params[:identificationQualifier]
+    doc["collectionCode"] = params[:collectionCode]
+    doc["catalogNumber"] = params[:catalogNumber]
+    doc["recordedBy"] = params[:recordedBy]
+    doc["recordNumber"] = params[:recordNumber]
+    doc["identifiedBy"] = params[:identifiedBy]
+    doc["locality"] = params[:locality]
+    doc["municipality"] = params[:municipality]
+    doc["stateProvince"] = params[:stateProvince]
+    doc["identificationDate"] = params[:identificationDate]
 
     doc["metadata"]["modified"] = Time.now.to_i
 

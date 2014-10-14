@@ -1,0 +1,81 @@
+
+    <div id="analysis-{{occurrenceID2}}" class="modal fade" role='dialog'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" action="{{base}}/occurrences/{{occurrenceID}}/analysis">
+                    <fieldset>
+                        <input name="q" value="{{query}}" type="hidden" />
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" >&times;</button>
+                            <h3>{{strings.analysis}}</h3>
+                        </div>
+                        <div class="modal-body">
+
+                            <!--
+                            <p class="form-group">
+                                <label for="qualifier">{{strings.qualifier}}</label>
+                                <input id="identificationQualifier" name="identificationQualifier" type="text" class="form-control" value="{{identificationQualifier}}" />
+                            </p>
+                            -->
+
+                            <p class="form-group">
+                                <label for="collectionCode">{{strings.collectionCode}}</label>
+                                <input id="collectionCode" name="collectionCode" type="text" class="form-control" value="{{collectionCode}}" />
+                            </p>
+
+                            <p class="form-group">
+                                <label for="catalogNumber">{{strings.catalogNumber}}</label>
+                                <input id="catalogNumber" name="catalogNumber" type="text" class="form-control" value="{{catalogNumber}}" />
+                            </p>
+
+
+                            <p class="form-group">
+                                <label for="recordedBy">{{strings.recordedBy}}</label>
+                                <input id="recordedBy" name="recordedBy" type="text" class="form-control" value="{{recordedBy}}" />
+                            </p>
+
+                            <p class="form-group">
+                                <label for="recordNumber">{{strings.recordNumber}}</label>
+                                <input id="recordNumber" name="recordNumber" type="text" class="form-control" value="{{recordNumber}}" />
+                            </p>
+
+                            <p class="form-group">
+                                <label for="identifiedBy">{{strings.identifiedBy}}</label>
+                                <input id="identifiedBy" name="identifiedBy" type="text" class="form-control" value="{{identifiedBy}}" />
+                            </p>
+
+                            <p class="form-group">
+                                <label for="identificationDate">{{strings.identificationDate}}</label>
+                                <input id="identificationDate" name="identificationDate" type="text" class="form-control" value="{{identificationDate}}" />
+                            </p>
+
+                            <p class="form-group">
+                                <label for="locality">{{strings.locality}}</label>
+                                <input id="locality" name="locality" type="text" class="form-control" value="{{locality}}" />
+                            </p>
+
+
+                            <p class="form-group">
+                                <label for="municipality">{{strings.municipality}}</label>
+                                <input id="municipality" name="municipality" type="text" class="form-control" value="{{municipality}}" />
+                            </p>
+
+                            <p class="form-group">
+                                <label for="stateProvince">{{strings.stateProvince}}</label>
+                                <input id="stateProvince" name="stateProvince" type="text" class="form-control" value="{{stateProvince}}" />
+                            </p>
+
+                            <p class="form-group">
+                                <label for="comments">{{strings.comment}}</label>
+                                <textarea name="comments" class='form-control'>{{comments}}</textarea>
+                            </p>
+
+                        </div>
+                        <div class='modal-footer'>
+                            <button class="btn btn-success" type='submit'>{{strings.save}}</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>

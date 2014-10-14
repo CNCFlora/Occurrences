@@ -117,5 +117,14 @@
     "help-duplicated":"Informa se este registro é duplicata de outro já no sistema. As duplicatas serão georreferenciadas com a mesma coordenada.",
     "profile":"Perfil da espécie",
     "assessment":"Avaliação da espécie",
-    "valid-csv":"CSV de pontos válidos"
+    "valid-csv":"CSV de pontos válidos",
+    "collectionCode":"Código da coleção",
+    "catalogNumber":"Número de catalogo",
+    "recordedBy":"Coletor",
+    "recordNumber":"Número do coletor",
+    "identifiedBy":"Identificador",
+    "locality":"Localidade",
+    "municipality":"Municipio",
+    "stateProvince":"Estado",
+    "identificationDate":"Data de identificação"
 } 

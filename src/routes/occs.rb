@@ -44,6 +44,7 @@ post '/occurrences/:id/analysis' do
     doc["identificationDate"] = params[:identificationDate]
     doc["decimalLatitude"] = params[:decimalLatitude]
     doc["decimalLongitude"] = params[:decimalLongitude]
+    doc["remarks"] = params[:remarks]
 
     doc["metadata"]["modified"] = Time.now.to_i
 

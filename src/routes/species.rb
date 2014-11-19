@@ -47,7 +47,11 @@ get '/specie/:name' do
         query << " OR \"#{t["scientificNameWithoutAuthorship"]}\""
     }
 
-    redirect "#{settings.config[:base]}/search?q=#{URI.encode( query )}"
+    if params[:json]
+      redirect "#{settings.config[:base]}/search?json=true&q=#{URI.encode( query )}"
+    else
+      redirect "#{settings.config[:base]}/search?q=#{URI.encode( query )}"
+    end
 end
 
 get '/specie/:name/:status' do
@@ -77,5 +81,9 @@ get '/specie/:name/:status' do
 
     query << ")"
 
-    redirect "#{settings.config[:base]}/search?q=#{URI.encode( query )}"
+    if params[:json]
+      redirect "#{settings.config[:base]}/search?json=true&q=#{URI.encode( query )}"
+    else
+      redirect "#{settings.config[:base]}/search?q=#{URI.encode( query )}"
+    end
 end

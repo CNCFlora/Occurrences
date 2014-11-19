@@ -143,7 +143,16 @@ get '/search' do
         }
     end
 
-    if to_calc.length >= 1 
+    @cache = settings.cache
+    if @cache[JSON.dump(to_calc)] then
+      c=@cache[JSON.dump(to_calc)];
+      eoo_meters=c["eoo_meters"]
+      aoo_meters=c["aoo_meters"]
+      eoo_poli=c["eoo_poli"]
+      aoo_poli=c["aoo_poli"]
+      eoo=c["eoo"]
+      aoo=c["aoo"]
+    elsif to_calc.length >= 1 
         to_send=[]
         to_calc.each {|o|
             if o.has_key?("decimalLatitude") and o.has_key?("decimalLongitude") and o["decimalLatitude"] != nil and o["decimalLongitude"] != nil and o["sig-ok"] == true 
@@ -180,6 +189,15 @@ get '/search' do
         end
     end
 
+    c={}
+    c["eoo_meters"]=eoo_meters
+    c["aoo_meters"]=aoo_meters
+    c["eoo_poli"]=eoo_poli
+    c["aoo_poli"]=aoo_poli
+    c["eoo"]=eoo
+    c["aoo"]=aoo
+    @cache[JSON.dump(to_calc)]=c;
+
     data = {
         :result=>occurrences,
         :query=>query,
@@ -189,6 +207,8 @@ get '/search' do
         :stats=>{
             :eoo=>eoo,
             :aoo=>aoo,
+            :eoo_meters=>eoo_meters,
+            :aoo_meters=>aoo_meters,
             :total=>total,
             :valid=>valid,
             :invalid=>invalid,
@@ -199,6 +219,10 @@ get '/search' do
         }
     }
 
-    view :search,data 
+    if params[:json]
+      data.to_json
+    else
+      view :search,data 
+    end
 end
 

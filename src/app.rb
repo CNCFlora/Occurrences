@@ -27,6 +27,8 @@ def is_authenticated?
     return !!session[:logged]
 end
 
+set :cache,{}
+
 def view(page,data)
     @config = settings.config
     @session_hash = {:logged => session[:logged] || false, :user => session[:user] || {}, :user_json => session[:user].to_json }

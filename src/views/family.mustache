@@ -19,9 +19,7 @@
                 <td>
                     <i>
                         {{#permission}}<strong><span class='glyphicon glyphicon-chevron-right'></span>{{/permission}}
-                        <a href='{{base}}/specie/{{scientificNameWithoutAuthorship}}'>
-                            {{scientificNameWithoutAuthorship}}
-                        </a>
+                        <a href='{{base}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}'>{{scientificNameWithoutAuthorship}}</a>
                         {{#permission}}</strong>{{/permission}}
                 </i> 
                 {{scientificNameAuthorship}}</td>

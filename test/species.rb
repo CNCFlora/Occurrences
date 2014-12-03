@@ -1,38 +1,38 @@
 
 require_relative 'base.rb'
 
-describe "Test web login" do
+describe "Species listing" do
 
     before (:each) do before_each() end
 
     after (:each) do after_each() end
 
     it "Gets families." do
-        get "/families"
+        get "/cncflora_test/families"
         expect( last_response.status ).to eq(200)
         expect( last_response.body ).to have_tag("body"){
-            with_tag "h2","Famílias"
-            @taxons.each do |taxon|
-                with_tag "a", :with=>{ href: "/family/#{taxon["family"].upcase}" }, :text=>"#{taxon["family"].upcase}"
-            end
+            with_tag "a", :text=>"ACANTHACEAE"
+            with_tag "a", :text=>"BALANOPHORACEAE"
+            with_tag "a", :text=>"APOCYNACEAE"
         }
     end
 
     it "Gets a family." do
-        taxon = @taxons.last
-        get "/family/#{taxon["family"]}"
-        expect( last_response.status ).to eq( 200 )
+        get "/cncflora_test/family/ACANTHACEAE"
         expect( last_response.body ).to have_tag( "body" ){
-            with_tag "h2", "#{taxon["family"]}"
-            with_tag "a", :with=>{ href: "/specie/#{taxon["scientificNameWithoutAuthorship"]}" }
+            with_tag "h2", "ACANTHACEAE"
+            with_tag "a", :text=>"Aphelandra longiflora" 
+            without_tag "a", :text=>"Aphelandra longiflora2" 
+            without_tag "a", :text=>"ACANTHACEAE" 
         }
     end
 
     it "Get a specie and redirect" do
-        taxon = @taxons.last
-        get "/specie/#{taxon["scientificNameWithoutAuthorship"].gsub(" ","%20")}"
-        expect( last_response.status ).to eq(302)
-        expect(last_response.header[ "location" ]).to start_with("http://example.org/search")
+        get "/cncflora_test/specie/Aphelandra%20longiflora"
+        expect(last_response.status).to eq(302)
+        expect(last_response.header["location"]).to include("search")
+        expect(last_response.header["location"]).to include("Aphelandra%20longiflora")
+        expect(last_response.header["location"]).to include("Aphelandra%20longiflora2")
     end
 
 end

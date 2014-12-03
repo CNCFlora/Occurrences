@@ -1,7 +1,7 @@
 
 require_relative 'base.rb'
 
-describe "Test web login" do
+describe "Spreadsheet and csv upload" do
 
     before (:each) do before_each() end
 

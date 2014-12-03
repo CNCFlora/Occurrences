@@ -126,5 +126,8 @@
     "locality":"Localidade",
     "municipality":"Municipio",
     "stateProvince":"Estado",
-    "identificationDate":"Data de identificação"
+    "identificationDate":"Data de identificação",
+    "checklist":"Recorte",
+    "checklists":"Recortes",
+    "welcome":"Bem vindo"
 } 

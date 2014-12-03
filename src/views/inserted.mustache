@@ -5,7 +5,7 @@
     <p>{{strings.species-inserted}}:</p>
     <ul>
         {{#species}}
-            <li><a href='{{base}}/search?q="{{.}}"'>{{.}}</a></li>
+          <li><a href='{{base}}/{{db}}/search?q="{{.}}"'>{{.}}</a></li>
         {{/species}}
     </ul>
 </div>

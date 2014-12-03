@@ -5,19 +5,23 @@
 <div class="col-md-12">
     {{#to_profiles}}
     <p>
-        <a href="{{profiles}}/specie/{{scientificNameWithoutAuthorship}}" class='btn btn-default'>
+        {{#profiles}}
+        <a href="{{profiles}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}" class='btn btn-default'>
             <span class='glyphicon glyphicon-leaf'></span>
             {{strings.profile}} <i>{{scientificNameWithoutAuthorship}}</i>
         </a>
-        <a href="{{assessment}}/specie/{{scientificNameWithoutAuthorship}}" class='btn btn-default'>
+        {{/profiles}}
+        {{#assessment}}
+        <a href="{{assessment}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}" class='btn btn-default'>
             <span class='glyphicon glyphicon-record'></span>
             {{strings.assessment}} <i>{{scientificNameWithoutAuthorship}}</i>
         </a>
+        {{/assessment}}
     </p>
     {{/to_profiles}}
 </div>
 
-<form action="{{base}}/search" class='col-md-12'>
+<form action="{{base}}/{{db}}/search" class='col-md-12'>
     <fieldset>
         <p id="input-taxon-search">
             <input class="form-control" type="text" name="q" placeholder="{{strings.search}}..." value="{{query}}">

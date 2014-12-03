@@ -2,7 +2,7 @@
 
 require_relative 'base.rb'
 
-describe "Test web login" do
+describe "SIG forms" do
 
     before (:each) do 
         post "/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_aurantiaca_test.xlsx"), "type"=>"xlsx"

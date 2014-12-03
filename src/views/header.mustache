@@ -8,7 +8,7 @@
     <link href="{{base}}/css/app.css" rel="stylesheet" >
     <script type="text/javascript">
         var logged = {{{logged}}};
-        var context = '{{context}}';
+        //var context = '{{context}}';
         var connect = '{{connect}}';
         var base = '{{base}}';
     </script>
@@ -21,6 +21,9 @@
     <div class="container">
         <header class='col-md-12'>
             <h1>{{strings.occurrences}}</h1>
+            {{#db}}
+            <p><span class='glyphicon glyphicon-chevron-right'></span><span class='db'>{{strings.checklist}}: {{db_name}}</span>.</p>
+            {{/db}}
         </header>
         <nav class="navbar navbar-default col-md-12">
             <ul class="nav navbar-nav">
@@ -28,11 +31,14 @@
                 <li id='login'><a href="#">{{strings.login}}</a></li>
                 {{/logged}}
                 {{#logged}}
-                <li><a href="{{base}}/">{{strings.summary}}</a></li>
-                <li><a href="{{base}}/families">{{strings.families}}</a></li>
+                <li><a href="{{base}}/">{{strings.checklists}}</a></li>
+                {{#db}}
+                <li><a href="{{base}}/{{db}}/workflow">{{strings.summary}}</a></li>
+                <li><a href="{{base}}/{{db}}/families">{{strings.families}}</a></li>
                 {{#role-analyst}}
-                <li><a href="{{base}}/upload">{{strings.send-occurrences}}</a></li>
+                <li><a href="{{base}}/{{db}}/upload">{{strings.send-occurrences}}</a></li>
                 {{/role-analyst}}
+                {{/db}}
                 <li id='logout'><a href="#">{{strings.logout}}</a></li>
                 {{/logged}}
             </ul>

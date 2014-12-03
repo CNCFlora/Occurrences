@@ -20,7 +20,7 @@ end
 setup '../config.yml'
 
 def require_logged_in
-    redirect("#{settings.base}/") unless is_authenticated?
+    redirect("#{settings.base}/?back_to=#{request.path_info}") unless is_authenticated?
 end
  
 def is_authenticated?
@@ -32,13 +32,40 @@ set :cache,{}
 def view(page,data)
     @config = settings.config
     @session_hash = {:logged => session[:logged] || false, :user => session[:user] || {}, :user_json => session[:user].to_json }
+    if data[:db]
+      data[:db_name] = data[:db].gsub('_',' ').upcase
+    end
     if session[:logged] 
+      if data[:db] 
         session[:user]['roles'].each do | role |
-            @session_hash["role-#{role['role'].downcase}"] = true
+          if role['context'] == data[:db]
+            role['roles'].each do | role |
+              @session_hash["role-#{role['role'].downcase}"] = true
+            end
+          end
         end
+      end
     end
     mustache page, {}, @config.merge(@session_hash).merge(data)
 end
+
+get '/' do
+  if session[:logged] && params[:back_to] then
+    redirect params[:back_to]
+  elsif session[:logged] then
+    dbs=[]
+    all=http_get("#{ settings.couchdb }/_all_dbs")
+    all.each {|db|
+      if db[0] != "_" && !db.match('_history') then
+        dbs << {:name=>db.gsub("_"," ").upcase,:db =>db}
+      end
+    }
+    view :index,{:dbs=>dbs}
+  else
+    view :index,{:dbs=>[]}
+  end
+end
+
 
 post '/login' do
     session[:logged] = true
@@ -48,8 +75,9 @@ post '/login' do
         session[:user] = preuser
     else
         user = http_get("#{settings.connect}/api/token?token=#{preuser["token"]}")
-        puts user
-        session[:user] = user
+        if user["email"] == preuser["email"] then
+          session[:user] = preuser
+        end
     end
     204
 end

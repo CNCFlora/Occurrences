@@ -1,16 +1,20 @@
 
-get '/' do
+get '/:db/workflow' do
     data = []
 
     if session[:logged]
 
         ents=[]
 
-        session[:user]["roles"].each {|r|
-            if r.has_key? "entities" then
-                r["entities"].each {|e|
-                    ents.push(e.upcase)
-                }
+        session[:user]["roles"].each {|ctx|
+            if ctx["context"] == params[:db] then
+              ctx["roles"].each {|r|
+                if r.has_key? "entities" then
+                    r["entities"].each {|e|
+                        ents.push(e.upcase)
+                    }
+                end
+              }
             end
         }
 
@@ -28,7 +32,7 @@ get '/' do
 
         #puts query
 
-        search("taxon",query)
+        search(params[:db],"taxon",query)
             .each { |e| families.push e['family'].upcase }
 
         #puts families
@@ -47,16 +51,16 @@ get '/' do
 
             occs=[]
             names=[]
-            search("taxon","family:\"#{f}\" AND taxonomicStatus:\"accepted\" AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecies\")")
+            search(params[:db],"taxon","family:\"#{f}\" AND taxonomicStatus:\"accepted\" AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecies\")")
                 .each {|s|
                     if ents.include?(s["scientificNameWithoutAuthorship"].upcase)  or ents.include?(s["family"].upcase)
                         names.push(s['scientificNameWithoutAuthorship'])
-                        search("taxon","taxonomicStatus:\"synonym\" AND acceptedNameUsage:\"#{s['scientificNameWithoutAuthorship']}*\"")
+                        search(params[:db],"taxon","taxonomicStatus:\"synonym\" AND acceptedNameUsage:\"#{s['scientificNameWithoutAuthorship']}*\"")
                         .each {|ss| names.push ss['scientificNameWithoutAuthorship']}
                     end
                 }
 
-            search("occurrence","\"#{ names.select {|n| n != nil }.join("\" OR \"") }\"")
+            search(param[:db],"occurrence","\"#{ names.select {|n| n != nil }.join("\" OR \"") }\"")
                 .each {|occ|
                     taxon[:total] += 1;
 
@@ -83,5 +87,5 @@ get '/' do
 
     end
 
-    view :index,{:data=>data}
+    view :workflow,{:data=>data,:db=>params[:db]}
 end

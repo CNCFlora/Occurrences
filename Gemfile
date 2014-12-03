@@ -8,7 +8,7 @@ gem 'sinatra-contrib'
 gem 'sinatra-mustache'
 gem 'sinatra-config-file'
 
-gem 'cncflora_commons', '0.0.23'
+gem 'cncflora_commons', '0.0.27'
 
 gem 'rest-client'
 
@@ -17,6 +17,4 @@ gem 'rspec-html-matchers'
 gem 'rack-test'
 
 gem 'unicorn'
-gem 'i18n'
-gem 'sinatra-advanced-routes'
 

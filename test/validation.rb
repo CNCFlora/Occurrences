@@ -1,7 +1,7 @@
 
 require_relative 'base.rb'
 
-describe "Test web login" do
+describe "Test validation system" do
 
     before (:each) do 
         before_each() 

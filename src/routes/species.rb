@@ -1,49 +1,52 @@
 
-get '/families' do
+get '/:db/families' do
     require_logged_in
 
     families=[]
 
-    r = search("taxon","taxonomicStatus:\"accepted\"")
+    r = search(params[:db],"taxon","taxonomicStatus:\"accepted\" AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\")")
     r.each{|taxon|
         families.push taxon["family"].upcase
     }
 
-    view :families, {:families=>families.uniq.sort}
+    view :families, {:families=>families.uniq.sort,:db=>params[:db]}
 end
 
-get '/family/:family' do
+get '/:db/family/:family' do
     require_logged_in
 
     family = params[:family]
-    species= search("taxon","family:\"#{family}\" AND taxonomicStatus:\"accepted\" 
-                    AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\")")
+    species= search(params[:db],"taxon","family:\"#{family}\" AND taxonomicStatus:\"accepted\" AND (taxonRank:\"species\" OR taxonRank:\"variety\" OR taxonRank:\"subspecie\")")
                     .sort {|t1,t2| t1["scientificName"] <=> t2["scientificName"] }
 
     if session[:logged]
         ents=[]
-        session[:user]["roles"].each {|r|
-            if r.has_key? "entities" then
+        session[:user]["roles"].each {|c|
+          if c["context"] == params[:db] then
+            c["roles"].each {|r|
+              if r.has_key? "entities" then
                 r["entities"].each {|e|
-                    ents.push(e)
+                  ents.push(e.downcase)
                 }
-            end
+              end
+            }
+          end
         }
         species.each {|s|
-            s[ "permission" ] = (ents.include?(s["scientificNameWithoutAuthorship"]) or ents.include?(s["family"]))
+            s[ "permission" ] = (ents.include?(s["scientificNameWithoutAuthorship"].downcase) or ents.include?(s["family"].downcase))
         }
     end
 
-    view :family, {:species=>species,:family=>family}
+    view :family, {:species=>species,:family=>family,:db=>params[:db]}
 end
 
 
-get '/specie/:name' do
+get '/:db/specie/:name' do
     require_logged_in
 
     query = "\"#{params[:name]}\""
 
-    search("taxon","acceptedNameUsage:\"#{params[:name]}\"").each {|t|
+    search(params[:db],"taxon","acceptedNameUsage:\"#{params[:name]}\"").each {|t|
         query << " OR \"#{t["scientificNameWithoutAuthorship"]}\""
     }
 
@@ -54,36 +57,3 @@ get '/specie/:name' do
     end
 end
 
-get '/specie/:name/:status' do
-    require_logged_in
-
-    query = ""
-
-    #query << "("
-
-    if params[:status] == 'validated' then
-        #query << "validation.status:\"valid\" OR validation.status:\"invalid\""
-    elsif params[:status] == 'reviewed' then
-        #query << "georeferenceVerificationStatus:\"valid\" OR georeferenceVerificationStatus:\"nok\" OR georeferenceVerificationStatus:\"uncertain-locality\""
-    elsif params[:status] == 'not_reviewed' then
-        #query << "NOT georeferenceVerificationStatus:\"valid\" AND NOT georeferenceVerificationStatus:\"nok\" AND NOT georeferenceVerificationStatus:\"uncertain-locality\""
-    elsif params[:status] == 'not_validated' then
-        #query << "NOT validation.status:\"valid\" AND NOT validation.status:\"invalid\""
-    end
-
-    #query << ") AND "
-    
-    query << "(\"#{params[:name]}\""
-
-    search("taxon","acceptedNameUsage:\"#{params[:name]}\"").each {|t|
-        query << " OR \"#{t["scientificNameWithoutAuthorship"]}\""
-    }
-
-    query << ")"
-
-    if params[:json]
-      redirect "#{settings.config[:base]}/search?json=true&q=#{URI.encode( query )}"
-    else
-      redirect "#{settings.config[:base]}/search?q=#{URI.encode( query )}"
-    end
-end

@@ -1,50 +1,21 @@
 {{> header}}
 
-
 {{^logged}}
 <h2 class="col-md-12">{{strings.must-login}}</h2>
 {{/logged}}
 
 {{#logged}}
-
-<div class="col-md-12">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>{{strings.family}}</th>
-                <th>{{strings.reviewed}}</th>
-                <th>{{strings.validated}}</th>
-                <th>{{strings.not-reviewed}}</th>
-                <th>{{strings.not-validated}}</th>
-                <th>{{strings.total}}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#data}}
-            <tr>
-                <td><a href="{{base}}/family/{{family}}">{{family}}</a></td>
-                <td>
-                    {{reviewed}}
-                </td>
-                <td>
-                    {{validated}}
-                </td>
-                <td>
-                    {{not_reviewed}}
-                </td>
-                <td>
-                    {{not_validated}}
-                </td>
-                <td>
-                    {{total}}
-                </td>
-            </tr>
-            {{/data}}
-        </tbody>
-    </table>
-</div>
+  <div class='col-md-12'>
+    <h1 >{{strings.welcome}}, {{user.name}}.</h1>
+    <h3>
+      {{strings.checklists}}
+    </h3>
+    <ul>
+    {{#dbs}}
+      <li><a href="{{base}}/{{db}}/workflow">{{name}}</a></li>
+    {{/dbs}}
+    </ul>
+  </div>
 {{/logged}}
-
-
 
 {{> footer}}

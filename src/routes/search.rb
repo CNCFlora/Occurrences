@@ -1,14 +1,14 @@
 
-get '/search' do
+get '/:db/search' do
     require_logged_in
 
     query = (params[:q] || "Aphelandra longiflora").gsub("&quot","\"")
 
-    species = search("taxon",query)
+    species = search(params[:db],"taxon",query)
 
     profiles = species.select {|doc| doc['taxonomicStatus']=='accepted'}
 
-    occurrences = search("occurrence",query).sort_by {|x| x["occurrenceID"]}
+    occurrences = search(params[:db],"occurrence",query).sort_by {|x| x["occurrenceID"]}
 
     valid=0
     invalid=0
@@ -25,12 +25,12 @@ get '/search' do
     to_calc=[]
 
     occurrences.each{ |occ| 
-        occ[:occurrenceID2] = i
+        occ["occurrenceID2"] = i
 
-        occ[:taxon] = {}
+        occ["taxon"] = {}
         species.each {|s|
-            if s[:scientificNameWithoutAuthorship] == occ[:scientificName] or s[:scientificName] == occ[:scientificName]
-                occ[:taxon] = s
+            if s["scientificNameWithoutAuthorship"] == occ["scientificName"] or s["scientificName"] == occ["scientificName"]
+                occ["taxon"] = s
             end
         }
 
@@ -117,12 +117,16 @@ get '/search' do
 
     if session[:logged]
         ents=[]
-        session[:user]["roles"].each {|r|
-            if r.has_key? "entities" then
-                r["entities"].each {|e|
-                    ents.push(e.upcase)
-                }
-            end
+        session[:user]["roles"].each {|c|
+          if c["context"].downcase == params[:db].downcase then
+            c["roles"].each {|r|
+              if r.has_key? "entities" then
+                  r["entities"].each {|e|
+                      ents.push(e.upcase)
+                  }
+              end
+            }
+          end
         }
         occurrences.each {|o|
             if !o['family'].nil? && ents.include?(o['family'].upcase)
@@ -199,6 +203,7 @@ get '/search' do
     @cache[JSON.dump(to_calc)]=c;
 
     data = {
+        :db=>params[:db],
         :result=>occurrences,
         :query=>query,
         :eoo_poli=>eoo_poli,

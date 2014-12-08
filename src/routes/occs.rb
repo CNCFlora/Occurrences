@@ -1,8 +1,8 @@
 
-post '/occurrences/:id/sig' do
+post '/:db/occurrences/:id/sig' do
     require_logged_in
     
-    doc = http_get("#{settings.config[:couchdb]}/#{params[:id]}")
+    doc = http_get("#{settings.couchdb}/#{params[:db]}/#{params[:id]}")
 
     if !doc.has_key?("validation") 
         doc["validation"] = {}
@@ -21,15 +21,15 @@ post '/occurrences/:id/sig' do
       doc["metadata"]["contact"] = "#{session[:user]['email']} ; #{doc["metadata"]["contact"]}"
     end
 
-    r = http_post("#{settings.config[:couchdb]}",doc)
+    r = http_post("#{settings.couchdb}/#{params[:db]}",doc)
 
-    redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
+    redirect "#{settings.base}/#{params[:db]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 
-post '/occurrences/:id/analysis' do
+post '/:db/occurrences/:id/analysis' do
     require_logged_in
 
-    doc = http_get("#{settings.config[:couchdb]}/#{params[:id]}")
+    doc = http_get("#{settings.couchdb}/#{params[:db]}/#{params[:id]}")
 
     doc["comments"] = params[:comments]
     #doc["identificationQualifier"] = params[:identificationQualifier]
@@ -53,14 +53,14 @@ post '/occurrences/:id/analysis' do
       doc["metadata"]["contact"] = "#{session[:user]['email']} ; #{doc["metadata"]["contact"]}"
     end
 
-    r = http_post("#{settings.config[:couchdb]}",doc)
-    redirect "#{settings.config[:base]}/search?q=#{URI.encode(params[:q])}#occ-#{params[:id]}-unit"
+    r = http_post("#{settings.couchdb}/#{params[:db]}",doc)
+    redirect "#{settings.base}/#{params[:db]}/search?q=#{URI.encode(params[:q])}#occ-#{params[:id]}-unit"
 end
 
-post '/occurrences/:id/validate' do
+post '/:db/occurrences/:id/validate' do
     require_logged_in
 
-    doc = http_get("#{settings.config[:couchdb]}/#{params[:id]}")
+    doc = http_get("#{settings.couchdb}/#{params[:db]}/#{params[:id]}")
    
 
     doc["validation"] = {
@@ -83,8 +83,8 @@ post '/occurrences/:id/validate' do
       doc["metadata"]["contact"] = "#{session[:user]['email']} ; #{doc["metadata"]["contact"]}"
     end
 
-    r = http_post("#{settings.config[:couchdb]}",doc)
+    r = http_post("#{settings.couchdb}/#{params[:db]}",doc)
     sleep 3
-    redirect "#{settings.config[:base]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
+    redirect "#{settings.base}/#{params[:db]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 

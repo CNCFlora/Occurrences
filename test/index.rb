@@ -1,7 +1,7 @@
 
 require_relative 'base.rb'
 
-describe "Test Login" do
+describe "Test login and checklist switch" do
 
     #before (:each) do before_each() end
 

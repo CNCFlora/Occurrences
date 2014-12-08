@@ -30,6 +30,7 @@ describe "Species listing" do
     it "Get a specie and redirect" do
         get "/cncflora_test/specie/Aphelandra%20longiflora"
         expect(last_response.status).to eq(302)
+        expect(last_response.header["location"]).to include("cncflora_test")
         expect(last_response.header["location"]).to include("search")
         expect(last_response.header["location"]).to include("Aphelandra%20longiflora")
         expect(last_response.header["location"]).to include("Aphelandra%20longiflora2")

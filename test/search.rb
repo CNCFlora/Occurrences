@@ -7,29 +7,22 @@ describe "Simple search?" do
 
     after (:each) do after_each() end
 
-    it "Gets specie by name with sig profile." do
-        taxon = @taxons.last["scientificNameWithoutAuthorship"]
-        get "/specie/#{URI.encode( taxon )}"
-        expect( last_response.status ).to eq( 302 )
-        follow_redirect!
-        expect( last_response.body ).to have_tag( "h2", "Busca" )
-        expect( last_response.body ).to have_tag( "form"){
-            with_tag "input[name=q]", :with => { :name=>"q", :value=>"\"#{taxon}\""}
-            with_tag "a",  :with=> { href: "/editor?q=\"#{taxon}\"" }
-        }
-    end
+    it "Gets specie by name" do
+        post "/cncflora_test/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_longiflora_test.xlsx"), "type"=>"xlsx"
+        sleep 1
 
-    it "Gets specie by name without sig profile." do
-        taxon = @taxons.last["scientificNameWithoutAuthorship"]
-        post '/logout'
-        post '/login', :user => '{ "name":"foo","email":"foo@cncflora.net", "roles":[ {"role":"assessor","entities":["ACANTHACEAE"]} ] }'
-        get "/specie/#{URI.encode( taxon )}"
+        taxon= "Aphelandra%20longiflora"
+        get "/cncflora_test/specie/#{taxon}"
         follow_redirect!
-        expect( last_response.body ).to have_tag( "h2", "Busca" )
-        expect( last_response.body ).to have_tag( "form"){
-            with_tag "input[name=q]", :with => { :name=>"q", :value=>"\"#{taxon}\""}
-            without_tag "a",  :with=> { href: "/editor?q=\"#{taxon}\"" }
-        }
+        expect(last_response.body).to have_tag("td#total",:text=>"3")
+
+        id1 = 'UNICAMP:UEC:10137'
+        id2 = 'MBM:MBM:19751'
+        id3 = 'MBM:MBM:137990'
+
+        expect(last_response.body).to have_tag("a",:text=>"urn:occurrence:#{id1}")
+        expect(last_response.body).to have_tag("a",:text=>"urn:occurrence:#{id2}")
+        expect(last_response.body).to have_tag("a",:text=>"urn:occurrence:#{id3}")
     end
 
 end

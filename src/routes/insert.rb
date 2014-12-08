@@ -1,5 +1,5 @@
 
-get '/insert' do
+get '/:db/insert' do
     require_logged_in
 
     data = JSON.parse(params[:data])
@@ -19,12 +19,12 @@ get '/insert' do
         }
     }
 
-    http_post("#{settings.couchdb}/_bulk_docs",{"docs"=> data});
+    http_post("#{settings.couchdb}/#{db}/_bulk_docs",{"docs"=> data});
 
-    view :inserted, {:count=>count,:species=>species.uniq}
+    view :inserted, {:count=>count,:species=>species.uniq,:db=>params[:db]}
 end
 
-post '/insert' do
+post '/:db/insert' do
     require_logged_in
 
     data = JSON.parse(request.body.read.to_s)
@@ -44,8 +44,8 @@ post '/insert' do
         }
     }
 
-    http_post("#{settings.couchdb}/_bulk_docs",{"docs"=> data});
+    http_post("#{settings.couchdb}/#{db}/_bulk_docs",{"docs"=> data});
 
-    view :inserted, {:count=>count,:species=>species.uniq}
+    view :inserted, {:count=>count,:species=>species.uniq,:db=>params[:db]}
 end
 

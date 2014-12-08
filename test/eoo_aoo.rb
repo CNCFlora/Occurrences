@@ -3,11 +3,7 @@ require_relative 'base.rb'
 
 describe "Test EOO and AOO calculations" do
 
-    before (:each) do 
-        post "/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_aurantiaca_test.xlsx"), "type"=>"xlsx"
-        sleep 1
-        before_each() 
-    end
+    before (:each) do before_each() end
 
     after (:each) do after_each() end
 

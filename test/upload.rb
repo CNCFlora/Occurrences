@@ -8,9 +8,9 @@ describe "Spreadsheet and csv upload" do
     after (:each) do after_each() end
 
     it "Gets occurrences upload sending page." do
-        get "/upload"
+        get "/cncflora_test/upload"
         expect( last_response.status ).to eq( 200 )
-        expect( last_response.body ).to have_form("/upload", :POST ) do
+        expect( last_response.body ).to have_form("/cncflora_test/upload", :POST ) do
             with_tag :legend, :text => "Enviar arquivo:"
             with_tag( "input", :with => { :id=>"file", :name=>"file", :type=>"file"} )
             with_select( "type", :with => { :id=>"type"} )
@@ -22,30 +22,16 @@ describe "Spreadsheet and csv upload" do
     end
 
     it "Does upload xlsx file" do
-        post "/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_aurantiaca_test.xlsx"), "type"=>"xlsx"
+        post "/cncflora_test/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_longiflora_test.xlsx"), "type"=>"xlsx"
 
-        sleep 1
+        sleep 2
 
-        docs = http_get( "#{@uri}/_all_docs?include_docs=true" )
+        expect(last_response.body).to have_tag("h2",:text=>"Registros de ocorrências inseridos: 3.")
+        expect(last_response.body).to have_tag("a",:text=>"Aphelandra longiflora")
 
-        occurrences = []
-        docs["rows"].each{ |row|
-            if ( row["doc"]["metadata"]["type"] == "occurrence" )
-                occurrences.push( row["doc"] )
-            end
-        }
-
-        expect( last_response.body ).to have_tag( "body" ){
-            with_tag( "h2", :text=>"Registros de ocorrências Inseridos: #{occurrences.count}." )
-            occurrences.each{ |occurrence|
-                expect( last_response.body ).to have_tag( "a", :with=>{ :href=>"/search?q=\"#{occurrence["scientificName"]}\"" }, :text=>occurrence["scientificName"] )
-            }
-        }
-
-        get "/search?q=#{URI.encode(occurrences[0]["scientificName"])}"
+        get "/cncflora_test/specie/Aphelandra%20longiflora"
+        follow_redirect!
         expect(last_response.body).to have_tag("td#total",:text=>"3")
-        expect(last_response.body).to have_tag("a",:with=>{:name=>"occ-#{occurrences[0]["_id"]}-unit"})
-
     end
 
 end

@@ -1,19 +1,19 @@
 
-get '/editor' do
+get '/:db/editor' do
     require_logged_in
 
     query = (params[:q] || "*").gsub("&quot","\"")
-    occurrences = search("occurrence","#{query}")
-    view :recline,{:occurrences=>occurrences,:query=>query}
+    occurrences = search(params[:db],"occurrence","#{query}")
+    view :recline,{:occurrences=>occurrences,:query=>query,:db=>params[:db]}
 end
 
-get "/json" do
+get "/:db/json" do
     require_logged_in
 
     query = (params[:q] || "*").gsub("&quot","\"")
 
     occurrences = []
-    search("occurrence","#{query}").each {|occ|
+    search(params[:db],"occurrence","#{query}").each {|occ|
         occ["decimalLatitude"] = occ["decimalLatitude"].to_f
         occ["decimalLongitude"] = occ["decimalLongitude"].to_f
         occurrences << occ;
@@ -31,7 +31,7 @@ get "/json" do
     r
 end
 
-post "/json" do
+post "/:db/json" do
     require_logged_in
 
     data = JSON.parse(params[:data]) 
@@ -40,7 +40,7 @@ post "/json" do
         keys << r['occurrenceID']
         keys << "#{ r['occurrenceID'] }.0"
     }
-    r = http_post("#{settings.config[:couchdb]}/_all_docs",{:keys=>keys})
+    r = http_post("#{settings.datahub}/#{params[:db]}/_all_docs",{:keys=>keys})
     docs = []
 
     data.each{ |occ|
@@ -63,9 +63,9 @@ post "/json" do
         }
     }
 
-    r=http_post("#{settings.config[:couchdb]}/_bulk_docs",{"docs"=> docs});
+    r=http_post("#{settings.couchdb}/#{params[:db]}/_bulk_docs",{"docs"=> docs});
 
     query = URI.encode(params[:q].gsub("&quot;","\""))
-    redirect "#{settings.config[:base]}/search?q=#{query}"
+    redirect "#{settings.config[:base]}/#{params[:db]}/search?q=#{query}"
 end
 

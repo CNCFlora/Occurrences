@@ -1,13 +1,13 @@
 
 require 'rest-client'
 
-get '/upload' do
+get '/:db/upload' do
     require_logged_in
 
-    view :upload,{}
+    view :upload,{:db=>params[:db]}
 end
 
-post '/upload' do
+post '/:db/upload' do
     require_logged_in
 
     errors = []
@@ -17,10 +17,8 @@ post '/upload' do
     begin
         if params.has_key?("file") 
             # convert to json
-            #puts params["file"]
             json = RestClient.post "#{settings.config[:dwc_services]}/api/v1/convert?from=#{params["type"]}&to=json&fixes=true", 
                                 params["file"][:tempfile].read, :content_type => params["file"][:type], :accept => :json
-
 
             if json[0] != '[' # cause it must be an array back
                 errors.push json
@@ -43,8 +41,8 @@ post '/upload' do
                     }
                 else
                     # also convert to geojson, to integrate with the editor
-                    geojson = RestClient.post "#{settings.config[:dwc_services]}/api/v1/convert?from=json&to=geojson", json,
-                                                :content_type => params["file"][:type], :accept => :json
+                    #geojson = RestClient.post "#{settings.config[:dwc_services]}/api/v1/convert?from=json&to=geojson", json,
+                    #                            :content_type => params["file"][:type], :accept => :json
                     #File.open("#{file}.json",'w') { |f| f.write(json) }
                     #File.open("#{file}.geojson",'w') { |f| f.write(geojson) }
                 end
@@ -66,7 +64,7 @@ post '/upload' do
     has_errors = errors.length > 0
 
     if has_errors 
-        view :upload, {:errors=>errors,:has_errors=>has_errors}
+        view :upload, {:errors=>errors,:has_errors=>has_errors,:db=>params[:db]}
     else
         #puts json
         data = JSON.parse(json)
@@ -85,9 +83,9 @@ post '/upload' do
               :contact => session[:user]["email"]
             }
         }
-        r=http_post("#{settings.config[:couchdb]}/_bulk_docs",{"docs"=> data});
+        r=http_post("#{settings.config[:couchdb]}/#{params[:db]}/_bulk_docs",{"docs"=> data});
 
-        view :inserted, {:count=>count,:species=>species.uniq}
+        view :inserted, {:count=>count,:species=>species.uniq,:db=>params[:db]}
     end
 end
 

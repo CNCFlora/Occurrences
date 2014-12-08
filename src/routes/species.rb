@@ -51,9 +51,9 @@ get '/:db/specie/:name' do
     }
 
     if params[:json]
-      redirect "#{settings.config[:base]}/search?json=true&q=#{URI.encode( query )}"
+      redirect "#{settings.config[:base]}/#{params[:db]}/search?json=true&q=#{URI.encode( query )}"
     else
-      redirect "#{settings.config[:base]}/search?q=#{URI.encode( query )}"
+      redirect "#{settings.config[:base]}/#{params[:db]}/search?q=#{URI.encode( query )}"
     end
 end
 

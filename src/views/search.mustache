@@ -29,7 +29,7 @@
         <p id="button-taxon-search">
             <button class="btn btn-primary" type="search"><span class='glyphicon glyphicon-search'></span> {{strings.search}}</button>
             {{#role-sig}}
-            <a href="{{base}}/editor?q={{query}}" class="btn btn-default btn-small">
+            <a href="{{base}}/{{db}}/editor?q={{query}}" class="btn btn-default btn-small">
                 <span class='glyphicon glyphicon-edit'></span>
                 {{strings.table-editor}}
             </a>

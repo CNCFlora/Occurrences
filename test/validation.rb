@@ -4,30 +4,33 @@ require_relative 'base.rb'
 describe "Test validation system" do
 
     before (:each) do 
-        before_each() 
-        post "/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_aurantiaca_test.xlsx"), "type"=>"xlsx"
-        sleep 1
+      before_each() 
+      post "/cncflora_test/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_longiflora_test.xlsx"), "type"=>"xlsx"
+      sleep 1
     end
 
     after (:each) do after_each() end
 
-    it "Gets validation form of occurrence page after uploading file." do
-        # Search occurrences inserted.
-        result = http_get( "#{@uri}/_all_docs?include_docs=true")["rows"]
-        occurrence = result.find { |e| e["doc"]["metadata"]["type"] == "occurrence"}["doc"]
+    it "Do show validation form" do
+      get "/cncflora_test/specie/Aphelandra+longiflora"
+      follow_redirect!
 
-        # Clicks on the specie link.
-        get "/specie/#{URI.encode(occurrence["scientificName"])}"
-        follow_redirect!
+      expect(last_response.body).to have_tag('form.validation')
+    end
 
-        expect( last_response.body ).to have_tag( "form", :with=>{:action=>"/occurrences/#{occurrence["_id"]}/validate"} )
+    it "Do not show validation form" do
+      post "/login", { :user => '{"name":"Bruno", "email":"bruno@cncflora.net","roles":[] }' }
+
+      get "/cncflora_test/specie/Aphelandra+longiflora"
+      follow_redirect!
+
+      expect(last_response.body).not_to have_tag('form.validation')
     end
 
     it "Gets Results of validates occurrence" do
-        result = http_get( "#{@uri}/_all_docs?include_docs=true")["rows"]
-        occurrence = result.find { |e| e["doc"]["metadata"]["type"] == "occurrence"}["doc"]
+        id1 = 'urn:occurrence:UNICAMP:UEC:10137'
 
-        get "/specie/#{URI.encode(occurrence["scientificName"])}"
+        get "/cncflora_test/specie/Aphelandra%20longiflora"
         follow_redirect!
 
         # initial state: no occurrence validated
@@ -41,14 +44,13 @@ describe "Test validation system" do
 
         # The query by scientificName
         validation = {
-            "q"=>occurrence["scientificName"],
+            "q"=>"Aphelandra%20longiflora",
             "taxonomy"=>"valid", 
             "georeference"=>"valid"
         }
 
-        post "/occurrences/#{occurrence["_id"]}/validate", validation
+        post "/cncflora_test/occurrences/#{id1}/validate", validation
         sleep 1
-        expect( last_response.status ).to eq(302)
         follow_redirect!
 
         # after first validation: 1 occ valid
@@ -62,14 +64,13 @@ describe "Test validation system" do
 
         # second validation: invalid
         validation = {
-            "q"=>occurrence["scientificName"],
+            "q"=>"Aphelandra%20longiflora",
             "taxonomy"=>"invalid", 
             "georeference"=>"valid"
         }
 
-        post "/occurrences/#{occurrence["_id"]}/validate", validation
+        post "/cncflora_test/occurrences/#{id1}/validate", validation
         sleep 1
-        expect( last_response.status ).to eq(302)
         follow_redirect!
 
         # after second validation: 1 invalid

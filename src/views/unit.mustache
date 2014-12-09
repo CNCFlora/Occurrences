@@ -99,6 +99,7 @@
     <p>
         <strong>{{strings.taxon}}</strong> {{family}} {{scientificName}};
     </p>
+
     {{#identificationQualifier}}
     <p>
         <strong>{{strings.qualifier}}</strong> {{identificationQualifier}}
@@ -166,12 +167,13 @@
         <strong>{{strings.remarks}}</strong> {{{remarks}}}
     </p>
     {{/remarks}}
-
-    {{#occurrenceRemarks}}
-    <p>
-        <strong>{{strings.remarks}}</strong> {{{occurrenceRemarks}}}
-    </p>
-    {{/occurrenceRemarks}}
+    {{^remarks}}
+      {{#occurrenceRemarks}}
+      <p>
+          <strong>{{strings.remarks}}</strong> {{{occurrenceRemarks}}}
+      </p>
+      {{/occurrenceRemarks}}
+    {{/remarks}}
 
     {{#georeferencedBy}}
         <p><strong>{{strings.georeference-remarks}}</strong> {{georeferencedBy}} - {{{georeferenceRemarks}}}</p>
@@ -203,6 +205,5 @@
     </p>
     {{/validation.by}}
 
-
-
 </div>
+

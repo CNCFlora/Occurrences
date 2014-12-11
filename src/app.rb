@@ -68,14 +68,15 @@ end
 
 
 post '/login' do
-    session[:logged] = true
     preuser =  JSON.parse(params[:user])
 
     if settings.test then
+        session[:logged] = true
         session[:user] = preuser
     else
         user = http_get("#{settings.connect}/api/token?token=#{preuser["token"]}")
         if user["email"] == preuser["email"] then
+          session[:logged] = true
           session[:user] = preuser
         end
     end

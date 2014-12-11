@@ -60,7 +60,7 @@ get '/:db/workflow' do
                     end
                 }
 
-            search(param[:db],"occurrence","\"#{ names.select {|n| n != nil }.join("\" OR \"") }\"")
+            search(params[:db],"occurrence","\"#{ names.select {|n| n != nil }.join("\" OR \"") }\"")
                 .each {|occ|
                     taxon[:total] += 1;
 

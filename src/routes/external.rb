@@ -40,7 +40,7 @@ post "/:db/json" do
         keys << r['occurrenceID']
         keys << "#{ r['occurrenceID'] }.0"
     }
-    r = http_post("#{settings.datahub}/#{params[:db]}/_all_docs",{:keys=>keys})
+    r = http_post("#{settings.couchdb}/#{params[:db]}/_all_docs",{:keys=>keys})
     docs = []
 
     data.each{ |occ|
@@ -66,6 +66,6 @@ post "/:db/json" do
     r=http_post("#{settings.couchdb}/#{params[:db]}/_bulk_docs",{"docs"=> docs});
 
     query = URI.encode(params[:q].gsub("&quot;","\""))
-    redirect "#{settings.config[:base]}/#{params[:db]}/search?q=#{query}"
+    redirect "#{settings.base}/#{params[:db]}/search?q=#{query}"
 end
 

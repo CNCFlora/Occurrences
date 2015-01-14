@@ -17,14 +17,14 @@ post '/:db/upload' do
     begin
         if params.has_key?("file") 
             # convert to json
-            json = RestClient.post "#{settings.config[:dwc_services]}/api/v1/convert?from=#{params["type"]}&to=json&fixes=true", 
+            json = RestClient.post "#{settings.dwc_services}/api/v1/convert?from=#{params["type"]}&to=json&fixes=true", 
                                 params["file"][:tempfile].read, :content_type => params["file"][:type], :accept => :json
 
             if json[0] != '[' # cause it must be an array back
                 errors.push json
             else
                 # validate
-                validation = RestClient.post "#{settings.config[:dwc_services]}/api/v1/validate", json,
+                validation = RestClient.post "#{settings.dwc_services}/api/v1/validate", json,
                                     :content_type => params["file"][:type], :accept => :json
 
                 validation = JSON.parse(validation)
@@ -41,7 +41,7 @@ post '/:db/upload' do
                     }
                 else
                     # also convert to geojson, to integrate with the editor
-                    #geojson = RestClient.post "#{settings.config[:dwc_services]}/api/v1/convert?from=json&to=geojson", json,
+                    #geojson = RestClient.post "#{settings.dwc_services}/api/v1/convert?from=json&to=geojson", json,
                     #                            :content_type => params["file"][:type], :accept => :json
                     #File.open("#{file}.json",'w') { |f| f.write(json) }
                     #File.open("#{file}.geojson",'w') { |f| f.write(geojson) }
@@ -83,7 +83,7 @@ post '/:db/upload' do
               :contact => session[:user]["email"]
             }
         }
-        r=http_post("#{settings.config[:couchdb]}/#{params[:db]}/_bulk_docs",{"docs"=> data});
+        r=http_post("#{settings.couchdb}/#{params[:db]}/_bulk_docs",{"docs"=> data});
 
         view :inserted, {:count=>count,:species=>species.uniq,:db=>params[:db]}
     end

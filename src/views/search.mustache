@@ -6,13 +6,13 @@
     {{#to_profiles}}
     <p>
         {{#profiles}}
-        <a href="{{profiles}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}" class='btn btn-default'>
+        <a href="{{profiles_url}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}" class='btn btn-default'>
             <span class='glyphicon glyphicon-leaf'></span>
             {{strings.profile}} <i>{{scientificNameWithoutAuthorship}}</i>
         </a>
         {{/profiles}}
         {{#assessment}}
-        <a href="{{assessment}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}" class='btn btn-default'>
+        <a href="{{assessments_url}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}" class='btn btn-default'>
             <span class='glyphicon glyphicon-record'></span>
             {{strings.assessment}} <i>{{scientificNameWithoutAuthorship}}</i>
         </a>

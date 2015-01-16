@@ -62,7 +62,7 @@ get '/:db/search' do
 
         if occ.has_key?("validation")
 
-            if occ["validation"]["status"].nil?
+            if occ["validation"].has_key?("taxonomy")
                if (occ["validation"]["taxonomy"].nil? || occ["validation"]["taxonomy"] == 'valid') && 
                   (occ["validation"]["georeference"].nil? || occ['validation']['georeference'] == 'valid') &&
                   (occ['validation']['native'] != 'non-native') &&
@@ -94,6 +94,9 @@ get '/:db/search' do
                     not_validated += 1
                 end
             else
+                occ["valid"] = false
+                occ["invalid"] = false
+                not_validated += 1
                 to_calc.push occ
             end
 

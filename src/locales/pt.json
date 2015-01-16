@@ -129,5 +129,8 @@
     "identificationDate":"Data de identificação",
     "checklist":"Recorte",
     "checklists":"Recortes",
-    "welcome":"Bem vindo"
+    "welcome":"Bem vindo",
+    "day":"Dia",
+    "month":"Mês",
+    "year":"Ano"
 } 

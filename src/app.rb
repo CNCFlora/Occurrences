@@ -51,7 +51,7 @@ end
 
 get '/' do
   if session[:logged] && params[:back_to] then
-    redirect params[:back_to]
+    redirect "#{settings.base}#{ params[:back_to] }"
   elsif session[:logged] then
     dbs=[]
     all=http_get("#{ settings.couchdb }/_all_dbs")

@@ -174,8 +174,8 @@ get '/:db/search' do
                 eoo_j = RestClient::Request.execute(:method=>:post,:url=> "#{settings.dwc_services}/api/v1/analysis/eoo",
                                :payload=>JSON.dump(to_send), :headers=>{ :content_type => "json", :accept => :json }, :timeout => 15)
                 eoo_r = JSON.parse(eoo_j)
-                eoo_meters = eoo_r["area"]
-                eoo_kmeters = (eoo_meters.to_f).round(2)
+                eoo_meters = eoo_r["area"]*1000
+                eoo_kmeters = (eoo_meters.to_f/1000).round(2)
                 eoo_poli = {"type"=>"Feature","geometry"=> eoo_r["polygon"] }.to_json
                 eoo = "#{eoo_kmeters.to_s.reverse.gsub(".",",").gsub(/(\d{3})(?=\d)/, '\\1.').reverse}km²"
             rescue Exception => e
@@ -186,7 +186,7 @@ get '/:db/search' do
                 aoo_j = RestClient::Request.execute(:method=>:post,:url=> "#{settings.dwc_services}/api/v1/analysis/aoo",
                                :payload=>JSON.dump(to_send), :headers=>{ :content_type => "json", :accept => :json }, :timeout => 15)
                 aoo_r = JSON.parse(aoo_j)
-                aoo_meters = aoo_r["area"]
+                aoo_meters = aoo_r["area"]*1000
                 aoo_kmeters = (aoo_meters.to_f/1000).round(2)
                 aoo_poli = {"type"=>"Feature","geometry"=> aoo_r["polygon"] }.to_json
                 aoo = "#{aoo_kmeters.to_s.reverse.gsub(".",",").gsub(/(\d{3})(?=\d)/, '\\1.').reverse}km²"

@@ -29,31 +29,6 @@ end
 
 set :cache,{}
 
-def es_index(db,doc)
-  settings = Sinatra::Application.settings
-  redoc = doc.clone
-  redoc["id"] = doc["_id"]
-  redoc["rev"] = doc["_rev"]
-  redoc.delete("_id")
-  redoc.delete("_rev")
-  redoc.delete("_attachments")
-  type = doc["metadata"]["type"]
-  r = http_post("#{settings.elasticsearch}/#{db}/#{type}/#{URI.encode(redoc["id"])}",redoc)
-  if r.has_key?("error")
-    puts "index err = #{r}"
-  end
-end
-
-def index(db,doc)
-  es_index(db,doc)
-  sleep 1
-end
-
-def index_bulk(db,docs)
-  docs.each{|doc| es_index(db,doc) }
-  sleep 1
-end
-
 def view(page,data)
     @config = settings.config
     @session_hash = {:logged => session[:logged] || false, :user => session[:user] || {}, :user_json => session[:user].to_json }

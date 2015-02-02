@@ -8,7 +8,7 @@ gem 'sinatra-contrib'
 gem 'sinatra-mustache'
 gem 'sinatra-config-file'
 
-gem 'cncflora_commons', '0.0.36'
+gem 'cncflora_commons', '0.0.37'
 
 gem 'rest-client'
 

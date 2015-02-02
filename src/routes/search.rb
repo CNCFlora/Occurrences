@@ -56,7 +56,7 @@ get '/:db/search' do
             not_reviewed += 1 
         end
 
-        if occ.has_key?("verbatimValidation") && !occ.has_key?("validation")
+        if occ.has_key?("verbatimValidation") && ( !occ.has_key?("validation") || occ["validation"] == {})
             occ["validation"] = occ["verbatimValidation"];
         end
 
@@ -73,6 +73,7 @@ get '/:db/search' do
                 else
                     occ["validation"]["status"]='invalid';
                 end
+            else
             end
 
             if occ["validation"].has_key?("status")

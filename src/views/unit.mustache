@@ -196,6 +196,11 @@
         {{/role-analyst}}
         <strong>{{strings.validation-by}}</strong> {{validation.by}} <br />
             Taxonomy {{validation.taxonomy}} <br />
+            {{#georeference-invalid}}
+            {{#role-sig}}
+            <span class="label label-warning glyphicon glyphicon-globe"> CHECK GEO</span>
+            {{/role-sig}}
+            {{/georeference-invalid}}
             Georeference {{validation.georeference}} <br />
             Presence {{validation.presence}} <br />
             Native {{validation.native}} <br />

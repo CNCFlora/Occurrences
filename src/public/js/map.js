@@ -106,37 +106,5 @@ var map = function() {
         location.hash="";
     });
 
-    $("#download-csv").click(function(){
-        var csvContent = "data:text/csv;charset=utf8,";
-
-        var fields = [];
-        if(calc.length >= 1) {
-            for(var k in calc[0]) {
-                if(typeof calc[0][k] == 'string') {
-                    fields.push(k);
-                }
-            }
-        }
-        console.log(fields);
-
-        csvContent += "\""+fields.join("\";\"")+"\"\n";
-        for(var i in calc) {
-            var vals = []
-            for(var ii in fields) {
-                var f = fields[ii];
-                if(typeof calc[i][f] == 'string') {
-                    vals.push(calc[i][f].replace("\n","").replace(/'/g,"").replace(/"/g,""));
-                } else {
-                    vals.push('');
-                }
-            }
-            csvContent += "\""+vals.join("\";\"")+"\"\n";
-        }
-
-        var encodedUri = encodeURI(csvContent);
-        $(this).attr("href",encodedUri);
-        return true;
-    });
-
 };
 

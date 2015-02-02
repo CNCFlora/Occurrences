@@ -33,7 +33,7 @@
                 <span class='glyphicon glyphicon-edit'></span>
                 {{strings.table-editor}}
             </a>
-            <a href='blob:data' download='data.csv' id="download-csv" class='btn btn-default btn-small'>
+            <a href='{{base}}/{{db}}/search?csv=true&q={{query}}' class='btn btn-default btn-small'>
                 <span class='glyphicon glyphicon-arrow-down'></span>
                 {{strings.valid-csv}}
             </a>

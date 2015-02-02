@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     backports (3.6.4)
-    cncflora_commons (0.0.37)
+    cncflora_commons (0.0.38)
     diff-lcs (1.2.5)
     kgio (2.9.3)
     mime-types (2.4.3)
@@ -63,7 +63,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cncflora_commons (= 0.0.37)
+  cncflora_commons (= 0.0.38)
   rack-test
   rest-client
   rspec

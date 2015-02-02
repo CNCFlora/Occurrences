@@ -38,9 +38,9 @@ def view(page,data)
     if session[:logged] 
       if data[:db] 
         session[:user]['roles'].each do | role |
-          if role['context'].downcase == data[:db].downcase
+          if role['context'].downcase.strip == data[:db].downcase.strip
             role['roles'].each do | role |
-              @session_hash["role-#{role['role'].downcase}"] = true
+              @session_hash["role-#{role['role'].downcase.strip}"] = true
             end
           end
         end

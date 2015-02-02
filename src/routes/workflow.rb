@@ -7,11 +7,11 @@ get '/:db/workflow' do
         ents=[]
 
         session[:user]["roles"].each {|ctx|
-            if ctx["context"] == params[:db] then
+            if ctx["context"].strip == params[:db].strip then
               ctx["roles"].each {|r|
                 if r.has_key? "entities" then
                     r["entities"].each {|e|
-                        ents.push(e.upcase)
+                        ents.push(e.upcase.strip)
                     }
                 end
               }

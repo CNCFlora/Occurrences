@@ -6,7 +6,6 @@ describe "Test validation system" do
     before (:each) do 
       before_each() 
       post "/cncflora_test/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_longiflora_test.xlsx"), "type"=>"xlsx"
-      sleep 1
     end
 
     after (:each) do after_each() end
@@ -50,7 +49,6 @@ describe "Test validation system" do
         }
 
         post "/cncflora_test/occurrences/#{id1}/validate", validation
-        sleep 1
         follow_redirect!
 
         # after first validation: 1 occ valid
@@ -70,7 +68,6 @@ describe "Test validation system" do
         }
 
         post "/cncflora_test/occurrences/#{id1}/validate", validation
-        sleep 1
         follow_redirect!
 
         # after second validation: 1 invalid

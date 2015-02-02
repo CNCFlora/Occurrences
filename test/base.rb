@@ -15,12 +15,13 @@ end
 
 def before_each()
     uri = "#{ Sinatra::Application.settings.couchdb }/cncflora_test"
+    uri2 = "#{ Sinatra::Application.settings.elasticsearch }/cncflora_test"
 
-    docs = http_get("#{uri}/_all_docs")["rows"]
+    docs = http_get("#{uri}/_all_docs?include_docs=true")["rows"]
     docs.each{ |e|
-        deleted = http_delete( "#{uri}/#{e["id"]}?rev=#{e["value"]["rev"]}")
+        deleted = http_delete("#{uri}/#{e["id"]}?rev=#{e["value"]["rev"]}")
+        r=http_delete("#{uri2}/#{e["doc"]["metadata"]["type"]}/#{e["id"]}")
     }
-    sleep 1
 
     taxons = [
         {
@@ -76,20 +77,23 @@ def before_each()
 
     taxons.each do |taxon|
         doc = http_post(uri,taxon)
+        taxon["_id"] = doc["id"]
+        taxon["_rev"] = doc["rev"]
+        es_index("cncflora_test",taxon)
     end
 
     roles = [{:context=>"cncflora_test",:roles=>[{:role=>'analyst',:entities=>["ACANTHACEAE"]},{:role=>"sig",:entities=>["ACANTHACEAE"]},{:role=>"validator",:entities=>["ACANTHACEAE"]}]}].to_json
     post "/login", { :user => "{\"name\":\"Diogo\", \"email\":\"diogo@cncflora.net\",\"roles\":#{roles}}"}
 
-    sleep 1
 end
 
 def after_each()
     uri = "#{ Sinatra::Application.settings.couchdb }/cncflora_test"
+    uri2 = "#{ Sinatra::Application.settings.elasticsearch }/cncflora_test"
 
-    docs = http_get("#{uri}/_all_docs")["rows"]
+    docs = http_get("#{uri}/_all_docs?include_docs=true")["rows"]
     docs.each{ |e|
-        deleted = http_delete( "#{uri}/#{e["id"]}?rev=#{e["value"]["rev"]}")
+        deleted = http_delete("#{uri}/#{e["id"]}?rev=#{e["value"]["rev"]}")
+        r=http_delete("#{uri2}/#{e["doc"]["metadata"]["type"]}/#{e["id"]}")
     }
-    sleep 1
 end

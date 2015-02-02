@@ -9,7 +9,6 @@ describe "Simple search?" do
 
     it "Gets specie by name" do
         post "/cncflora_test/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_longiflora_test.xlsx"), "type"=>"xlsx"
-        sleep 1
 
         taxon= "Aphelandra%20longiflora"
         get "/cncflora_test/specie/#{taxon}"

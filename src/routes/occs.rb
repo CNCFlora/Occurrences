@@ -8,7 +8,7 @@ post '/:db/occurrences/:id/sig' do
         doc["validation"] = {}
     end
 
-    doc[:georeferencedBy] = session[:user]["name"]
+    doc["georeferencedBy"] = session[:user]["name"]
     doc["georeferenceVerificationStatus"] = params[:status]
     doc["georeferenceRemarks"] = params[:comment]
     doc["decimalLatitude"] = params[:latitude].to_f
@@ -22,6 +22,7 @@ post '/:db/occurrences/:id/sig' do
     end
 
     r = http_post("#{settings.couchdb}/#{params[:db]}",doc)
+    index(params[:db],doc)
 
     redirect "#{settings.base}/#{params[:db]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
@@ -32,7 +33,7 @@ post '/:db/occurrences/:id/analysis' do
     doc = http_get("#{settings.couchdb}/#{params[:db]}/#{params[:id]}")
 
     doc["comments"] = params[:comments]
-    #doc["identificationQualifier"] = params[:identificationQualifier]
+    doc["identificationQualifier"] = params[:identificationQualifier]
     doc["collectionCode"] = params[:collectionCode]
     doc["catalogNumber"] = params[:catalogNumber]
     doc["recordedBy"] = params[:recordedBy]
@@ -57,6 +58,8 @@ post '/:db/occurrences/:id/analysis' do
     end
 
     r = http_post("#{settings.couchdb}/#{params[:db]}",doc)
+    index(params[:db],doc)
+
     redirect "#{settings.base}/#{params[:db]}/search?q=#{URI.encode(params[:q])}#occ-#{params[:id]}-unit"
 end
 
@@ -87,7 +90,8 @@ post '/:db/occurrences/:id/validate' do
     end
 
     r = http_post("#{settings.couchdb}/#{params[:db]}",doc)
-    sleep 3
+    index(params[:db],doc)
+
     redirect "#{settings.base}/#{params[:db]}/search?q=#{URI.encode( params[:q] )}#occ-#{params[:id]}-unit"
 end
 

@@ -4,6 +4,7 @@ get '/:db/editor' do
 
     query = (params[:q] || "*").gsub("&quot","\"")
     occurrences = search(params[:db],"occurrence","#{query}")
+
     view :recline,{:occurrences=>occurrences,:query=>query,:db=>params[:db]}
 end
 
@@ -40,14 +41,14 @@ post "/:db/json" do
         keys << r['occurrenceID']
         keys << "#{ r['occurrenceID'] }.0"
     }
-    r = http_post("#{settings.couchdb}/#{params[:db]}/_all_docs",{:keys=>keys})
+    r = http_post("#{settings.couchdb}/#{params[:db]}/_all_docs?include_docs=true",{:keys=>keys})
     docs = []
 
     data.each{ |occ|
         r["rows"].each {|row|
             if row["id"] == occ["occurrenceID"] || row["id"] == "#{occ["occurrenceID"]}.0"
-                occ["_rev"] = row["value"]["rev"]
-                occ["_id"] = row["id"]
+                doc = row["doc"]
+
                 occ["metadata"]["modified"] = Time.now.to_i
 
                 if occ["metadata"]["contributor"].nil? then
@@ -58,12 +59,17 @@ post "/:db/json" do
                   occ["metadata"]["contact"] = "#{session[:user]['email']} ; #{occ["metadata"]["contact"]}"
                 end
 
-                docs << occ
+                occ.keys.each {|k|
+                  doc[k] = occ[k]
+                }
+
+                docs << doc 
             end
         }
     }
 
     r=http_post("#{settings.couchdb}/#{params[:db]}/_bulk_docs",{"docs"=> docs});
+    index_bulk(params[:db],docs)
 
     query = URI.encode(params[:q].gsub("&quot;","\""))
     redirect "#{settings.base}/#{params[:db]}/search?q=#{query}"

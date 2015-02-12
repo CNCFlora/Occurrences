@@ -30,6 +30,13 @@ get '/:db/search' do
         occ["taxon"] = {}
         species.each {|s|
             if s["scientificNameWithoutAuthorship"] == occ["scientificName"] or s["scientificName"] == occ["scientificName"]
+                  if s["taxonomicStatus"] == 'synonym'
+                    species.each { |ss| 
+                      if s["acceptedNameUsage"] == ss["scientificName"] || s["acceptedNameUsage"] == "#{ss["scientificNameWithoutAuthorship"]} #{ss["scientificNameAuthorship"]}"
+                        s = ss
+                      end
+                    }
+                  end
                 occ["taxon"] = s
             end
         }
@@ -133,20 +140,29 @@ get '/:db/search' do
           end
         }
         occurrences.each {|o|
+            o["can_validate"]=false
             if !o['family'].nil? && ents.include?(o['family'].upcase)
                 o["can_validate"] = true
             end
             if !o['scientificName'].nil? && ents.include?(o['scientificName'].upcase)
                 o["can_validate"] = true
             end
-            if o.has_key?(:taxon)
-                if !o[:taxon]['scientificNameWithoutAuthorship'].nil? && ents.include?(o[:taxon]['scientificNameWithoutAuthorship'].upcase)
+            if o.has_key?("taxon")
+                if !o["taxon"]['scientificNameWithoutAuthorship'].nil? && ents.include?(o["taxon"]['scientificNameWithoutAuthorship'].upcase)
                     o["can_validate"] = true
                 end
-                o[:taxon]['acceptedNameUsage'] = o[:taxon]['acceptedNameUsage'].gsub(o[:taxon]["scientificNameAuthorship"],"");
-                if !o[:taxon]['acceptedNameUsage'].nil? && ents.include?(o[:taxon]['acceptedNameUsage'].upcase)
+
+                if o["taxon"].has_key?('family') && !o["taxon"]["family"].nil? && ents.include?(o["taxon"]['family'].upcase)
                     o["can_validate"] = true
                 end
+                if o["taxon"].has_key?("acceptedNameUsage") && !o["taxon"]['acceptedNameUsage'].nil?
+                  o["taxon"]['acceptedNameUsage'] = o["taxon"]['acceptedNameUsage'].gsub(o["taxon"]["scientificNameAuthorship"],"");
+                  if !o["taxon"]['acceptedNameUsage'].nil? && ents.include?(o["taxon"]['acceptedNameUsage'].upcase)
+                      o["can_validate"] = true
+                  end
+                end
+            end
+            if o["can_validate"] == false
             end
         }
     end

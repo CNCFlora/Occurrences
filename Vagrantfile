@@ -19,9 +19,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     d.run "cncflora/connect", name: "connect", args: "-P -v /var/connect:/var/floraconnect:rw"
     d.run "cncflora/elasticsearch", name: "elasticsearch",args: "-p 9200"
     d.run "cncflora/couchdb", name: "couchdb", args: "-P --link elasticsearch:elasticsearch -v /var/couchdb:/var/lib/couchdb:rw"
-    d.run "cncflora/dwc-services", name: "dwc-services", args: "-P"
-    d.run "cncflora/floradata", name: "floradata", args: "-P"
-    d.run "cncflora/checklist", name: "checklist", args: "-P"
+#d.run "cncflora/dwc-services", name: "dwc-services", args: "-P"
+#d.run "cncflora/floradata", name: "floradata", args: "-P"
+#d.run "cncflora/checklist", name: "checklist", args: "-P"
   end
 
   config.vm.provision :shell, :path => "vagrant.sh"

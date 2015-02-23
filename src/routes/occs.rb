@@ -45,7 +45,7 @@ post '/:db/occurrences/:id/analysis' do
     doc["locality"] = params[:locality]
     doc["municipality"] = params[:municipality]
     doc["stateProvince"] = params[:stateProvince]
-    doc["identificationDate"] = params[:identificationDate]
+    doc["dateIdentified"] = params[:dateIdentified]
     doc["decimalLatitude"] = params[:decimalLatitude]
     doc["decimalLongitude"] = params[:decimalLongitude]
     doc["remarks"] = params[:remarks]

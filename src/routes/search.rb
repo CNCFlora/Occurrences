@@ -25,6 +25,7 @@ get '/:db/search' do
     to_calc=[]
 
     occurrences.each{ |occ| 
+        occ["occurrenceID"] = occ["id"] 
         occ["occurrenceID2"] = i
 
         occ["taxon"] = {}

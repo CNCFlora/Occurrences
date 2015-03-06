@@ -251,7 +251,7 @@ get '/:db/search' do
     elsif params[:csv]
       content_type 'application/csv'
       attachment 'ocorrencias.csv'
-      RestClient.post "#{settings.dwc_services}/api/v1/convert?from=json&to=csv&fixes=true",
+      RestClient.post "#{settings.dwc_services}/api/v1/convert?from=json&to=csv",
                         data[:result].to_json, :content_type => :json
 
     else

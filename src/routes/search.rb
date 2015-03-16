@@ -39,6 +39,7 @@ get '/:db/search' do
                     }
                   end
                 occ["taxon"] = s
+                occ["acceptedNameUsage"] = s["acceptedNameUsage"]
             end
         }
 

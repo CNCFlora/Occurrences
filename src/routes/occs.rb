@@ -2,7 +2,7 @@
 post '/:db/occurrences/:id/sig' do
     require_logged_in
     
-    doc = http_get("#{settings.couchdb}/#{params[:db]}/#{params[:id]}")
+    doc = http_get("#{settings.couchdb}/#{params[:db]}/#{URI.encode( params[:id] )}")
 
     if !doc.has_key?("validation") 
         doc["validation"] = {}
@@ -30,7 +30,7 @@ end
 post '/:db/occurrences/:id/analysis' do
     require_logged_in
 
-    doc = http_get("#{settings.couchdb}/#{params[:db]}/#{params[:id]}")
+    doc = http_get("#{settings.couchdb}/#{params[:db]}/#{URI.encode( params[:id] )}")
 
     doc["comments"] = params[:comments]
     doc["identificationQualifier"] = params[:identificationQualifier]
@@ -67,8 +67,7 @@ end
 post '/:db/occurrences/:id/validate' do
     require_logged_in
 
-    doc = http_get("#{settings.couchdb}/#{params[:db]}/#{params[:id]}")
-   
+    doc = http_get("#{settings.couchdb}/#{params[:db]}/#{URI.encode( params[:id] )}")
 
     doc["validation"] = {
         "taxonomy"=>params[:taxonomy],

@@ -15,6 +15,7 @@ get "/:db/json" do
 
     occurrences = []
     search(params[:db],"occurrence","#{query}").each {|occ|
+        occ["occurrenceID"] = occ["id"]
         occ["decimalLatitude"] = occ["decimalLatitude"].to_f
         occ["decimalLongitude"] = occ["decimalLongitude"].to_f
         occurrences << occ;
@@ -24,6 +25,8 @@ get "/:db/json" do
     if params[:callback]
         r << params[:callback]
         r << "("
+    else
+      content_type 'application/json'
     end
     r << occurrences.to_json
     if params[:callback]
@@ -44,9 +47,13 @@ post "/:db/json" do
     r = http_post("#{settings.couchdb}/#{params[:db]}/_all_docs?include_docs=true",{:keys=>keys})
     docs = []
 
+    puts data
+
     data.each{ |occ|
         r["rows"].each {|row|
+          puts row
             if row["id"] == occ["occurrenceID"] || row["id"] == "#{occ["occurrenceID"]}.0"
+              puts "got"
                 doc = row["doc"]
 
                 occ["metadata"]["modified"] = Time.now.to_i
@@ -69,6 +76,7 @@ post "/:db/json" do
     }
 
     r=http_post("#{settings.couchdb}/#{params[:db]}/_bulk_docs",{"docs"=> docs});
+    puts "rrrr=#{r}"
     index_bulk(params[:db],docs)
 
     query = URI.encode(params[:q].gsub("&quot;","\""))

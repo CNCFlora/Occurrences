@@ -1,76 +1,4 @@
 
-get '/:db/search' do
-    require_logged_in
-
-    query = (params[:q] || "Aphelandra longiflora").gsub("&quot","\"")
-
-    species = search(params[:db],"taxon",query)
-
-    profiles = species.select {|doc| doc['taxonomicStatus']=='accepted'}
-
-    occurrences = search(params[:db],"occurrence",query).sort_by {|x| x["occurrenceID"]}
-
-    valid=0
-    invalid=0
-    reviewed=0
-    validated=0
-    not_reviewed=0
-    not_validated=0
-    eoo="n/a"
-    aoo="n/a"
-    eoo_poli="null"
-    aoo_poli="null"
-    i=0
-
-    to_calc=[]
-
-    occurrences.each{ |occ| 
-        occ["occurrenceID"] = occ["id"] 
-        occ["occurrenceID2"] = i
-
-        occ["taxon"] = {}
-        species.each {|s|
-            if s["scientificNameWithoutAuthorship"] == occ["scientificName"] or s["scientificName"] == occ["scientificName"]
-                  if s["taxonomicStatus"] == 'synonym'
-                    species.each { |ss| 
-                      if s["acceptedNameUsage"] == ss["scientificName"] || s["acceptedNameUsage"] == "#{ss["scientificNameWithoutAuthorship"]} #{ss["scientificNameAuthorship"]}"
-                        s = ss
-                      end
-                    }
-                  end
-                occ["taxon"] = s
-                occ["acceptedNameUsage"] = s["acceptedNameUsage"]
-            end
-        }
-
-        if occ.has_key?("decimalLatitude")
-            if occ["decimalLatitude"] == 0.0
-                occ.delete("decimalLatitude")
-            end
-        end
-        if occ.has_key?("decimalLongitude")
-            if occ["decimalLongitude"] == 0.0
-                occ.delete("decimalLongitude")
-            end
-        end
-
-        if occ.has_key?("georeferenceVerificationStatus") 
-            reviewed += 1
-            if occ["georeferenceVerificationStatus"] == "1" || occ["georeferenceVerificationStatus"] == "ok" then
-                occ["sig-ok"]=true;
-            else
-                occ["sig-ok"]=false;
-            end
-        else
-            not_reviewed += 1 
-        end
-
-        if occ.has_key?("verbatimValidation") && ( !occ.has_key?("validation") || occ["validation"] == {})
-            occ["validation"] = occ["verbatimValidation"];
-        end
-
-        if occ.has_key?("validation")
-
             if occ["validation"].has_key?("taxonomy")
                if (occ["validation"]["taxonomy"].nil? || occ["validation"]["taxonomy"] == 'valid') && 
                   (occ["validation"]["georeference"].nil? || occ['validation']['georeference'] == 'valid') &&
@@ -169,16 +97,7 @@ get '/:db/search' do
         }
     end
 
-    @cache = settings.cache
-    if @cache[JSON.dump(to_calc)] then
-      c=@cache[JSON.dump(to_calc)];
-      eoo_meters=c["eoo_meters"]
-      aoo_meters=c["aoo_meters"]
-      eoo_poli=c["eoo_poli"]
-      aoo_poli=c["aoo_poli"]
-      eoo=c["eoo"]
-      aoo=c["aoo"]
-    elsif to_calc.length >= 1 
+    if to_calc.length >= 1 
         to_send=[]
         to_calc.each {|o|
             if o.has_key?("decimalLatitude") and o.has_key?("decimalLongitude") and o["decimalLatitude"] != nil and o["decimalLongitude"] != nil and o["sig-ok"] == true 

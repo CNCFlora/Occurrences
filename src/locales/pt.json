@@ -132,5 +132,7 @@
     "welcome":"Bem vindo",
     "day":"Dia",
     "month":"Mês",
-    "year":"Ano"
+    "year":"Ano",
+    "user":"Usuário",
+    "none":"Nenhum"
 } 

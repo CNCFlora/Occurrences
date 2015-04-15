@@ -2,12 +2,11 @@
 $(function(){
 
     Connect({
-        onlogin: function(user) {
-            if(!logged) {
-                $.post(base+'/login','user='+JSON.stringify(user),function(){
-                    location.reload();
-                });
-            }
+        onlogin: function(nuser) {
+              if(logged && nuser.email == user.email) return;
+              $.post(base+'/login','user='+JSON.stringify(nuser),function(){
+                  location.reload();
+              });
         },
         onlogout: function(nothing){
             if(logged) {

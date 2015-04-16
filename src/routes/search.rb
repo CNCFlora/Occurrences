@@ -171,8 +171,8 @@ get '/:db/search' do
 
     eoo_meters="n/a"
     aoo_meters="n/a"
-    eoo_poli=nil
-    aoo_poli=nil
+    eoo_poli="null"
+    aoo_poli="null"
     eoo="n/a"
     aoo="n/a"
 

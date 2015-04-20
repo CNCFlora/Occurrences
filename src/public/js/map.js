@@ -25,6 +25,7 @@ var map = function() {
         if(!feature.decimalLatitude || !feature.decimalLongitude) continue;
         if(feature.decimalLatitude == 0.0 || feature.decimalLongitude == 0.0) continue;
 
+
         var marker = L.marker(new L.LatLng(feature.decimalLatitude,feature.decimalLongitude));
         marker.bindPopup(document.getElementById("occ-"+feature.occurrenceID+"-unit").innerHTML);
 
@@ -75,8 +76,8 @@ var map = function() {
         'Non-validated points clustered': markersUnk
     };
 
-    if(typeof eoo == 'object') {
-        var eool = L.geoJson(eoo).addTo(map);
+    if(typeof eoo == 'object' && typeof eoo.geometry == 'object' && eoo.geometry != null) {
+        var eool = L.geoJson(eoo.geometry).addTo(map);
         layers.EOO = eool
     }
 

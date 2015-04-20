@@ -143,6 +143,9 @@ get '/:db/search' do
         }
         occurrences.each {|o|
             o["can_validate"]=false
+            if ents.include?("all") 
+              o["can_validate"]=true
+            end
             if !o['family'].nil? && ents.include?(o['family'].upcase)
                 o["can_validate"] = true
             end
@@ -193,7 +196,7 @@ get '/:db/search' do
                 eoo_r = JSON.parse(eoo_j)
                 eoo_meters = eoo_r["area"]*1000
                 eoo_kmeters = (eoo_meters.to_f/1000).round(2)
-                eoo_poli = {"type"=>"Feature","geometry"=> eoo_r["polygon"] }.to_json
+                eoo_poli = {"type"=>"Feature","geometry"=> eoo_r["geo"] }.to_json
                 eoo = "#{eoo_kmeters.to_s.reverse.gsub(".",",").gsub(/(\d{3})(?=\d)/, '\\1.').reverse}km²"
             rescue Exception => e
                 puts "EOO exception #{e.message}"
@@ -205,7 +208,7 @@ get '/:db/search' do
                 aoo_r = JSON.parse(aoo_j)
                 aoo_meters = aoo_r["area"]*1000
                 aoo_kmeters = (aoo_meters.to_f/1000).round(2)
-                aoo_poli = {"type"=>"Feature","geometry"=> aoo_r["polygon"] }.to_json
+                aoo_poli = {"type"=>"Feature","geometry"=> aoo_r["geo"] }.to_json
                 aoo = "#{aoo_kmeters.to_s.reverse.gsub(".",",").gsub(/(\d{3})(?=\d)/, '\\1.').reverse}km²"
             rescue Exception => e
                 puts "AOO exception #{e.message}"

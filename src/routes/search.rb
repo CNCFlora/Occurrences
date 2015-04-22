@@ -30,7 +30,7 @@ get '/:db/search' do
 
         occ["taxon"] = {}
         species.each {|s|
-            if s["scientificNameWithoutAuthorship"] == occ["scientificName"] or s["scientificName"] == occ["scientificName"]
+            if s["scientificNameWithoutAuthorship"] == occ["scientificName"] or s["scientificName"] == occ["scientificName"] or s["scientificName"] == occ["acceptedNameUsage"] or s["scientificNameWithoutAuthorship"] == occ["acceptedNameUsage"]
                   if s["taxonomicStatus"] == 'synonym'
                     species.each { |ss| 
                       if s["acceptedNameUsage"] == ss["scientificName"] || s["acceptedNameUsage"] == "#{ss["scientificNameWithoutAuthorship"]} #{ss["scientificNameAuthorship"]}"

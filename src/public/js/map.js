@@ -76,7 +76,7 @@ var map = function() {
         'Non-validated points clustered': markersUnk
     };
 
-    if(typeof eoo == 'object' && typeof eoo.geometry == 'object' && eoo.geometry != null) {
+    if(eoo != null && typeof eoo == 'object' && typeof eoo.geometry == 'object' && eoo.geometry != null) {
         var eool = L.geoJson(eoo.geometry).addTo(map);
         layers.EOO = eool
     }

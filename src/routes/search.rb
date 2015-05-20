@@ -8,7 +8,7 @@ get '/:db/search' do
 
     profiles = species.select {|doc| doc['taxonomicStatus']=='accepted'}
 
-    occurrences = search(params[:db],"occurrence",query).sort_by {|x| x["occurrenceID"]}
+    occurrences = search(params[:db],"occurrence",query).sort_by {|x| x["occurrenceID"] || x["id"] || "z" }
 
     valid=0
     invalid=0
@@ -29,6 +29,22 @@ get '/:db/search' do
         occ["occurrenceID2"] = i
 
         occ["taxon"] = {}
+
+        if !occ.has_key?("acceptedNameUsage") || occ["acceptedNameUsage"].nil?
+          if occ["scientificName"].index("f.")
+            idx = occ["scientificName"].index("f.") -2
+            occ["acceptedNameUsage"] = occ["scientificName"][0..idx]
+          end
+          if occ["scientificName"].index("subsp.")
+            idx = occ["scientificName"].index("subsp.") -2
+            occ["acceptedNameUsage"] = occ["scientificName"][0..idx]
+          end
+          if occ["scientificName"].index("var.")
+            idx = occ["scientificName"].index("var.") -2
+            occ["acceptedNameUsage"] = occ["scientificName"][0..idx]
+          end
+        end
+
         species.each {|s|
             if s["scientificNameWithoutAuthorship"] == occ["scientificName"] or s["scientificName"] == occ["scientificName"] or s["scientificName"] == occ["acceptedNameUsage"] or s["scientificNameWithoutAuthorship"] == occ["acceptedNameUsage"]
                   if s["taxonomicStatus"] == 'synonym'
@@ -112,7 +128,7 @@ get '/:db/search' do
 
             occ["validation"].keys.each {|k|
                 val = occ["validation"][k]
-                if val.class == String then
+                if val.class == String and k != "remarks" and k != 'by' then
                     occ["#{k}-#{val}"]=true;
                 end
             }
@@ -146,12 +162,15 @@ get '/:db/search' do
             if ents.include?("all") 
               o["can_validate"]=true
             end
+
             if !o['family'].nil? && ents.include?(o['family'].upcase)
                 o["can_validate"] = true
             end
+
             if !o['scientificName'].nil? && ents.include?(o['scientificName'].upcase)
                 o["can_validate"] = true
             end
+
             if o.has_key?("taxon")
                 if !o["taxon"]['scientificNameWithoutAuthorship'].nil? && ents.include?(o["taxon"]['scientificNameWithoutAuthorship'].upcase)
                     o["can_validate"] = true
@@ -160,8 +179,10 @@ get '/:db/search' do
                 if o["taxon"].has_key?('family') && !o["taxon"]["family"].nil? && ents.include?(o["taxon"]['family'].upcase)
                     o["can_validate"] = true
                 end
+
                 if o["taxon"].has_key?("acceptedNameUsage") && !o["taxon"]['acceptedNameUsage'].nil?
-                  o["taxon"]['acceptedNameUsage'] = o["taxon"]['acceptedNameUsage'].gsub(o["taxon"]["scientificNameAuthorship"],"");
+                  o["taxon"]['acceptedNameUsage'] = o["taxon"]['acceptedNameUsage'].gsub(o["taxon"]["scientificNameAuthorship"],"")
+
                   if !o["taxon"]['acceptedNameUsage'].nil? && ents.include?(o["taxon"]['acceptedNameUsage'].upcase)
                       o["can_validate"] = true
                   end
@@ -244,6 +265,9 @@ get '/:db/search' do
     elsif params[:csv]
       content_type 'application/csv'
       attachment 'ocorrencias.csv'
+      data[:result].each {|occ|
+        occ[:json] = nil
+      }
       RestClient.post "#{settings.dwc_services}/api/v1/convert?from=json&to=csv",
                         data[:result].to_json, :content_type => :json
     else

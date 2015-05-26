@@ -23,3 +23,7 @@ production:
     connect_url: "http://$HOST/connect"
     elasticsearch: "http://$HOST/elasticsearch"
     dwc_services: "http://$HOST/dwc_services"
+    assessments: "http://$HOST/assessments"
+    assessments_url: "http://$HOST/assessments"
+    profiles: "http://$HOST/profiles"
+    profiles_url: "http://$HOST/profiles"

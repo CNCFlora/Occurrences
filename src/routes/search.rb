@@ -31,17 +31,19 @@ get '/:db/search' do
         occ["taxon"] = {}
 
         if !occ.has_key?("acceptedNameUsage") || occ["acceptedNameUsage"].nil?
-          if occ["scientificName"].index("f.")
-            idx = occ["scientificName"].index("f.") -2
-            occ["acceptedNameUsage"] = occ["scientificName"][0..idx]
-          end
-          if occ["scientificName"].index("subsp.")
-            idx = occ["scientificName"].index("subsp.") -2
-            occ["acceptedNameUsage"] = occ["scientificName"][0..idx]
-          end
-          if occ["scientificName"].index("var.")
-            idx = occ["scientificName"].index("var.") -2
-            occ["acceptedNameUsage"] = occ["scientificName"][0..idx]
+          if occ.has_key?("scientificName") 
+            if occ["scientificName"].index("f.")
+              idx = occ["scientificName"].index("f.") -2
+              occ["acceptedNameUsage"] = occ["scientificName"][0..idx]
+            end
+            if occ["scientificName"].index("subsp.")
+              idx = occ["scientificName"].index("subsp.") -2
+              occ["acceptedNameUsage"] = occ["scientificName"][0..idx]
+            end
+            if occ["scientificName"].index("var.")
+              idx = occ["scientificName"].index("var.") -2
+              occ["acceptedNameUsage"] = occ["scientificName"][0..idx]
+            end
           end
         end
 

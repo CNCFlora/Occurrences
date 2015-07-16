@@ -17,20 +17,20 @@ test:
 homolog:
     lang: "pt"
     base: "/occurrences"
-    couchdb: 'http://jb048:5984'
-    connect: 'http://jb048/connect'
+    couchdb: 'http://jb048.jbrj.gov.br:5984'
+    connect: 'http://$HOST/connect'
     connect_url: 'http://$HOST/connect'
-    elasticsearch: 'http://jb048:9200'
+    elasticsearch: 'http://jb048.jbrj.gov.br:9200'
     dwc_services: "http://$HOST/dwc_services"
     assessments_url: "http://$HOST/assessments"
     profiles_url: "http://$HOST/profiles"
 production:
     lang: "pt"
     base: "/occurrences"
-    couchdb: 'http://jb049:5984'
-    connect: 'http://jb049/connect'
+    couchdb: 'http://jb049.jbrj.gov.br:5984'
+    connect: 'http://$HOST/connect'
     connect_url: 'http://$HOST/connect'
-    elasticsearch: 'http://jb049:9200'
+    elasticsearch: 'http://jb049.jbrj.gov.br:9200'
     dwc_services: "http://$HOST/dwc_services"
     assessments_url: "http://$HOST/assessments"
     profiles_url: "http://$HOST/profiles"

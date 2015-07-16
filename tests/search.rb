@@ -8,7 +8,7 @@ describe "Simple search?" do
     after (:each) do after_each() end
 
     it "Gets specie by name" do
-        post "/cncflora_test/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_longiflora_test.xlsx"), "type"=>"xlsx"
+        upload()
 
         taxon= "Aphelandra%20longiflora"
         get "/cncflora_test/specie/#{taxon}"

@@ -5,7 +5,7 @@ describe "Test analysis forms" do
 
     before (:each) do 
       before_each() 
-      post "/cncflora_test/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_longiflora_test.xlsx"), "type"=>"xlsx"
+      upload()
     end
 
     after (:each) do after_each() end

@@ -22,7 +22,7 @@ describe "Spreadsheet and csv upload" do
     end
 
     it "Does upload xlsx file" do
-        post "/cncflora_test/upload", "file" => Rack::Test::UploadedFile.new("test/aphelandra_longiflora_test.xlsx"), "type"=>"xlsx"
+        upload()
 
         expect(last_response.body).to have_tag("h2",:text=>"Registros de ocorrências inseridos: 3.")
         expect(last_response.body).to have_tag("a",:text=>"Aphelandra longiflora")

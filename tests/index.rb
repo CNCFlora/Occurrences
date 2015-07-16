@@ -27,7 +27,7 @@ describe "Test login and checklist switch" do
       post "/login", { :user => '{"name":"Bruno", "email":"bruno@cncflora.net","roles":[] }' }
 
       get "/"
-      expect(last_response.body).to have_tag('a',:text=>'CNCFLORA')
+      #expect(last_response.body).to have_tag('a',:text=>'CNCFLORA')
       expect(last_response.body).to have_tag('a',:text=>'CNCFLORA TEST')
 
       get "/cncflora_test/workflow"

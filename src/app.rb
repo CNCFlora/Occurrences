@@ -5,7 +5,8 @@ require 'sinatra'
 require 'sinatra/config_file'
 require 'sinatra/mustache'
 require "sinatra/reloader" if development?
-require 'cncflora_commons'
+
+require_relative 'commons'
 
 if development?
     also_reload "routes/*"

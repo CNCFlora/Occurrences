@@ -4,7 +4,6 @@ require_relative '../src/app'
 require 'rspec'
 require 'rack/test'
 require 'rspec-html-matchers'
-require 'cncflora_commons'
 
 include Rack::Test::Methods
 
@@ -100,4 +99,8 @@ def after_each()
         deleted = http_delete("#{uri}/#{e["id"]}?rev=#{e["value"]["rev"]}")
         r=http_delete("#{uri2}/#{e["doc"]["metadata"]["type"]}/#{e["id"]}")
     }
+end
+
+def upload()
+    post "/cncflora_test/upload", "file" => Rack::Test::UploadedFile.new("tests/aphelandra_longiflora_test.xlsx"), "type"=>"xlsx"
 end

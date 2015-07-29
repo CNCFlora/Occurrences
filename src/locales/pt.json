@@ -90,7 +90,7 @@
     "record-number":"Número de coletor",
     "collect-date":"Data da coleta",
     "collection-code":"Código da coleção",
-    "catalog-number":"Número de catalogo",
+    "catalog-number":"Número de catalogo/Código de barras",
     "identified-by":"Identificado por",
     "identification-date":"Data de identificação",
     "state":"Estado",
@@ -119,7 +119,7 @@
     "assessment":"Avaliação da espécie",
     "valid-csv":"CSV de pontos válidos",
     "collectionCode":"Código da coleção",
-    "catalogNumber":"Número de catalogo",
+    "catalogNumber":"Número de catalogo/Código de barras",
     "recordedBy":"Coletor",
     "recordNumber":"Número do coletor",
     "identifiedBy":"Identificador",
@@ -135,4 +135,4 @@
     "year":"Ano",
     "user":"Usuário",
     "none":"Nenhum"
-} 
+}

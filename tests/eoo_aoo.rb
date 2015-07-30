@@ -9,7 +9,6 @@ describe "Test EOO and AOO calculations" do
 
     it "EOO and AOO calcs" do
         pending("Not implemented")
-        this_should_not_get_executed
     end
 
 end

@@ -15,10 +15,16 @@ RSpec.configure do |config|
   config.include RSpecHtmlMatchers
 end
 
+def login_before_each()
+    roles = [{:context=>"cncflora_test",:roles=>[{:role=>'analyst',:entities=>["ACANTHACEAE"]},{:role=>"sig",:entities=>["ACANTHACEAE"]},{:role=>"validator",:entities=>["ACANTHACEAE"]}]}].to_json
+    post "/login", { :user => "{\"name\":\"Diogo\", \"email\":\"diogo@cncflora.net\",\"roles\":#{roles}}"}
+end
 
 def before_each()
     uri = "#{ Sinatra::Application.settings.couchdb }/cncflora_test"
     uri2 = "#{ Sinatra::Application.settings.elasticsearch }/cncflora_test"
+    http_put(uri, {})
+    http_put(uri2, {})
 
     docs = http_get("#{uri}/_all_docs?include_docs=true")["rows"]
     docs.each{ |e|
@@ -85,9 +91,6 @@ def before_each()
         es_index("cncflora_test",taxon)
     end
 
-    roles = [{:context=>"cncflora_test",:roles=>[{:role=>'analyst',:entities=>["ACANTHACEAE"]},{:role=>"sig",:entities=>["ACANTHACEAE"]},{:role=>"validator",:entities=>["ACANTHACEAE"]}]}].to_json
-    post "/login", { :user => "{\"name\":\"Diogo\", \"email\":\"diogo@cncflora.net\",\"roles\":#{roles}}"}
-
 end
 
 def after_each()
@@ -99,6 +102,8 @@ def after_each()
         deleted = http_delete("#{uri}/#{e["id"]}?rev=#{e["value"]["rev"]}")
         r=http_delete("#{uri2}/#{e["doc"]["metadata"]["type"]}/#{e["id"]}")
     }
+    http_delete(uri)
+    http_delete(uri2)
 end
 
 def upload()

@@ -3,9 +3,9 @@ require_relative 'base.rb'
 
 describe "Test login and checklist switch" do
 
-    #before (:each) do before_each() end
+    before (:each) do before_each() end
 
-    #after (:each) do after_each() end
+    after (:each) do after_each() end
 
     it "Gets login page." do
         get "/"

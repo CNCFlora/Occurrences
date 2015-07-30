@@ -3,7 +3,10 @@ require_relative 'base.rb'
 
 describe "Simple search?" do
 
-    before (:each) do before_each() end
+    before (:each) do 
+      before_each() 
+      login_before_each()
+    end
 
     after (:each) do after_each() end
 

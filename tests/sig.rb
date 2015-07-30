@@ -5,6 +5,7 @@ describe "Test GIS forms" do
 
     before (:each) do 
       before_each() 
+      login_before_each()
       upload()
     end
 

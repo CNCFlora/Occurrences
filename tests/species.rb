@@ -3,7 +3,11 @@ require_relative 'base.rb'
 
 describe "Species listing" do
 
-    before (:each) do before_each() ; sleep 1 end
+    before (:each) do 
+      before_each()
+      login_before_each()
+      sleep 1 
+    end
 
     after (:each) do after_each() end
 

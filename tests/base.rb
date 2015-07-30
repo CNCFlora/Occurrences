@@ -15,6 +15,9 @@ RSpec.configure do |config|
   config.include RSpecHtmlMatchers
 end
 
+# wait for elasticsearch
+sleep 5
+
 def login_before_each()
     roles = [{:context=>"cncflora_test",:roles=>[{:role=>'analyst',:entities=>["ACANTHACEAE"]},{:role=>"sig",:entities=>["ACANTHACEAE"]},{:role=>"validator",:entities=>["ACANTHACEAE"]}]}].to_json
     post "/login", { :user => "{\"name\":\"Diogo\", \"email\":\"diogo@cncflora.net\",\"roles\":#{roles}}"}

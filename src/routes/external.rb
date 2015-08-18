@@ -51,9 +51,7 @@ post "/:db/json" do
 
     data.each{ |occ|
         r["rows"].each {|row|
-          puts row
             if row["id"] == occ["occurrenceID"] || row["id"] == "#{occ["occurrenceID"]}.0"
-              puts "got"
                 doc = row["doc"]
 
                 occ["metadata"]["modified"] = Time.now.to_i
@@ -76,7 +74,6 @@ post "/:db/json" do
     }
 
     r=http_post("#{settings.couchdb}/#{params[:db]}/_bulk_docs",{"docs"=> docs});
-    puts "rrrr=#{r}"
     index_bulk(params[:db],docs)
 
     query = URI.encode(params[:q].gsub("&quot;","\""))

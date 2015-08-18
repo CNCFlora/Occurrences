@@ -1,4 +1,5 @@
 require 'uri'
+require 'cgi'
 require 'json'
 require 'net/http'
 require 'yaml'
@@ -84,7 +85,7 @@ def es_index(db,doc)
   redoc.delete("_rev")
   redoc.delete("_attachments")
   type = doc["metadata"]["type"]
-  r = http_post("#{settings.elasticsearch}/#{db}/#{type}/#{URI.encode(redoc["id"])}",redoc)
+  r = http_post("#{settings.elasticsearch}/#{db}/#{type}/#{CGI.escape(redoc["id"])}",redoc)
   if r.has_key?("error")
     puts "index err = #{r}"
   end

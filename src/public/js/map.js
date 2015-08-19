@@ -22,9 +22,19 @@ var map = function() {
     for(var i in occurrences) {
         var feature = occurrences[i];
 
+        if(typeof feature.decimalLatitude == 'undefined' || typeof feature.decimalLongitude == 'undefined') continue;
         if(!feature.decimalLatitude || !feature.decimalLongitude) continue;
-        if(feature.decimalLatitude == 0.0 || feature.decimalLongitude == 0.0) continue;
+        if(feature.decimalLatitude == null || feature.decimalLongitude == null) continue;
 
+        if(typeof feature.decimalLatitude == 'string') {
+          feature.decimalLatitude=parseFloat(feature.decimalLatitude);
+        }
+        if(typeof feature.decimalLongitude == 'string') {
+          feature.decimalLongitude=parseFloat(feature.decimalLongitude);
+        }
+
+        if(isNaN(feature.decimalLatitude) || isNaN(feature.decimalLongitude)) continue;
+        if(feature.decimalLatitude == 0.0 || feature.decimalLongitude == 0.0) continue;
 
         var marker = L.marker(new L.LatLng(feature.decimalLatitude,feature.decimalLongitude));
         marker.bindPopup(document.getElementById("occ-"+feature.occurrenceID+"-unit").innerHTML);

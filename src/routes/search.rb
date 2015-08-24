@@ -7,6 +7,9 @@ get '/:db/search' do
     species = search(params[:db],"taxon",query)
 
     profiles = species.select {|doc| doc['taxonomicStatus']=='accepted'}
+                      .map {|doc| doc['scientificNameWithoutAuthorship']}
+                      .uniq 
+                      .map {|name| {"scientificNameWithoutAuthorship"=>name}}
 
     occurrences = search(params[:db],"occurrence",query).sort_by {|x| x["occurrenceID"] || x["id"] || "z" }
 

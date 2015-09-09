@@ -1,12 +1,10 @@
-FROM cncflora/ruby
+FROM cncflora/apache
 
-RUN gem install bundler
+ADD composer.json /var/www/composer.json
+RUN composer self-update && composer install --no-dev
 
-ADD Gemfile /opt/app/Gemfile
-RUN bundle install
-
-EXPOSE 80
-CMD ["unicorn","-p","80"]
-
-ADD . /opt/app
+ADD config.yml /var/www/config.yml
+ADD resources /var/www/resources
+ADD html /var/www/html
+ADD src /var/www/src
 

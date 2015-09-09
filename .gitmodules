@@ -1,3 +1,0 @@
-[submodule "recline"]
-	path = src/public/recline
-	url = git://github.com/CNCFlora/recline-editor.git

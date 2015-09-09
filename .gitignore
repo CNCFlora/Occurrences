@@ -1,6 +1,6 @@
 .vagrant
 *.swp
-*.war
 *.log
 *~
-public/uploads/*
+vendor
+composer.phar

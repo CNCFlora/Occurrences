@@ -1,52 +1,47 @@
 occurrences:
-    build: "."
+    image: cncflora/apache
     ports:
         - 8081:80
     volumes:
-        - .:/opt/app
+        - .:/var/www
     links:
-        - elasticsearch:elasticsearch
-        - couchdb:couchdb
-        - connect:connect
+        - elasticsearch
+        - couchdb
+        - connect
         - dwcservices:dwc_services
     environment:
-        - RACK_ENV=development
+        - PHP_ENV=development
 elasticsearch:
     image: cncflora/elasticsearch
     ports:
-        - "9200:9200"
+        - 9200:9200
     volumes:
-        - "/var/data/elasticsearch/data:/usr/share/elasticsearch/data:rw"
+        - /var/data/elasticsearch/data:/usr/share/elasticsearch/data:rw
 couchdb:
     image: cncflora/couchdb
     ports:
-        - "5984:5984"
-        - "9001"
+        - 5984:5984
     volumes:
-        - "/var/data/couchdb:/var/lib/couchdb:rw"
-    links:
-        - "elasticsearch:elasticsearch"
+        - /var/data/couchdb:/var/lib/couchdb:rw
 connect:
     image: cncflora/connect
     ports:
-        - "8080:80"
+        - 8080:80
     volumes:
-        - "/var/data/connect:/var/floraconnect:rw"
+        - /var/data/connect:/var/floraconnect:rw
 dwcservices:
-    image: cncflora/dwc-services
+    image: diogok/dwc-services
     ports:
-        - "80"
+        - 80
 floradata:
     image: cncflora/floradata
-    environment:
-        SERVICE_80_CHECK_HTTP: /api/v1/families
     ports:
-        - "8181:80"
-        - "9005:9001"
+        - 8181:80
+        - 9005:9001
 checklist:
     image: cncflora/checklist
     ports:
-        - "8000:80"
+        - 8000:80
     links:
         - elasticsearch:elasticsearch
         - couchdb:couchdb

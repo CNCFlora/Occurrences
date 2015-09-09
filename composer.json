@@ -1,0 +1,22 @@
+{
+    "autoload": {
+        "psr-0": {
+            "cncflora":"src"
+        }
+    },
+    "require": {
+        "alexbilbie/proton": "~1.4",
+        "mustache/mustache": "dev-master",
+        "symfony/yaml": "2.5.*@dev",
+        "elasticsearch/elasticsearch": "~2.0",
+        "doctrine/couchdb": "@dev"
+    },
+    "require-dev": {
+        "jaz303/phake": "dev-master",
+        "phpunit/phpunit": "*",
+        "behat/behat": "2.4.*@stable",
+        "behat/mink": "1.4.*@stable",
+        "behat/mink-extension": "*",
+        "behat/mink-selenium2-driver": "*"
+    }
+}

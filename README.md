@@ -27,6 +27,14 @@ Start with git:
 
 The tasks are defined in the Makefile.
 
+Before first run:
+
+    $ make install-deps
+
+If you change composer.json
+
+    $ make update-deps
+
 To run the app in dev mode:
 
     $ make start # run in background
@@ -38,6 +46,7 @@ This will take a while the first time, as it download the needed services (like 
 Other relevant tasks:
 
     $ make test # run unit tests
+    $ make test-features # run behavior tests
     $ make build # builds docker container
     $ make push # pushes the container
 

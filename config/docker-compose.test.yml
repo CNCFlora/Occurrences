@@ -34,7 +34,7 @@ selenium:
 tester:
     image: cncflora/apache
     volumes:
-        - .:/var/www
+        - ..:/var/www
     links:
         - elasticsearch:elasticsearch
         - couchdb:couchdb

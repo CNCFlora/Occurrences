@@ -13,7 +13,7 @@ class Config {
     if(self::$configured) return;
     self::$config=new Config;
 
-    $raw = Yaml::parse(file_get_contents( __DIR__."/../../config.yml" ));
+    $raw = Yaml::parse(file_get_contents( __DIR__."/../../config/settings.yml" ));
     
     if(!defined('ENV')) {
       $env = getenv("PHP_ENV");

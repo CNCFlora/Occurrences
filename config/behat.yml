@@ -1,4 +1,7 @@
 default:
+    paths:
+        features: "../features"
+        bootstrap: "../features/bootstrap"
     context:
         class: 'FeatureContext'
     extensions:

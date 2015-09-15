@@ -27,10 +27,10 @@ test:
 	docker-compose -p $(project) -f config/docker-compose.test.yml run tester vendor/bin/phpunit tests
 
 test-features:
-	docker-compose -p $(project) -f config/docker-compose.test.yml run tester vendor/bin/behat 
+	docker-compose -p $(project) -f config/docker-compose.test.yml run tester vendor/bin/behat -c config/behat.yml
 
 build:
-	docker build -t cncflora/$(project) config
+	docker build -t cncflora/$(project) -f config/Dockerfile .
 
 push:
 	docker push cncflora/$(project)

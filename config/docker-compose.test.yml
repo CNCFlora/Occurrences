@@ -1,5 +1,6 @@
 occurrences2:
-    build: .
+    build: ../
+    dockerfile: config/Dockerfile
     ports:
       - 8888:80
     links:

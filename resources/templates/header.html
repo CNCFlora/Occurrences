@@ -7,11 +7,14 @@
     <link href="{{base}}/css/bootstrap.min.css" rel="stylesheet" >
     <link href="{{base}}/css/app.css" rel="stylesheet" >
     <script type="text/javascript">
-        var logged = {{{logged}}};
+      {{#logged}}
+        var logged =true; 
+      {{/logged}}
+      {{^logged}}
+        var logged = false;
+      {{/logged}}
         var connect = '{{connect_url}}';
         var base = '{{base}}';
-        {{#logged}} var user = {{{user_json}}}; {{/logged}}
-        {{^logged}} var user=null; {{/logged}}
     </script>
     <script src="{{base}}/js/jquery.min.js"></script>
     <script src="{{base}}/js/bootstrap.min.js"></script>

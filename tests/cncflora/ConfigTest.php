@@ -16,6 +16,11 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
     public function testConfig() {
         Config::config();
         $this->assertEquals(ENV,"test");
+        $this->assertEquals(Config::$_couchdb['host'],'couchdb');
+        $this->assertEquals(Config::$_couchdb['port'],'5984');
+
+        $client = Config::couchdb();
+        $this->assertEquals($client,$client);
     }
 
 }

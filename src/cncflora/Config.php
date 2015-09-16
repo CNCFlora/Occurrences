@@ -1,6 +1,6 @@
 <?php
-
 namespace cncflora;
+
 
 use Symfony\Component\Yaml\Yaml;
 
@@ -8,6 +8,7 @@ class Config {
 
   public static $configured;
   public static $config;
+  public static $_couchdb;
 
   public static function config() {
     if(self::$configured) return;
@@ -45,7 +46,17 @@ class Config {
 
     self::$config->strings = json_decode(file_get_contents(__DIR__."/../../resources/locales/".LANG.".json"));
 
+    $couchdb_parts = explode(":",self::$config->couchdb);
+    self::$_couchdb=array();
+    self::$_couchdb['host']=substr( $couchdb_parts[1] ,2);
+    self::$_couchdb['port']=$couchdb_parts[2];
+
     self::$configured=true;
+  }
+
+  public static function couchdb($db=''){
+    $opts = array_merge(self::$_couchdb,['dbname'=>$db]);
+    return \Doctrine\CouchDB\CouchDBClient::create($opts);
   }
 }
 

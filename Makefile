@@ -30,7 +30,7 @@ test-features:
 	docker-compose -p $(project) -f config/docker-compose.test.yml run tester vendor/bin/behat 
 
 build:
-	docker build -t cncflora/$(project) config
+	docker build -t cncflora/$(project) -f config/Dockerfile .
 
 push:
 	docker push cncflora/$(project)

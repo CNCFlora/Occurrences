@@ -7,9 +7,10 @@ describe "Test EOO and AOO calculations" do
 
     after (:each) do after_each() end
 
-    it "EOO and AOO calcs" do
-        pending("Not implemented")
-    end
+    it "EOO and AOO calcs"
+    #it "EOO and AOO calcs" do
+        #pending("Not implemented")
+    #end
 
 end
 

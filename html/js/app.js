@@ -1,24 +1,24 @@
 
 $(function(){
 
-    Connect({
-        onlogin: function(nuser) {
-              if(logged && nuser.email == user.email) return;
-              $.post(base+'/login','user='+JSON.stringify(nuser),function(){
-                  location.reload();
-              });
-        },
-        onlogout: function(nothing){
-            if(logged) {
-                $.post(base+'/logout',nothing,function(){
-                    location.reload();
-                });
-            }
-        }
-    });
+  Connect({
+    onlogin: function(nuser) {
+      if(logged && nuser.email == user.email) return;
+      $.post(base+'/login','user='+JSON.stringify(nuser),function(){
+        location.reload();
+      });
+    },
+    onlogout: function(nothing){
+      if(logged) {
+        $.post(base+'/logout',nothing,function(){
+          location.reload();
+        });
+      }
+    }
+  });
 
-    $("#login a").click(function(){ Connect.login(); });
-    $("#logout a").click(function(){ Connect.logout(); });
+  $("#login a").click(function(){ Connect.login(); });
+  $("#logout a").click(function(){ Connect.logout(); });
 
     if(typeof map == 'function') {
         map();

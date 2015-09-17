@@ -17,7 +17,12 @@ class FeatureContext extends MinkContext {
 
     /** @BeforeFeature */
     public static function prepareForTheFeature(){
-      // setup
+      \cncflora\Config::config();
+      $couchdb = \cncflora\Config::couchdb();
+      try {
+        $couchdb->createDatabase('cncflora1');
+        $couchdb->createDatabase('cncflora2');
+      }catch(Exception $e) {}
     }
 
     /**
@@ -46,7 +51,7 @@ class FeatureContext extends MinkContext {
         foreach($roles as $role) {
             $doc['roles'][0]['roles'][] = ['role'=>$role,'entities'=>[]];
         }
-        $this->getMainContext()->getSession()->executeScript('$.post("/login",JSON.stringify('.json_encode($doc).'),function(){})');
+        $this->getMainContext()->getSession()->executeScript('$.post("/login","user="+JSON.stringify('.json_encode($doc).'),function(){})');
         $this->getMainContext()->getSession()->wait(1500);
         $this->getMainContext()->getSession()->reload();
     }
@@ -62,7 +67,7 @@ class FeatureContext extends MinkContext {
         foreach($roles as $role) {
             $doc['roles'][0]['roles'][] =  ['role'=>$role,'entities'=>$ents] ;
         }
-        $this->getMainContext()->getSession()->executeScript('$.post("/login",JSON.stringify('.json_encode($doc).'),function(){})');
+        $this->getMainContext()->getSession()->executeScript('$.post("/login","user="+JSON.stringify('.json_encode($doc).'),function(){})');
         $this->getMainContext()->getSession()->wait(1500);
         $this->getMainContext()->getSession()->reload();
     }

@@ -11,10 +11,9 @@ class App {
 
     $r=new \Proton\Application;
 
-    $r->get("/",function($req,$res) {
-      $res->setContent('Hello, world!');
-      return $res;
-    });
+    $r->get("/",'\cncflora\controller\Home::index');
+    $r->post("/login",'\cncflora\controller\Home::login');
+    $r->post("/logout",'\cncflora\controller\Home::logout');
 
     $this->router = $r;
   }

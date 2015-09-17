@@ -21,6 +21,12 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 
         $client = Config::couchdb();
         $this->assertEquals($client,$client);
+
+        $client = Config::couchdb('db');
+        $this->assertEquals($client,$client);
+
+        $client = Config::elasticsearch();
+        $this->assertEquals($client,$client);
     }
 
 }

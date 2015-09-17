@@ -58,5 +58,12 @@ class Config {
     $opts = array_merge(self::$_couchdb,['dbname'=>$db]);
     return \Doctrine\CouchDB\CouchDBClient::create($opts);
   }
+
+  public static function elasticsearch() {
+    $client = \Elasticsearch\ClientBuilder::create()
+              ->setHosts([ELASTICSEARCH])
+              ->build();
+    return $client;
+  }
 }
 

@@ -51,6 +51,10 @@ post '/:db/occurrences/:id/analysis' do
     doc["bibliographicCitation"] = params[:bibliographicCitation]
     doc["remarks"] = params[:remarks]
 
+    # Clear "old" remarks field. These comments will be added to remarks in 
+    # this post
+    doc['occurrenceRemarks'] = ""
+
     doc["metadata"]["modified"] = Time.now.to_i
 
     if !doc["metadata"].has_key?("contributor") || !doc["metadata"]["contributor"].match(session[:user]['name']) then

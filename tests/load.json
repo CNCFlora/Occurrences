@@ -35,4 +35,40 @@
     ,"scientificNameWithoutAuthorship":"Vicia alba"
     ,"acceptedNameUsage":"Vicia faba E.Dalcin"
   }
+  ,{
+    "_id":"o0"
+    ,"metadata":{"type":"occurrence"}
+    ,"scientificName":"Aphelandra longiflora"
+  }
+  ,{
+    "_id":"o01"
+    ,"metadata":{"type":"occurrence"}
+    ,"scientificNameWithoutAuthorship":"Aphelandra longiflora S.Profice"
+  }
+  ,{
+    "_id":"o1"
+    ,"metadata":{"type":"occurrence"}
+    ,"scientificName":"Aphelandra longiflora S.Profice"
+  }
+  ,{
+    "_id":"o2"
+    ,"metadata":{"type":"occurrence"}
+    ,"acceptedNameUsage":"Aphelandra longiflora"
+  }
+  ,{
+    "_id":"o3"
+    ,"metadata":{"type":"occurrence"}
+    ,"genus":"Aphelandra"
+    ,"specificEpithet":"longiflora"
+  }
+  ,{
+    "_id":"o4"
+    ,"metadata":{"type":"occurrence"}
+    ,"scientificName":"Vicia faba"
+  }
+  ,{
+    "_id":"o5"
+    ,"metadata":{"type":"occurrence"}
+    ,"scientificName":"Vicia alba"
+  }
 ]

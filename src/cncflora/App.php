@@ -2,24 +2,17 @@
 
 namespace cncflora;
 
-class App {
+Config::config();
 
-  private $router=null;
+$r=new \Proton\Application;
 
-  function __construct() {
-    Config::config();
+$r->get("/",'\cncflora\controller\Home::index');
 
-    $r=new \Proton\Application;
+$r->post("/login",'\cncflora\controller\Home::login');
+$r->post("/logout",'\cncflora\controller\Home::logout');
 
-    $r->get("/",'\cncflora\controller\Home::index');
-    $r->post("/login",'\cncflora\controller\Home::login');
-    $r->post("/logout",'\cncflora\controller\Home::logout');
+$r->get("/{db}/families",'\cncflora\controller\Taxon::families');
+$r->get("/{db}/family/{family}",'\cncflora\controller\Taxon::family');
 
-    $this->router = $r;
-  }
-
-  function start() {
-    $this->router->run();
-  }
-}
+$r->run();
 

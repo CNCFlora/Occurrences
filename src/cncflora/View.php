@@ -21,6 +21,10 @@ class View {
       $this->props[$k] =$v;
     }
 
+    if(isset($this->props['db'])) {
+      $this->props['db_name']=strtoupper( str_replace("_"," ", $this->props['db']) );
+    }
+
     $iterator = new \DirectoryIterator(__DIR__."/../../resources/templates");
     foreach ($iterator as $file) {
       if($file->isFile() && preg_match("/\.html$/",$file->getFilename())) {

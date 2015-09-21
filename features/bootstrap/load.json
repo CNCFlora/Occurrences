@@ -1,0 +1,38 @@
+[
+  {
+    "_id":"t0"
+    ,"metadata":{"type":"taxon"}
+    ,"taxonomicStatus":"accepted"
+    ,"family":"ACANTHACEAE"
+    ,"scientificName":"Aphelandra longiflora S.Profice"
+    ,"scientificNameWithoutAuthorship":"Aphelandra longiflora"
+    ,"acceptedNameUsage":"Aphelandra longiflora S.Profice"
+  }
+  ,{
+    "_id":"t1"
+    ,"metadata":{"type":"taxon"}
+    ,"taxonomicStatus":"accepted"
+    ,"family":"Fabaceae "
+    ,"scientificName":"Vicia outra E.Dalcin"
+    ,"scientificNameWithoutAuthorship":"Vicia outra"
+    ,"acceptedNameUsage":"Vicia outra E.Dalcin"
+  }
+  ,{
+    "_id":"t2"
+    ,"metadata":{"type":"taxon"}
+    ,"taxonomicStatus":"accepted"
+    ,"family":"FABACEAE"
+    ,"scientificName":"Vicia faba E.Dalcin"
+    ,"scientificNameWithoutAuthorship":"Vicia faba"
+    ,"acceptedNameUsage":"Vicia faba E.Dalcin"
+  }
+  ,{
+    "_id":"t3"
+    ,"metadata":{"type":"taxon"}
+    ,"taxonomicStatus":"synonym"
+    ,"family":"LEGUMINOSA"
+    ,"scientificName":"Vicia alba E.Dalcin"
+    ,"scientificNameWithoutAuthorship":"Vicia alba"
+    ,"acceptedNameUsage":"Vicia faba E.Dalcin"
+  }
+]

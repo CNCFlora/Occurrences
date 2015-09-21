@@ -13,12 +13,12 @@ Feature: Homepage
 
   Scenario: I can login and see the checklists
     Given I am on "/"
-    Then I login as "Diogo", "diogo@diogok.net", "cncflora", "admin"
+    Then I login as "Diogo", "diogo@diogok.net", "TEST0", "admin"
     Then I should see "Logout"
     And I should not see "Login"
     And I should see "Bem vindo, Diogo."
     Then I reload the page
     And I should see "Bem vindo, Diogo."
-    And I should see "CNCFLORA1"
-    And I should see "CNCFLORA2"
+    And I should see "TEST1"
+    And I should see "TEST2"
 

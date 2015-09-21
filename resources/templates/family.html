@@ -6,28 +6,16 @@
         <thead>
             <tr>
                 <th>{{strings.specie}}</th>
-                <!--
-                <th>{{strings.reviewed}}</th>
-                <th>{{strings.validated}}</th>
-                <th>{{strings.total}}</th>
-                -->
             </tr>
         </thead>
         <tbody>
             {{#species}}
             <tr>
                 <td>
-                    <i>
-                        {{#permission}}<strong><span class='glyphicon glyphicon-chevron-right'></span>{{/permission}}
-                        <a href='{{base}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}'>{{scientificNameWithoutAuthorship}}</a>
-                        {{#permission}}</strong>{{/permission}}
-                </i> 
-                {{scientificNameAuthorship}}</td>
-                <!--
-                <td>{{reviewed}}</td>
-                <td>{{validated}}</td>
-                <td>{{total}}</td>
-                -->
+                  {{#permission}}<strong><span class='glyphicon glyphicon-chevron-right'></span>{{/permission}}
+                    <i><a href='{{base}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}'>{{scientificNameWithoutAuthorship}}</a></i>
+                  {{#permission}}</strong>{{/permission}}
+                  {{scientificNameAuthorship}}</td>
             </tr>
             {{/species}}
         </tbody>

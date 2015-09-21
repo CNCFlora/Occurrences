@@ -18,11 +18,41 @@ class FeatureContext extends MinkContext {
     /** @BeforeFeature */
     public static function prepareForTheFeature(){
       \cncflora\Config::config();
-      $couchdb = \cncflora\Config::couchdb();
-      try {
-        $couchdb->createDatabase('cncflora1');
-        $couchdb->createDatabase('cncflora2');
-      }catch(Exception $e) {}
+      $es = \cncflora\Config::elasticsearch();
+
+      try { $es->indices()->delete(['index'=>'test0']); }
+      catch(\Elasticsearch\Common\Exceptions\Missing404Exception $e) { }
+      try { $es->indices()->delete(['index'=>'test1']); }
+      catch(\Elasticsearch\Common\Exceptions\Missing404Exception $e) { }
+      try { $es->indices()->create(['index'=>'test0']); }
+      catch(Exception $e) { }
+      try { $es->indices()->create(['index'=>'test1']); }
+      catch(Exception $e) { }
+
+      $couchdb = \cncflora\config::couchdb();
+      try { $couchdb->deletedatabase('test0'); }
+      catch(exception $e) { }
+      try { $couchdb->deletedatabase('test1'); }
+      catch(exception $e) { }
+      try { $couchdb->createdatabase('test0'); }
+      catch(exception $e) { }
+      try { $couchdb->createdatabase('test1'); }
+      catch(exception $e) { }
+
+      $couchdb = \cncflora\config::couchdb('test0');
+
+      $docs = json_decode(file_get_contents(__DIR__."/load.json"),true);
+
+      foreach($docs as $doc) {
+        $c=$couchdb->postDocument($doc);
+        $a=$es->index([
+          'index'=>'test0',
+          'type'=>'taxon',
+          'id'=>$doc[ '_id' ],
+          'body'=>$doc
+        ]);
+      }
+      sleep(2);
     }
 
     /**

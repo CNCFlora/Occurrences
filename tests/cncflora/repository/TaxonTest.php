@@ -8,83 +8,11 @@ class TaxonTest extends \PHPUnit_Framework_TestCase {
 
     public static function setupBeforeClass() {
       \cncflora\Config::config();
-
-      $es = \cncflora\Config::elasticsearch();
-      try {
-        $es->indices()->delete(['index'=>'test']);
-      } catch(\Elasticsearch\Common\Exceptions\Missing404Exception $e) { }
-      try {
-        $es->indices()->create(['index'=>'test']);
-      }catch(Exception $e) {
-        vaR_dump($e);
-      }
-
-      $couchdb = \cncflora\Config::couchdb();
-      try {
-        $couchdb->deleteDatabase('test');
-      } catch(Exception $e) { }
-      try {
-        $couchdb->createDatabase('test');
-      } catch(Exception $e) {
-        var_dump($e);
-      }
-      $couchdb = \cncflora\Config::couchdb('test');
-
-      $docs = [
-        [
-          '_id'=>'t0'
-          ,'metadata'=>['type'=>'taxon']
-          ,'taxonomicStatus'=>'accepted'
-          ,'family'=>'ACANTHACEAE'
-          ,'scientificName'=>'Aphelandra longiflora S.Profice'
-          ,'scientificNameWithoutAuthorship'=>'Aphelandra longiflora'
-          ,'acceptedNameUsage'=>'Aphelandra longiflora S.Profice'
-        ]
-        ,[
-          '_id'=>'t1'
-          ,'metadata'=>['type'=>'taxon']
-          ,'taxonomicStatus'=>'accepted'
-          ,'family'=>'Fabaceae '
-          ,'scientificName'=>'Vicia outra E.Dalcin'
-          ,'scientificNameWithoutAuthorship'=>'Vicia outra'
-          ,'acceptedNameUsage'=>'Vicia outra E.Dalcin'
-        ]
-        ,[
-          '_id'=>'t2'
-          ,'metadata'=>['type'=>'taxon']
-          ,'taxonomicStatus'=>'accepted'
-          ,'family'=>'FABACEAE'
-          ,'scientificName'=>'Vicia faba E.Dalcin'
-          ,'scientificNameWithoutAuthorship'=>'Vicia faba'
-          ,'acceptedNameUsage'=>'Vicia faba E.Dalcin'
-        ]
-        ,[
-          '_id'=>'t3'
-          ,'metadata'=>['type'=>'taxon']
-          ,'taxonomicStatus'=>'synonym'
-          ,'family'=>'LEGUMINOSA'
-          ,'scientificName'=>'Vicia alba E.Dalcin'
-          ,'scientificNameWithoutAuthorship'=>'Vicia alba'
-          ,'acceptedNameUsage'=>'Vicia faba E.Dalcin'
-        ]
-      ];
-      $bulk = $couchdb->createBulkUpdater();
-      $bulk->updateDocuments($docs);
-      $be=$bulk->execute();
-
-      foreach($docs as $doc) {
-        $a=$es->index([
-          'index'=>'test',
-          'type'=>'taxon',
-          'id'=>$doc['_id'],
-          'body'=>$doc
-        ]);
-      }
-      sleep(1);
+      include __DIR__."/../../preload.php";
     }
 
     public function testFamilies() {
-      $repo = new Taxon('test');
+      $repo = new Taxon('test0');
       
       $families = $repo->listFamilies();
       $this->assertEquals(2,count($families));
@@ -93,7 +21,7 @@ class TaxonTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testFamily() {
-      $repo = new Taxon('test');
+      $repo = new Taxon('test0');
       
       $spps = $repo->listFamily('ACANTHACEAE');
       $this->assertEquals(1,count($spps));
@@ -109,7 +37,7 @@ class TaxonTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testNames() {
-      $repo = new Taxon('test');
+      $repo = new Taxon('test0');
       
       $spps = $repo->listNames('Aphelandra longiflora');
       $this->assertEquals(1,count($spps));

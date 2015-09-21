@@ -42,5 +42,6 @@ tester:
         - elasticsearch2:elasticsearch
         - couchdb2:couchdb
         - selenium:selenium
+        - dwcservices:dwc_services
     environment:
         - PHP_ENV=test

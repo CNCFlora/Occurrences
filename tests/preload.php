@@ -26,7 +26,7 @@ foreach($dbs as $db) {
     $c=$couchdb->postDocument($doc);
     $a=$es->index([
       'index'=>$db,
-      'type'=>'taxon',
+      'type'=>$doc['metadata']['type'],
       'id'=>$doc['_id'],
       'body'=>$doc
     ]);

@@ -14,5 +14,7 @@ $r->post("/logout",'\cncflora\controller\Home::logout');
 $r->get("/{db}/families",'\cncflora\controller\Taxon::families');
 $r->get("/{db}/family/{family}",'\cncflora\controller\Taxon::family');
 
+$r->get("/{db}/specie/{name}",'\cncflora\controller\Occurrences::specie');
+
 $r->run();
 

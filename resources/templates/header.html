@@ -9,12 +9,15 @@
     <script type="text/javascript">
       {{#logged}}
         var logged =true; 
+        var user = {{{user_json}}};
       {{/logged}}
       {{^logged}}
         var logged = false;
+        var user =null;
       {{/logged}}
         var connect = '{{connect_url}}';
         var base = '{{base}}';
+        var strings = {{{strings_json}}};
     </script>
     <script src="{{base}}/js/jquery.min.js"></script>
     <script src="{{base}}/js/bootstrap.min.js"></script>

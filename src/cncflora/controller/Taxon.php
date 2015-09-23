@@ -10,7 +10,12 @@ class Taxon {
     $db = $args['db'];
     $repo = new \cncflora\repository\Taxon($db);
     $families = $repo->listFamilies();
-    $response->setContent(new View('families',['db'=>$db,'families'=>$families]));
+
+    $fs=[];
+    foreach($families as $f) {
+      $fs[]=['family'=>$f];
+    }
+    $response->setContent(new View('families',['db'=>$db,'families'=>$fs]));
     return $response;
   }
 

@@ -1,8 +1,7 @@
 
-<div class="well occurrence {{#validationBy}} validated {{/validationBy}} {{#valid}} valid {{/valid}}" >
+<div class="occurrence {{#validationBy}} validated {{/validationBy}} {{#valid}} valid {{/valid}}" >
 
     <div class='actions alabel'>
-
         {{^validation.status}}
             <span class='label label-warning'>
                 <span class="glyphicon glyphicon-question-sign"></span>
@@ -46,169 +45,61 @@
             </span>
             {{/sig-ok}}
         {{/georeferenceVerificationStatus}}
-        
-        <br /><br />
-
-        {{#decimalLatitude}}
-        <span>
-            <button class="to-map btn btn-default btn-xs" rel='{{occurrenceID}}'><i class='glyphicon glyphicon-eye-open'></i> {{strings.view-in-map}}</button>
-        </span>
-        {{/decimalLatitude}}
 
         {{^decimalLatitude}}
-        <span class='label label-warning'>{{strings.no-points}}</span>
+        <span class='label small-label label-warning'>{{strings.no-points}}</span>
         {{/decimalLatitude}}
-
-        {{#role-validator}}
-        {{#can_validate}}
-        <span>
-            <button data-target="#validate-{{occurrenceID2}}" data-toggle="modal" class='btn btn-default btn-xs'><i class='glyphicon glyphicon-edit'></i> {{strings.edit-validation}}</button>
-        </span>
-        {{/can_validate}}
-        {{/role-validator}}
-
-        {{#role-analyst}}
-        <span>
-            <button data-target="#analysis-{{occurrenceID2}}" data-toggle="modal" class='btn btn-default btn-xs'><i class='glyphicon glyphicon-edit'></i> {{strings.edit-analysis}}</button>
-        </span>
-        {{/role-analyst}}
-
-        {{#role-sig}}
-        <span>
-            <button data-target="#sig-{{occurrenceID2}}" data-toggle="modal" class='btn btn-default btn-xs'><i class='glyphicon glyphicon-edit'></i> {{strings.edit-sig}}</button>
-        </span>
-        {{/role-sig}}
-
     </div>
 
-    {{#metadata}}
-    <div class="metadata">
-      <p><strong>{{strings.creator}}</strong>: {{creator}}</p>
-      <p><strong>{{strings.contributor}}</strong>: {{contributor}}</p>
-      <p><strong>{{strings.contact}}</strong>: {{contact}}</p>
-      <p><strong>{{strings.created}}</strong>: {{created_date}}</p>
-      <p><strong>{{strings.modified}}</strong>: {{modified_date}}</p>
-      <p><strong>{{strings.status}}</strong>: {{status}}</p>
-    </div>
-    {{/metadata}}
-
-    <p>
-        <strong>{{strings.occurrence-id}}</strong> <a href="#occ-{{occurrenceID}}-unit">{{occurrenceID}}</a> ;
-    </p>
-
-    <p>
-        <strong>{{strings.taxon}}</strong> {{family}} {{scientificName}};
-    </p>
-
-    {{#identificationQualifier}}
-    <p>
-        <strong>{{strings.qualifier}}</strong> {{identificationQualifier}}
-    </p>
-    {{/identificationQualifier}}
-
-    <p>
-        <strong>{{strings.recorded-by}}</strong> {{recordedBy}}  
-    </p>
-    <p>
-        <strong>{{strings.record-number}}</strong> {{recordNumber}}
-    </p>
-
-    <p>
-        <strong>{{strings.collect-date}}</strong> {{day}}-{{month}}-{{year}} 
-    </p>
-
-    <p>
-        <strong>{{strings.collection-code}}</strong> {{collectionCode}}  
-    </p>
-    <p>
-        <strong>{{strings.catalog-number}}</strong> {{catalogNumber}}
-    </p>
-
-    {{#identifiedBy}}
-    <p>
-            <strong>{{strings.identified-by}}</strong> {{identifiedBy}} 
-    </p>
-    <p>
-        <strong>{{strings.identification-date}}</strong> {{dateIdentified}}
-    </p>
-    {{/identifiedBy}}
-
-    <p>
-        <strong>{{strings.state}}</strong> {{stateProvince}} 
-    </p>
-    <p>
-        <strong>{{strings.city}}</strong> {{municipality}} 
-    </p>
-
-    {{#locality}}
-    <p>
-        <strong>{{strings.locality}}</strong> {{locality}} 
-    </p>
-    {{/locality}}
-
-    {{#presence}}
-    <p>
-        <strong>{{strings.presence}}</strong> {{presence}}
-    </p>
-    {{/presence}}
-
-    <p>
-        <strong>Long/Lat</strong> {{decimalLongitude}} {{decimalLatitude}} 
-    </p>
-
-    {{#bibliographicCitation}}
-    <p>
-        <strong>{{strings.literature}}</strong> {{bibliographicCitation}}
-    </p>
-    {{/bibliographicCitation}}
-
-    {{#remarks}}
-    <p>
-        <strong>{{strings.remarks}}</strong> {{{remarks}}}
-    </p>
-    {{/remarks}}
-    {{^remarks}}
-      {{#occurrenceRemarks}}
+    <div class="taxon col-md-12">
+      <h4>Taxonomia reconhecida no sistema</h4>
+      <p>{{specie.family}} <i>{{specie.scientificNameWithoutAuthorship}}</i> {{scpecie.scientificNameAuthorship}}</p>
+      <h4>Taxonomia original do registro</h4>
       <p>
-          <strong>{{strings.remarks}}</strong> {{{occurrenceRemarks}}}
+        {{#family}}
+        <strong>{{strings.family}}</strong>:{{family}}; <br />
+        {{/family}}
+        {{#genus}}
+        <strong>{{strings.genus}}</strong>:{{genus}}; <br />
+        {{/genus}}
+        {{#specificEpithet}}
+        <strong>{{strings.specificEpithet}}</strong>:{{specificEpithet}}; <br />
+        {{/specificEpithet}}
+        {{#scientificName}}
+        <strong>{{strings.scientificName}}</strong>:{{scientificName}}; <br />
+        {{/scientificName}}
+        {{#scientificNameWithoutAuthorship}}
+        <strong>{{strings.scientificNameWithoutAuthorship}}</strong>:{{scientificNameWithoutAuthorship}}; <br />
+        {{/scientificNameWithoutAuthorship}}
+        {{#acceptedNameUsage}}
+        <strong>{{strings.acceptedNameUsage}}</strong>:{{acceptedNameUsage}}; <br />
+        {{/acceptedNameUsage}}
       </p>
-      {{/occurrenceRemarks}}
-    {{/remarks}}
+    </div>
+    <div class="data col-md-12">
+      {{> form-analysis}}
+    </div>
 
-    {{#georeferencedBy}}
-        <p><strong>{{strings.georeference-remarks}}</strong> {{georeferencedBy}} - {{{georeferenceRemarks}}}</p>
-    {{/georeferencedBy}}
+    <div class='validation col-md-5'>
+      {{> form-validation}}
+    </div>
 
-    {{#comments}}
-        <p><strong>{{strings.analyst-remarks}}</strong> {{{comments}}}</p>
-    {{/comments}}
+    <div class="sig col-md-4">
+      {{> form-sig}}
+    </div>
 
-    {{#verbatimValidation.status}}
-    <p>
-        <strong>{{strings.verbatim-validation}}</strong> <strong>{{verbatimValidation.status}}</strong> {{{verbatimValidation.remarks}}}
-    </p>
-    {{/verbatimValidation.status}}
-
-    {{#validation.by}}
-    <p>
-        {{#role-analyst}}
-            <span class='label label-warning'>check</span>
-        {{/role-analyst}}
-        <strong>{{strings.validation-by}}</strong> {{validation.by}} <br />
-            Taxonomy {{validation.taxonomy}} <br />
-            {{#georeference-invalid}}
-            {{#role-sig}}
-            <span class="label label-warning glyphicon glyphicon-globe"> CHECK GEO</span>
-            {{/role-sig}}
-            {{/georeference-invalid}}
-            Georeference {{validation.georeference}} <br />
-            Presence {{validation.presence}} <br />
-            Native {{validation.native}} <br />
-            Cultivated {{validation.cultivated}} <br />
-            Duplicated {{validation.duplicated}} <br />
-            Remarks {{validation.remarks}} 
-    </p>
-    {{/validation.by}}
+    <div class="metadata col-md-3">
+      <h4>Metadata</h4>
+      {{#metadata}}
+      <p><strong>{{strings.identifier}}</strong>:<Br />{{occurrenceID}}</p>
+      <p><strong>{{strings.creator}}</strong>:<Br>{{creator}}</p>
+      <p><strong>{{strings.contributor}}</strong>:<br />{{contributor}}</p>
+      <p><strong>{{strings.contact}}</strong>:<br />{{contact}}</p>
+      <p><strong>{{strings.created}}</strong>:<br />{{created_date}}</p>
+      <p><strong>{{strings.modified}}</strong>:<br />{{modified_date}}</p>
+      <p><strong>{{strings.status}}</strong>:<br />{{status}}</p>
+      {{/metadata}}
+    </div>
 
 </div>
 

@@ -1,42 +1,55 @@
+<h4>Georeferenciamento</h4>
+  {{#georeferencedBy}}
+    <p><strong>{{strings.sig-by}}</strong>:{{georeferencedBy}}</p>
+  {{/georeferencedBy}}
+<form method="POST" 
+  {{#role-sig}}
+  action="{{base}}/{{db}}/occurrences/{{occurrenceID}}/sig" 
+  {{/role-sig}}
+  class='sig-form'>
+    <fieldset>
 
-    <div id="sig-{{occurrenceID2}}" class="modal fade" role='dialog'>
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form method="POST" action="{{base}}/{{db}}/occurrences/{{occurrenceID}}/sig" class='sig'>
-                    <fieldset>
-                        <input name="q" value="{{query}}" type="hidden" />
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" >&times;</button>
-                            <h3>{{strings.sig}}</h3>
-                        </div>
-                        <div class="modal-body">
-                            <p class='form-group'>
-                                <label for="status">{{strings.status-sig}}:</label>
-                                <select name="status" class='form-control'>
-                                    <option value="ok" {{#status-ok}} selected {{/status-ok}}>{{strings.ok}}</option>
-                                    <option value="nok" {{#status-nok}} selected {{/status-nok}}>{{strings.not-ok}}</option>
-                                    <option value="uncertain-locality" {{#status-uncertain-locality}} selected {{/status-uncertain-locality}}>{{strings.uncertain-locality}}</option>
-                                </select>
-                            </p>
-                            <p class="form-group">
-                                <label for="latitude">{{strings.latitude}}</label>
-                                <input name="latitude" value="{{decimalLatitude}}" class='form-control' type="text" />
-                            </p>
-                            <p class="form-group">
-                                <label for="longitude">{{strings.longitude}}</label>
-                                <input name="longitude" value="{{decimalLongitude}}" class='form-control' type="text" />
-                            </p>
-                            <p class="form-group">
-                                <label for="comment">{{strings.comment}}</label>
-                                <textarea name="comment" class='form-control'>{{georeferenceRemarks}}</textarea>
-                            </p>
-                        </div>
-                        <div class='modal-footer'>
-                            <button class="btn btn-success" type='submit'>{{strings.save}}</button>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
+        <div class='form-group'>
+            <label for="status">{{strings.status-sig}}:</label>
+            <select name="status" class='form-control'>
+                <option value="ok" {{#status-ok}} selected {{/status-ok}}>{{strings.ok}}</option>
+                <option value="nok" {{#status-nok}} selected {{/status-nok}}>{{strings.not-ok}}</option>
+                <option value="uncertain-locality" {{#status-uncertain-locality}} selected {{/status-uncertain-locality}}>{{strings.uncertain-locality}}</option>
+            </select>
         </div>
-    </div>
+
+        <div class="form-group">
+          <label for="decimalLatitude">{{strings.latitude}} &amp; {{strings.longitude}}</label>
+          <div class='row'>
+            <div class='col-md-6'>
+              <input name="decimalLatitude" value="{{decimalLatitude}}" class='form-control' type="text" />
+            </div>
+            <div class='col-md-6'>
+              <input name="decimalLongitude" value="{{decimalLongitude}}" class='form-control' type="text" />
+            </div>
+          </div>
+        </div>
+
+        <div class='form-group'>
+            <label for="coordinateUncertaintyInMeters">{{strings.coordinateUncertaintyInMeters}}:</label>
+            <input name="longitude" value="{{coordinateUncertaintyInMeters}}" class='form-control' type="text" />
+        </div>
+
+        <div class='form-group'>
+            <label for="georeferenceProtocol">{{strings.georeferenceProtocol}}:</label>
+            <input name="longitude" value="{{georeferenceProtocol}}" class='form-control' type="text" />
+        </div>
+
+        <div class="form-group">
+            <label for="comment">{{strings.comment}}</label>
+            <textarea name="comment" class='form-control'>{{georeferenceRemarks}}</textarea>
+        </div>
+
+        {{#role-sig}}
+        <p>
+          <button class="btn btn-success" type='submit'>{{strings.save}}</button>
+        </p>
+        {{/role-sig}}
+    </fieldset>
+</form>
 

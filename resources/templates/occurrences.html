@@ -1,46 +1,28 @@
 {{> header}}
 
-<h2 class='col-md-12'>{{strings.search}}</h2>
+<h3 class="col-md-12">
+  <a href='{{base}}/family/{{specie.family}}'>
+    {{specie.family}}
+  </a>
+</h3>
+<h2 class='col-md-12'><i>{{specie.scientificNameWithoutAuthorship}}</i> {{ specie.scientificNameAuthorship }}</h2>
 
 <div class="col-md-12">
-    {{#to_profiles}}
     <p>
         {{#profiles_url}}
-        <a href="{{profiles_url}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}" class='btn btn-default'>
+        <a href="{{profiles_url}}/{{db}}/specie/{{specie.scientificNameWithoutAuthorship}}" class='btn btn-default'>
             <span class='glyphicon glyphicon-leaf'></span>
-            {{strings.profile}} <i>{{scientificNameWithoutAuthorship}}</i>
+            {{strings.profile}} <i>{{specie.scientificNameWithoutAuthorship}}</i>
         </a>
         {{/profiles_url}}
         {{#assessments_url}}
-        <a href="{{assessments_url}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}" class='btn btn-default'>
+        <a href="{{assessments_url}}/{{db}}/specie/{{specie.scientificNameWithoutAuthorship}}" class='btn btn-default'>
             <span class='glyphicon glyphicon-record'></span>
-            {{strings.assessment}} <i>{{scientificNameWithoutAuthorship}}</i>
+            {{strings.assessment}} <i>{{specie.scientificNameWithoutAuthorship}}</i>
         </a>
         {{/assessments_url}}
     </p>
-    {{/to_profiles}}
 </div>
-
-<form action="{{base}}/{{db}}/search" class='col-md-12'>
-    <fieldset>
-        <p id="input-taxon-search">
-            <input class="form-control" type="text" name="q" placeholder="{{strings.search}}..." value="{{query}}">
-        </p>
-        <p id="button-taxon-search">
-            <button class="btn btn-primary" type="search"><span class='glyphicon glyphicon-search'></span> {{strings.search}}</button>
-            {{#role-sig}}
-            <a href="{{base}}/{{db}}/editor?q={{query}}" class="btn btn-default btn-small">
-                <span class='glyphicon glyphicon-edit'></span>
-                {{strings.table-editor}}
-            </a>
-            <a href='{{base}}/{{db}}/search?csv=true&q={{query}}' class='btn btn-default btn-small'>
-                <span class='glyphicon glyphicon-arrow-down'></span>
-                {{strings.valid-csv}}
-            </a>
-            {{/role-sig}}
-        </p>
-    </fieldset>
-</form>
 
 <div class="col-md-12">
     <h3>{{strings.results}}</h3>
@@ -76,34 +58,32 @@
     </table>
     {{/stats}}
 
-
     <a name="map"></a>
     <div id="map"></div>
-
     <script type="text/javascript">
-        var occurrences = [] ;
-        var eoo = {{{eoo_poli}}};
-        var aoo = {{{aoo_poli}}};
+      occurrences = {{{occurrences_json}}};
     </script>
 
-    {{#result}}
+    <div class="occurrences">
+    {{#occurrences}}
         <a name="occ-{{occurrenceID}}-unit"></a>
-        <script>
-            occurrences.push({{{json}}});
-        </script>
-        <div id="occ-{{occurrenceID}}-unit" class='col-md-6' >
+        <div id="occ-{{occurrenceID}}-unit" class='col-md-12' >
             {{> unit}}
         </div>
-        {{> forms}}
-    {{/result}}
+    {{/occurrences}}
+    </div>
 
 </div>
 
 <link rel="stylesheet" href="{{base}}/css/leaflet.css" />
+<link rel="stylesheet" href="{{base}}/css/leaflet.draw.css" />
 <link rel="stylesheet" href="{{base}}/css/MarkerCluster.css" />
 <link rel="stylesheet" href="{{base}}/css/MarkerCluster.Default.css" />
 <script type="text/javascript" src="{{base}}/js/leaflet.js"></script>
 <script type="text/javascript" src="{{base}}/js/leaflet.markercluster.js"></script>
+<script type="text/javascript" src="{{base}}/js/L.Control.MousePosition.js"></script>
+<script type="text/javascript" src="{{base}}/js/leaflet.draw.js"></script>
+<script type="text/javascript" src="{{base}}/js/leaflet.measurecontrol.js"></script>
 <script type="text/javascript" src='{{base}}/js/proj4.js'></script>
 <script type="text/javascript" src='{{base}}/js/map.js'></script>
 

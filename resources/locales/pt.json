@@ -29,7 +29,7 @@
     "missing-sig":"Falta revisão SIG",
     "missing-validation":"Falta validar",
     "view-in-map":"Ver no mapa",
-    "no-point":"Sem coordenadas",
+    "no-points":"Sem coordenadas",
     "edit-validation":"Validar/Invalidar",
     "edit-analysis":"Editar análise",
     "edit-sig":"GIS",
@@ -134,5 +134,16 @@
     "month":"Mês",
     "year":"Ano",
     "user":"Usuário",
-    "none":"Nenhum"
+    "none":"Nenhum",
+    "sig-by":"Analista SIG",
+    "occurrence-data":"Dados da ocorrência",
+    "validation":"Validação",
+    "coordinateUncertaintyInMeters":"Geo Precisão",
+    "georeferenceProtocol":"Geo Protocolo",
+    "identifier":"Identificador",
+    "scientificName":"Nome cientifico",
+    "genus":"Gênero",
+    "specificEpithet":"Epiteto específico",
+    "scientificNameWithoutAuthorship":"Nome científico sem autor",
+    "acceptedNameUsage":"Nome aceito"
 }

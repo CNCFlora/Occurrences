@@ -1,13 +1,15 @@
 
-    {{#role-validator}}
-        {{> form-validation}}
-    {{/role-validator}}
+{{#role-validator}}
+  {{#can_validate}}
+    {{> form-validation}}
+  {{/can_validate}}
+{{/role-validator}}
 
-    {{#role-analyst}}
-        {{> form-analysis}}
-    {{/role-analyst}}
+{{#role-analyst}}
+  {{> form-analysis}}
+{{/role-analyst}}
 
-    {{#role-sig}}
-        {{> form-sig}}
-    {{/role-sig}}
+{{#role-sig}}
+  {{> form-sig}}
+{{/role-sig}}
 

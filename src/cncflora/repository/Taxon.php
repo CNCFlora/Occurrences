@@ -104,4 +104,34 @@ class Taxon {
 
     return $names;
   }
+
+  public function getSpecie($name) {
+    $params=[
+      'index'=>$this->db,
+      'type'=>'taxon',
+      'body'=>[
+        'query'=>[
+          'bool'=>[
+            'must'=>[
+              [
+                'match'=>[
+                  'taxonomicStatus'=>'accepted'
+                ]
+              ],
+              [
+                'match'=>[
+                'acceptedNameUsage'=>[
+                    'query'=>$name ,'operator'=>'and'
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ];
+    $result = $this->elasticsearch->search($params);
+
+    return $result['hits']['hits'][0]['_source'];
+  }
 }

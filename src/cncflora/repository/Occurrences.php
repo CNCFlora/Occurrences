@@ -165,7 +165,7 @@ class Occurrences {
   }
 
   public function isValid($occ) {
-    return $occ['status'] === "true";
+    return $occ['valid'] === "true";
   }
 
   public function isSigOk($occ) {
@@ -213,6 +213,9 @@ class Occurrences {
 
     $doc['metadata']['type']='occurrence';
 
+    $doc['metadata']['modified_date'] = date('Y-m-d',$doc['metadata']['modified']);
+    $doc['metadata']['created_date'] = date('Y-m-d',$doc['metadata']['created']);
+
     if(isset($doc["georeferenceVerificationStatus"])) {
       if($doc["georeferenceVerificationStatus"] == "1" || $doc["georeferenceVerificationStatus"] == "ok") {
         $doc["georeferenceVerificationStatus"] = "ok";
@@ -220,10 +223,10 @@ class Occurrences {
     }
 
     if(isset($doc["validation"])) {
-      if(is_object($doc["validation"])) {
+      if(is_array($doc["validation"])) {
         foreach($doc["validation"] as $k=>$v) {
-          $kk = 'validation_'.$k;
-          $doc[$kk]=$v;
+          $kk = $k."-".$v;
+          $doc['validation'][$kk]=$v;
         }
 
         if(isset($doc["validation"]["status"])) {
@@ -283,6 +286,8 @@ class Occurrences {
     } else {
       $doc["valid"] = "";
     }
+
+    $doc['metadata']['status'] = $this->canUse($doc)?"valid":"invalid";
 
     return $doc;
   }

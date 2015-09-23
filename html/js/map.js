@@ -37,7 +37,7 @@ var map = function() {
         if(feature.decimalLatitude == 0.0 || feature.decimalLongitude == 0.0) continue;
 
         var marker = L.marker(new L.LatLng(feature.decimalLatitude,feature.decimalLongitude));
-        marker.bindPopup(document.getElementById("occ-"+feature.occurrenceID+"-unit").innerHTML);
+        marker.bindPopup(makePopup(feature));
 
         if(typeof feature.validation == 'object') {
             if(typeof feature.validation.status == 'string') {
@@ -86,7 +86,7 @@ var map = function() {
         'Non-validated points clustered': markersUnk
     };
 
-    if(eoo != null && typeof eoo == 'object' && typeof eoo.geometry == 'object' && eoo.geometry != null) {
+    if(typeof eoo == 'object' && typeof eoo.geometry == 'object' && eoo.geometry != null) {
         var eool = L.geoJson(eoo.geometry).addTo(map);
         layers.EOO = eool
     }
@@ -105,17 +105,46 @@ var map = function() {
 
     L.control.layers(base,layers).addTo(map);
     L.control.scale().addTo(map);
+    L.control.mousePosition().addTo(map);
+    L.Control.measureControl().addTo(map);
+};
 
-    $(".to-map").click(function(evt){ 
-        // zoom in and open point in map
-        var id = $(evt.target).attr("rel");
-        map.setView(points[id]._latlng,10)
-        setTimeout(function(){
-            location.hash="map";
-            points[id].openPopup();
-        },250);
-        location.hash="";
-    });
 
+function makePopup(props) {
+  var table = document.createElement('table');
+  table.setAttribute('class','table table-striped');
+
+  for(var k in props) {
+
+    if(k == 'id' || k== '_id' || k =='rev' ||k=='_rev') {
+    } else if(typeof props[k] == 'object') {
+      for(var kk in props[k]) {
+        if(kk.indexOf("-") >= 1){
+        }else if(typeof props[k][kk] == 'string' || typeof props[k][kk] == 'number') {
+          var tr = document.createElement('tr');
+          var td = document.createElement('td');
+          td.innerHTML = k+'<br />'+kk;
+          tr.appendChild(td);
+          var td2 = document.createElement('td');
+          td2.innerHTML = ""+props[k][kk];
+          tr.appendChild(td2);
+          table.appendChild(tr);
+        }
+      }
+    } else if(typeof props[k] == 'string' || typeof props[k] == 'number') {
+      var tr = document.createElement('tr');
+      var td = document.createElement('td');
+      td.innerHTML = k;
+      tr.appendChild(td);
+      var td2 = document.createElement('td');
+      td2.innerHTML = ""+props[k];
+      tr.appendChild(td2);
+      table.appendChild(tr);
+    } else {
+      continue;
+    }
+  }
+
+  return table;
 };
 

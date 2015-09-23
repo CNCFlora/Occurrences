@@ -8,33 +8,13 @@
     border-radius: 3px;
 }
 
-.leaflet-popup-content p {
-    margin: 0 !important;
-}
-
-.leaflet-popup-content .to-map {
-    display: none;
-}
-
-.leaflet-popup-content .actions{
-    display: none;
-}
-
-.leaflet-popup-content .metadata{
-    display: none;
-}
-
 .occurrence {
     margin-top: 10px;
     padding: 10px;
     font-size: 12px;
     line-height: 13px;
     border: 1px #ddd solid;
-    min-height: 500px;
-}
-
-.leaflet-popup-content .occurrence {
-    min-height: 0;
+    display: table;
 }
 
 .occurrence { /* basic occurrence border */
@@ -61,6 +41,11 @@
 .alabel .label, .alabel.label{
     font-size: 16px;
     line-height: 20px;
+    margin-right: 5px;
+}
+
+.alabel .label.small-label {
+  font-size: 12px;
 }
 
 .validated .alabel{
@@ -71,10 +56,6 @@
     border-color: #20AE54;
 }
 
-#file {
-    box-sizing: unset;
-}
-
 .form-group.input-group.col-md-6 .input-group-btn {
     padding-left: 27px;
 }
@@ -83,9 +64,61 @@
     height: 48px;
 }
 
-.metadata {
-  float: right;
-  width: 250px;
-  display: none;
+
+form>fieldset>.col-md-4:first-child {
+  margin-right: 10px;
+}
+form>fieldset>.col-md-4:last-child {
+  margin-left: 10px;
 }
 
+
+.validation-form .radio-inline input[type="radio"] {
+  margin-top: -2px;
+}
+
+.leaflet-popup-content-wrapper {
+  width: 500px;
+}
+
+.leaflet-popup-content {
+  min-width: 460px;
+  max-height: 220px;
+  overflow-y: scroll;
+}
+
+.leaflet-popup-content table {
+  width: 100%;
+  max-width: 100%;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+
+.leaflet-popup-content table tr {
+}
+
+.leaflet-popup-content table tr td {
+  padding: 8px;
+  line-height: 1.42857;
+  vertical-align: top;
+  border-top: 1px solid #DDD;
+  box-sizing: border-box;
+}
+
+.leaflet-popup-content table tr td:first-child {
+  font-weight: bold;
+}
+
+.leaflet-popup-content table tr td:last-child {
+}
+
+.leaflet-control-draw-measure {
+  background-image: url(../images/measure-control.png);
+}
+
+.leaflet-control.leaflet-control-mouseposition { 
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.4);
+  background: #FFF;
+  border-radius: 5px;
+  padding: 5px;
+}

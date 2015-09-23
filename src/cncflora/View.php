@@ -34,7 +34,12 @@ class View {
   }
 
   function __toString() {
-      $props = array_merge($_SESSION,$this->props );
+      $props = array_merge($_SESSION,$this->props);
+      $props['strings_json'] = json_encode($props['strings']);
+
+      if($_SESSION['logged']) {
+        $props['user_json'] = json_encode($_SESSION['user']);
+      }
 
       $m = new \Mustache_Engine(array('partials'=>$this->partials));
       $content = $m->render($this->template,$props);

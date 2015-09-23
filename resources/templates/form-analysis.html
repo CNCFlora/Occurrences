@@ -1,120 +1,114 @@
+<h4>{{strings.occurrence-data}}</h4>
+<form method="POST" 
+  {{#role-analyst}}
+  action="{{base}}/{{db}}/occurrences/{{occurrenceID}}/analysis" 
+  {{/role-analyst}}
+  class='analysis-form form-horizontal' >
+    <fieldset>
 
-    <div id="analysis-{{occurrenceID2}}" class="modal fade" role='dialog'>
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form method="POST" action="{{base}}/{{db}}/occurrences/{{occurrenceID}}/analysis" class='analysis'>
-                    <fieldset>
-                        <input name="q" value="{{query}}" type="hidden" />
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" >&times;</button>
-                            <h3>{{strings.analysis}}</h3>
-                        </div>
-                        <div class="modal-body">
-
-                            <!--
-                            <p class="form-group">
-                                <label for="qualifier">{{strings.qualifier}}</label>
-                                <input id="identificationQualifier" name="identificationQualifier" type="text" class="form-control" value="{{identificationQualifier}}" />
-                            </p>
-                            -->
-
-                            <p class="form-group">
-                                <label for="collectionCode">{{strings.collectionCode}}</label>
-                                <input id="collectionCode" name="collectionCode" type="text" class="form-control" value="{{collectionCode}}" />
-                            </p>
-
-                            <p class="form-group">
-                                <label for="catalogNumber">{{strings.catalogNumber}}</label>
-                                <input id="catalogNumber" name="catalogNumber" type="text" class="form-control" value="{{catalogNumber}}" />
-                            </p>
-
-
-                            <p class="form-group">
-                                <label for="recordedBy">{{strings.recordedBy}}</label>
-                                <input id="recordedBy" name="recordedBy" type="text" class="form-control" value="{{recordedBy}}" />
-                            </p>
-
-                            <p class="form-group">
-                                <label for="recordNumber">{{strings.recordNumber}}</label>
-                                <input id="recordNumber" name="recordNumber" type="text" class="form-control" value="{{recordNumber}}" />
-                            </p>
-
-
-                            <p class="form-group">
-                                <label for="day">{{strings.day}}</label>
-                                <input id="day" name="day" type="text" class="form-control" value="{{day}}" />
-                            </p>
-
-
-                            <p class="form-group">
-                                <label for="month">{{strings.month}}</label>
-                                <input id="month" name="month" type="text" class="form-control" value="{{month}}" />
-                            </p>
-
-
-                            <p class="form-group">
-                                <label for="year">{{strings.year}}</label>
-                                <input id="year" name="year" type="text" class="form-control" value="{{year}}" />
-                            </p>
-
-
-                            <p class="form-group">
-                                <label for="identifiedBy">{{strings.identifiedBy}}</label>
-                                <input id="identifiedBy" name="identifiedBy" type="text" class="form-control" value="{{identifiedBy}}" />
-                            </p>
-
-                            <p class="form-group">
-                                <label for="dateIdentified">{{strings.identification-date}}</label>
-                                <input id="dateIdentified" name="dateIdentified" type="text" class="form-control" value="{{dateIdentified}}" />
-                            </p>
-
-                            <p class="form-group">
-                                <label for="locality">{{strings.locality}}</label>
-                                <input id="locality" name="locality" type="text" class="form-control" value="{{locality}}" />
-                            </p>
-
-
-                            <p class="form-group">
-                                <label for="municipality">{{strings.municipality}}</label>
-                                <input id="municipality" name="municipality" type="text" class="form-control" value="{{municipality}}" />
-                            </p>
-
-                            <p class="form-group">
-                                <label for="stateProvince">{{strings.stateProvince}}</label>
-                                <input id="stateProvince" name="stateProvince" type="text" class="form-control" value="{{stateProvince}}" />
-                            </p>
-
-                            <p class="form-group">
-                                <label for="decimalLatitude">{{strings.latitude}}</label>
-                                <input name="decimalLatitude" value="{{decimalLatitude}}" class='form-control' type="text" />
-                            </p>
-
-                            <p class="form-group">
-                                <label for="decimalLongitude">{{strings.longitude}}</label>
-                                <input name="decimalLongitude" value="{{decimalLongitude}}" class='form-control' type="text" />
-                            </p>
-
-                            <p class="form-group">
-                                <label for="bibliographicCitation">{{strings.literature}}</label>
-                                <input name="bibliographicCitation" value="{{bibliographicCitation}}" class='form-control' type="text" />
-                            </p>
-
-                            <p class="form-group">
-                                <label for="comments">{{strings.comment}}</label>
-                                <textarea name="comments" class='form-control'>{{comments}}</textarea>
-                            </p>
-
-                            <p class="form-group">
-                                <label for="remarks">{{strings.remarks}}</label>
-                                <textarea name="remarks" class='form-control'>{{remarks}}{{occurrenceRemarks}}</textarea>
-                            </p>
-
-                        </div>
-                        <div class='modal-footer'>
-                            <button class="btn btn-success" type='submit'>{{strings.save}}</button>
-                        </div>
-                    </fieldset>
-                </form>
+      <div class='col-md-4'>
+        <div class="form-group">
+          <label for="collectionCode">{{strings.collectionCode}} &amp; {{strings.catalogNumber}}</label>
+          <div class='row'>
+            <div class='col-md-3'>
+              <input id="collectionCode" name="collectionCode" type="text" class="form-control" value="{{collectionCode}}" />
             </div>
+            <div class='col-md-9'>
+              <input id="catalogNumber" name="catalogNumber" type="text" class="form-control" value="{{catalogNumber}}" />
+            </div>
+          </div>
         </div>
-    </div>
+
+        <div class="form-group">
+          <label for="recordedBy">{{strings.recordedBy}} &amp; {{strings.recordNumber}}</label>
+          <div class='row'>
+            <div class='col-md-6'>
+              <input id="recordedBy" name="recordedBy" type="text" class="form-control" value="{{recordedBy}}" />
+            </div>
+            <div class='col-md-6'>
+              <input id="recordNumber" name="recordNumber" type="text" class="form-control" value="{{recordNumber}}" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="day">{{strings.day}}/{{strings.month}}/{{strings.year}}</label>
+          <div class='row'>
+            <div class='col-md-3'>
+              <input id="day" name="day" type="ext" class="form-control" value="{{day}}" />
+            </div>
+            <div class='col-md-3'>
+              <input id="month" name="month" type="text" class="form-control" value="{{month}}" />
+            </div>
+            <div class='col-md-5'>
+              <input id="year" name="year" type="text" class="form-control" value="{{year}}" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="identifiedBy">{{strings.identifiedBy}}</label>
+          <input id="identifiedBy" name="identifiedBy" type="text" class="form-control" value="{{identifiedBy}}" />
+        </div>
+
+        <div class="form-group">
+          <label for="dateIdentified">{{strings.identification-date}}</label>
+          <input id="dateIdentified" name="dateIdentified" type="text" class="form-control" value="{{dateIdentified}}" />
+        </div>
+      </div>
+
+      <div class='col-md-3'>
+        <div class="form-group">
+          <label for="locality">{{strings.locality}}</label>
+          <input id="locality" name="locality" type="text" class="form-control" value="{{locality}}" />
+        </div>
+
+
+        <div class="form-group">
+          <label for="municipality">{{strings.municipality}}</label>
+          <input id="municipality" name="municipality" type="text" class="form-control" value="{{municipality}}" />
+        </div>
+
+        <div class="form-group">
+          <label for="stateProvince">{{strings.stateProvince}}</label>
+          <input id="stateProvince" name="stateProvince" type="text" class="form-control" value="{{stateProvince}}" />
+        </div>
+
+        <div class="form-group">
+          <label for="decimalLatitude">{{strings.latitude}} &amp; {{strings.longitude}}</label>
+          <div class='row'>
+            <div class='col-md-6'>
+              <input name="decimalLatitude" value="{{decimalLatitude}}" class='form-control' type="text" />
+            </div>
+            <div class='col-md-6'>
+              <input name="decimalLongitude" value="{{decimalLongitude}}" class='form-control' type="text" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class='col-md-4'>
+        <div class="form-group">
+            <label for="bibliographicCitation">{{strings.literature}}</label>
+            <input name="bibliographicCitation" value="{{bibliographicCitation}}" class='form-control' type="text" />
+        </div>
+
+        <div class="form-group">
+            <label for="comments">{{strings.comment}}</label>
+            <textarea name="comments" class='form-control'>{{comments}}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="remarks">{{strings.remarks}}</label>
+            <textarea name="remarks" class='form-control'>{{remarks}}{{occurrenceRemarks}}</textarea>
+        </div>
+
+        {{#role-analyst}}
+        <p>
+          <button class="btn btn-success" type='submit'>{{strings.save}}</button>
+        </p>
+        {{/role-analyst}}
+      </div>
+
+    </fieldset>
+</form>

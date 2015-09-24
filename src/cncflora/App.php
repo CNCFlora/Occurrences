@@ -16,5 +16,25 @@ $r->get("/{db}/family/{family}",'\cncflora\controller\Taxon::family');
 
 $r->get("/{db}/specie/{name}",'\cncflora\controller\Occurrences::specie');
 
+$r->subscribe('request.received', function ($evt,$req) use ($r){
+  $uri = explode("?",$req->getRequestURI())[0];
+  if(isset($_SESSION['logged']) && $_SESSION['logged'] === true) {
+    if(isset($_GET['back_to'])) {
+      header('Location: '.$_GET['back_to']);
+      exit;
+    }
+  } else if($uri != "" && $uri != "/" && $uri != "/login" && $uri != "/logout") {
+    /*
+    $res = new \Symfony\Component\HttpFoundation\Response;
+    $res->setStatusCode(303);
+    $res->headers->add(['Location'=>'/?back_to='.$req->getURI()]);
+    $r->terminate($req,$res);
+    */
+    header('Location: '.BASE.'/?back_to='.$req->getURI());
+    exit;
+    //return $res;
+  }
+});
+
 $r->run();
 

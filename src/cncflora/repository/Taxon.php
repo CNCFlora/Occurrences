@@ -21,6 +21,7 @@ class Taxon {
       'index'=>$this->db,
       'type'=>'taxon',
       'body'=>[
+        'size'=> 9999,
         'query'=>[
           'match'=>[
             'taxonomicStatus'=>'accepted'
@@ -45,6 +46,7 @@ class Taxon {
       'index'=>$this->db,
       'type'=>'taxon',
       'body'=>[
+        'size'=> 9999,
         'query'=>[
           'bool'=>[
             'must'=>[
@@ -85,6 +87,7 @@ class Taxon {
       'index'=>$this->db,
       'type'=>'taxon',
       'body'=>[
+        'size'=> 9999,
         'query'=>[
           'match'=>[
           'acceptedNameUsage'=>[
@@ -110,6 +113,7 @@ class Taxon {
       'index'=>$this->db,
       'type'=>'taxon',
       'body'=>[
+        'size'=> 9999,
         'query'=>[
           'bool'=>[
             'must'=>[

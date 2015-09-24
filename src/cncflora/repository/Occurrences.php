@@ -23,6 +23,7 @@ class Occurrences {
       'index'=>$this->db,
       'type'=>'occurrence',
       'body'=>[
+        'size'=> 9999,
         'query'=>[
           'bool'=>[
             'should'=>[

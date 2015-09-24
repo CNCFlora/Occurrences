@@ -37,7 +37,7 @@ class View {
       $props = array_merge($_SESSION,$this->props);
       $props['strings_json'] = json_encode($props['strings']);
 
-      if($_SESSION['logged']) {
+      if(isset( $_SESSION['logged'] ) && $_SESSION['logged'] ===true) {
         $props['user_json'] = json_encode($_SESSION['user']);
       }
 

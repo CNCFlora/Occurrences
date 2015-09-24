@@ -166,7 +166,7 @@ class Occurrences {
   }
 
   public function isValid($occ) {
-    return $occ['valid'] === "true";
+    return $occ['valid'] === true;
   }
 
   public function isSigOk($occ) {
@@ -220,6 +220,9 @@ class Occurrences {
     if(isset($doc["georeferenceVerificationStatus"])) {
       if($doc["georeferenceVerificationStatus"] == "1" || $doc["georeferenceVerificationStatus"] == "ok") {
         $doc["georeferenceVerificationStatus"] = "ok";
+        $doc['sig-ok']=true;
+      } else {
+        $doc['sig-ok']=false;
       }
     }
 
@@ -232,11 +235,14 @@ class Occurrences {
 
         if(isset($doc["validation"]["status"])) {
           if($doc["validation"]["status"] == "valid") {
-            $doc["valid"]="true";
+            $doc["valid"]=true;
+            $doc['validation']['done']=true;
           } else if($doc["validation"]["status"] == "invalid") {
-            $doc["valid"]="false";
+            $doc["valid"]=false;
+            $doc['validation']['done']=true;
           } else {
-            $doc["valid"]="";
+            $doc["valid"]=null;
+            $doc['validation']['done']=false;
           }
         } else {
           if(
@@ -276,16 +282,20 @@ class Occurrences {
               || $doc["validation"]["duplicated"] != 'yes'
             )
           ) {
-            $doc["valid"]="true";
+            $doc["valid"]=true;
+            $doc['validation']['done']=true;
           } else {
-            $doc["valid"]="false";
+            $doc["valid"]=false;
+            $doc['validation']['done']=true;
           }
         }
       } else {
-        $doc["valid"] = "";
+        $doc["valid"] = null;
+        $doc['validation']['done']=false;
       }
     } else {
-      $doc["valid"] = "";
+      $doc["valid"] = null;
+      $doc['validation']['done']=false;
     }
 
     $doc['metadata']['status'] = $this->canUse($doc)?"valid":"invalid";

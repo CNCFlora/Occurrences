@@ -14,15 +14,16 @@
 {{/validation-by}}
 
 {{#validation.georeference-invalid}}
-  {{#role-sig}}
+  {{#sig}}
     <span class="label label-warning glyphicon glyphicon-globe">CHECK GEO</span>
-  {{/role-sig}}
+  {{/sig}}
 {{/validation.georeference-invalid}}
 
 <form method="POST" 
-  {{#can_validate}}
+  {{#validate}}
   action="{{base}}/{{db}}/occurrences/{{id}}/validate" 
-  {{/can_validate}}
+  rel='ok'
+  {{/validate}}
   class='validation validation-form'>
     <fieldset>
 
@@ -179,8 +180,8 @@
           <textarea name="comment" class='form-control'>{{validation.remarks}}</textarea>
       </div>
 
-      {{#can_validate}}
-        <p> <button class="btn btn-success" type='submit'>{{strings.save}}</button> </p>
-      {{/can_validate}}
+      {{#validate}}
+        <p> <button class="btn btn-success" type='submit'>{{strings.save-validation}}</button> </p>
+      {{/validate}}
 </fieldset>
 </form>

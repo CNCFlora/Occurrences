@@ -1,8 +1,9 @@
 <h4>{{strings.occurrence-data}}</h4>
 <form method="POST" 
-  {{#role-analyst}}
+  {{#analysis}}
   action="{{base}}/{{db}}/occurrences/{{occurrenceID}}/analysis" 
-  {{/role-analyst}}
+  rel='ok'
+  {{/analysis}}
   class='analysis-form form-horizontal' >
     <fieldset>
 
@@ -55,6 +56,11 @@
           <label for="dateIdentified">{{strings.identification-date}}</label>
           <input id="dateIdentified" name="dateIdentified" type="text" class="form-control" value="{{dateIdentified}}" />
         </div>
+        {{#analysis}}
+        <div class='form-group'>
+          <button class="btn btn-success" type='submit'>{{strings.save-analysis}}</button>
+        </div>
+        {{/analysis}}
       </div>
 
       <div class='col-md-3'>
@@ -103,11 +109,6 @@
             <textarea name="remarks" class='form-control'>{{remarks}}{{occurrenceRemarks}}</textarea>
         </div>
 
-        {{#role-analyst}}
-        <p>
-          <button class="btn btn-success" type='submit'>{{strings.save}}</button>
-        </p>
-        {{/role-analyst}}
       </div>
 
     </fieldset>

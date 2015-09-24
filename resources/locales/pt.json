@@ -145,5 +145,8 @@
     "genus":"Gênero",
     "specificEpithet":"Epiteto específico",
     "scientificNameWithoutAuthorship":"Nome científico sem autor",
-    "acceptedNameUsage":"Nome aceito"
+    "acceptedNameUsage":"Nome aceito",
+    "save-analysis":"Salvar dados",
+    "save-validation":"Salvar validação",
+    "save-sig":"Salvar SIG"
 }

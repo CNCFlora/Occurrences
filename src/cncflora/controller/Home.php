@@ -27,9 +27,14 @@ class Home {
       $client = new \GuzzleHttp\Client();
       $res = $client->request('GET', CONNECT.'/api/token?token='.$preuser->token);
       $user = json_decode($res->getBody());
-      $_SESSION['user']=$user;
-      $_SESSION['logged']=true;
-      $res->setContent(json_encode($user));
+      if($user->is_approved) {
+        $_SESSION['user']=$preuser;
+        $_SESSION['logged']=true;
+        $res->setContent(json_encode($user));
+      } else {
+        $_SESSION['user']=null;
+        $_SESSION['logged']=false;
+      }
     }
     return $res;
   }

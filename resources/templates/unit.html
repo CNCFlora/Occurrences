@@ -2,27 +2,27 @@
 <div class="occurrence {{#validationBy}} validated {{/validationBy}} {{#valid}} valid {{/valid}}" >
 
     <div class='actions alabel'>
-        {{^validation.status}}
+        {{^validation.done}}
             <span class='label label-warning'>
                 <span class="glyphicon glyphicon-question-sign"></span>
                 {{strings.missing-validation}}
             </span>
-        {{/validation.status}}
+        {{/validation.done}}
 
-        {{#validation.status}}
+        {{#validation.done}}
             {{#valid}}
                 <span class="label label-success">
                     <span class="glyphicon glyphicon-ok-sign"></span>
                     {{strings.valid}}
                 </span>
             {{/valid}}
-            {{#invalid}}
+            {{^valid}}
                 <span class="label label-danger">
                     <span class="glyphicon glyphicon-remove-sign"></span>
                     {{strings.invalid}}
                 </span>
-            {{/invalid}}
-        {{/validation.status}}
+            {{/valid}}
+        {{/validation.done}}
 
         {{^georeferenceVerificationStatus}}
         <span  class='label label-warning'>

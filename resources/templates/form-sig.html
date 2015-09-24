@@ -3,9 +3,10 @@
     <p><strong>{{strings.sig-by}}</strong>:{{georeferencedBy}}</p>
   {{/georeferencedBy}}
 <form method="POST" 
-  {{#role-sig}}
+  {{#sig}}
   action="{{base}}/{{db}}/occurrences/{{occurrenceID}}/sig" 
-  {{/role-sig}}
+  rel='ok'
+  {{/sig}}
   class='sig-form'>
     <fieldset>
 
@@ -45,11 +46,12 @@
             <textarea name="comment" class='form-control'>{{georeferenceRemarks}}</textarea>
         </div>
 
-        {{#role-sig}}
-        <p>
-          <button class="btn btn-success" type='submit'>{{strings.save}}</button>
-        </p>
-        {{/role-sig}}
+        {{#sig}}
+        <br /><br />
+        <div class='form-group'>
+          <button class="btn btn-success" type='submit'>{{strings.save-sig}}</button>
+        </div>
+        {{/sig}}
     </fieldset>
 </form>
 

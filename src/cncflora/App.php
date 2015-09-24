@@ -16,6 +16,10 @@ $r->get("/{db}/family/{family}",'\cncflora\controller\Taxon::family');
 
 $r->get("/{db}/specie/{name}",'\cncflora\controller\Occurrences::specie');
 
+$r->post("/{db}/occurrence/{id}/analysis",'\cncflora\controller\Occurrences::analysis');
+$r->post("/{db}/occurrence/{id}/validate",'\cncflora\controller\Occurrences::validate');
+$r->post("/{db}/occurrence/{id}/sig",'\cncflora\controller\Occurrences::sig');
+
 $r->subscribe('request.received', function ($evt,$req) use ($r){
   $uri = explode("?",$req->getRequestURI())[0];
   if(isset($_SESSION['logged']) && $_SESSION['logged'] === true) {

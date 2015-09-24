@@ -7,11 +7,11 @@
 </p>
 {{/verbatimValidation.status}}
 
-{{#validation-by}}
+{{#validation.by}}
 <p>
   <strong>{{strings.validation-by}}</strong> {{validation.by}} <br />
 </p>
-{{/validation-by}}
+{{/validation.by}}
 
 {{#validation.georeference-invalid}}
   {{#sig}}
@@ -21,7 +21,7 @@
 
 <form method="POST" 
   {{#validate}}
-  action="{{base}}/{{db}}/occurrences/{{id}}/validate" 
+  action="{{base}}/{{db}}/occurrence/{{id}}/validate" 
   rel='ok'
   {{/validate}}
   class='validation validation-form'>
@@ -176,8 +176,8 @@
       </div>
 
       <div class="form-group">
-          <label for="comment">{{strings.valid-comments}}</label>
-          <textarea name="comment" class='form-control'>{{validation.remarks}}</textarea>
+          <label for="remarks">{{strings.valid-comments}}</label>
+          <textarea name="remarks" class='form-control'>{{validation.remarks}}</textarea>
       </div>
 
       {{#validate}}

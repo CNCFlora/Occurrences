@@ -7,11 +7,13 @@ class Occurrences {
   public $couchdb = null;
   public $db = null;
   public $elasticsearch=null;
+  public $user = null;
 
-  public function __construct($db) {
+  public function __construct($db,$user=null) {
     $this->db=$db;
     $this->couchdb = \cncflora\Config::couchdb($db);
     $this->elasticsearch = \cncflora\Config::elasticsearch();
+    $this->user = $user;
   }
 
   public function listOccurrences($name) {
@@ -53,6 +55,8 @@ class Occurrences {
     }
     $occs=$this->fixAll($occs);
 
+    usort($occs,function($a,$b) { return strcmp($a['occurrenceID'],$b['occurrenceID']);});
+
     return $occs;
   }
 
@@ -61,10 +65,16 @@ class Occurrences {
   }
 
   public function insertOccurrence($occurrence){
-    $occurrence=$this->fix($occurrence);
+    $occurrence=$this->fixRaw($occurrence);
 
     $occurrence['metadata']['created']=time();
     $occurrence['metadata']['modified']=time();
+
+    if($this->user != null) {
+      $occurrence['metadata']['contributor'] = $this->user->name;
+      $occurrence['metadata']['contact'] = $this->user->email;
+      $occurrence['metadata']['creator'] = $this->user->name;
+    }
 
     try {
       $r=$this->couchdb->postDocument($occurrence);
@@ -83,10 +93,20 @@ class Occurrences {
   }
 
   public function insertOccurrences($occurrences) {
-    $occurrences=$this->fixAll($occurrences);
+    $occurrences=$this->fixAllRaw($occurrences);
 
-    $occurrence['metadata']['created']=time();
-    $occurrence['metadata']['modified']=time();
+    foreach($occurrences as $i=>$occurrence) {
+      $occurrence['metadata']['created']=time();
+      $occurrence['metadata']['modified']=time();
+
+      if($this->user != null) {
+        $occurrence['metadata']['contributor'] = $this->user->name;
+        $occurrence['metadata']['contact'] = $this->user->email;
+        $occurrence['metadata']['creator'] = $this->user->name;
+      }
+
+      $occurrences[$i] = $occurrence;
+    }
 
     $bulk=$this->couchdb->createBulkUpdater();
     $bulk->updateDocuments($occurrences);
@@ -110,8 +130,8 @@ class Occurrences {
   }
 
   public function updateOccurrence($occurrence) {
-    $occurrence=$this->fix($occurrence);
-    $occurrence['metadata']['modified']=time();
+    $occurrence=$this->metalog($this->fixRaw($occurrence));
+    vaR_dump($occurrence);
     try {
       $r=$this->couchdb->postDocument($occurrence);
       $occurrence['_rev']=$r[1];
@@ -129,10 +149,10 @@ class Occurrences {
   }
 
   public function updateOccurrences($occurrences) {
-    $occurrences=$this->fixAll($occurrences);
+    $occurrences=$this->fixAllRaw($occurrences);
 
     foreach($occurrences as $i=>$occ) {
-      $occurrences[$i]['metadata']['modified']=time();
+      $occurrences[$i] = $this->metalog($occ);
     }
 
     $bulk=$this->couchdb->createBulkUpdater();
@@ -173,7 +193,7 @@ class Occurrences {
     return isset($doc["georeferenceVerificationStatus"]) && $doc["georeferenceVerificationStatus"] == "ok";
   }
 
-  public function fixAll($docs) {
+  public function fixAllRaw($docs) {
     $client = new \GuzzleHttp\Client();
     $res = $client->request('POST',DWC_SERVICES.'/api/v1/fix',['json'=>$docs]);
     $redocs = json_decode($res->getBody(),true);
@@ -183,6 +203,11 @@ class Occurrences {
         $docs[$i][$k] = $v;
       }
     }
+    return $docs;
+  }
+
+  public function fixAll($docs) {
+    $docs=$this->fixAllRaw($docs);
 
     foreach($docs as $i=>$doc) {
       $docs[$i] = $this->fix($doc,false);
@@ -191,15 +216,26 @@ class Occurrences {
     return $docs;
   }
 
+  public function fixRaw($doc) {
+    $client = new \GuzzleHttp\Client();
+    $res = $client->request('POST',DWC_SERVICES.'/api/v1/fix',[
+      'json'=>[$doc]]);
+    $redoc = json_decode($res->getBody(),true);
+    foreach($redoc[0] as $k=>$v) {
+      $doc[$k] = $v;
+    }
+
+    foreach($doc['validation'] as $k=>$v) {
+      if(strpos($k,'-') >0) {
+        unset($doc['validation'][$k]);
+      }
+    }
+
+    return $doc;
+  }
   public function fix($doc,$dwc=true) {
     if($dwc) {
-      $client = new \GuzzleHttp\Client();
-      $res = $client->request('POST',DWC_SERVICES.'/api/v1/fix',[
-        'json'=>[$doc]]);
-      $redoc = json_decode($res->getBody(),true);
-      foreach($redoc[0] as $k=>$v) {
-        $doc[$k] = $v;
-      }
+      $doc=$this->fixRaw($doc);
     }
 
     if(isset($doc["occurrenceID"])) {
@@ -224,6 +260,23 @@ class Occurrences {
       } else {
         $doc['sig-ok']=false;
       }
+
+      $geos=$doc['georeferenceVerificationStatus'];
+      if($geos=='ok') {
+        $doc['sig-status-ok']=true;
+        $doc['sig-status-nok']=false;
+        $doc['sig-status-uncertain-locality']=false;
+      }else if($geos=='nok') {
+        $doc['sig-status-ok']=false;
+        $doc['sig-status-nok']=true;
+        $doc['sig-status-uncertain-locality']=false;
+      }else if($geos=='uncertain-locality') {
+        $doc['sig-status-ok']=false;
+        $doc['sig-status-nok']=false;
+        $doc['sig-status-uncertain-locality']=true;
+      }
+    } else {
+      $doc['sig-ok']=null;
     }
 
     if(isset($doc["validation"])) {
@@ -301,5 +354,38 @@ class Occurrences {
     $doc['metadata']['status'] = $this->canUse($doc)?"valid":"invalid";
 
     return $doc;
+  }
+
+  public function metalog($occurrence) {
+    $metadata = $occurrence['metadata'];
+
+    if($this->user != null) {
+      if(strpos($metadata['contact'],$this->user->email) === false) {
+        $metadata['contributor'] = $this->user->name ." ; ".$metadata['contributor'];
+        $metadata['contact'] = $this->user->email ." ; ".$metadata['contact'];
+      }
+    }
+
+    $contributors = explode(" ; ",$metadata['contributor']);
+    $contributorsFinal = array();
+    foreach($contributors as $contributor) {
+      if($contributor != null && strlen($contributor) >= 3) {
+        $contributorsFinal[] = $contributor;
+      }
+    }
+    $metadata['contributor'] = implode(" ; ",$contributorsFinal);
+
+    $contacts = explode(" ; ",$metadata['contact']);
+    $contactsFinal = array();
+    foreach($contacts as $contact) {
+      if($contact != null && strlen($contact) >= 3) {
+        $contactsFinal[] = $contact;
+      }
+    }
+    $metadata['contact'] = implode(" ; ",$contactsFinal);
+
+    $metadata['modified'] = time();
+    $occurrence[ 'metadata' ] = $metadata;
+    return $occurrence;
   }
 }

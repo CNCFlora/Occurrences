@@ -28,61 +28,32 @@ $(function(){
 
   $(".sig-form").each(function(i,e){
     var form=e;
-    var ok=false;
-    if(user!= null) {
-      for(var i=0;i<user.roles.length;i++) {
-        if(user.roles[i].role.toLowerCase() == 'sig')  {
-          ok=true;
-        }
+    if(form.getAttribute("rel")!='ok') {
+      form.onsubmit=function() { return false; };
+      var fields = form.querySelectorAll("input,textarea,select");
+      for(var i=0;i<fields.length;i++) {
+        fields[i].setAttribute('readonly','readonly');
       }
-    }
-    if(ok) {
-      return;
-    }
-    form.submit=function() { return false; };
-
-    var fields = form.querySelectorAll("input,textarea,select");
-    for(var i=0;i<fields.length;i++) {
-      fields[i].setAttribute('readonly','readonly');
     }
   });
   $(".analysis-form").each(function(i,e){
     var form=e;
-    var ok=false;
-    if(user!= null) {
-      for(var i=0;i<user.roles.length;i++) {
-        if(user.roles[i].role.toLowerCase() == 'analyst')  {
-          ok=true;
-        }
+    if(form.getAttribute("rel")!='ok') {
+      form.onsubmit=function() { return false; };
+      var fields = form.querySelectorAll("input,textarea,select");
+      for(var i=0;i<fields.length;i++) {
+        fields[i].setAttribute('readonly','readonly');
       }
-    }
-    if(ok) {
-      return;
-    }
-    form.submit=function() { return false; };
-
-    var fields = form.querySelectorAll("input,textarea,select");
-    for(var i=0;i<fields.length;i++) {
-      fields[i].setAttribute('readonly','readonly');
     }
   });
 
   $(".validation-form").each(function(i,e){
     var form=e;
-    var ok=false;
-    if(user != null) {
-      for(var i=0;i<user.roles.length;i++) {
-        if(user.roles[i].role.toLowerCase() == 'validator')  {
-          ok=true;
-        }
-      }
-    }
-
-    if(!ok) {
-      form.submit=function() { return false; };
+    if(form.getAttribute("rel")!='ok') {
+      form.onsubmit=function() { return false; };
       var fields = form.querySelectorAll("input,textarea,select");
       for(var i=0;i<fields.length;i++) {
-        fields[i].setAttribute('disabled','disabled');
+        fields[i].setAttribute('readonly','readonly');
       }
     }
 

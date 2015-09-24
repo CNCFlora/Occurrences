@@ -25,41 +25,77 @@
 </div>
 
 <div class="col-md-12">
-    <h3>{{strings.results}}</h3>
+    <h3>{{strings.results}} ({{stats.total}})</h3>
 
     {{#stats}}
-    <table class='table'>
-        <thead>
-            <tr>
-                <th>{{strings.eoo}}</th>
-                <th>{{strings.aoo}}</th>
-                <th>{{strings.valid}}</th>
-                <th>{{strings.invalid}}</th>
-                <th>{{strings.reviewed}}</th>
-                <th>{{strings.validated}}</th>
-                <th>{{strings.not-reviewed}}</th>
-                <th>{{strings.not-validated}}</th>
-                <th>{{strings.total}}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td id="eoo">{{eoo}}</td>
-                <td id="aoo">{{aoo}}</td>
-                <td id="valid">{{valid}}</td>
-                <td id="invalid">{{invalid}}</td>
-                <td id="reviewed">{{reviewed}}</td>
-                <td id="validated">{{validated}}</td>
-                <td id="not_reviewed">{{not_reviewed}}</td>
-                <td id="not_validated">{{not_validated}}</td>
-                <td id="total">{{total}}</td>
-            </tr>
+    <div class='col-md-4'>
+      <table class='table'>
+        <tr>
+          <th>{{strings.validated}}</th>
+          <td>{{validated}}</td>
+        </tr>
+        <tr>
+          <th>{{strings.not-validated}}</th>
+          <td>{{not_validated}}</td>
+        </tr>
+        <tr>
+          <th>{{strings.valid}}</th>
+          <td>{{valid}}</td>
+        </tr>
+        <tr>
+          <th>{{strings.invalid}}</th>
+          <td>{{invalid}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class='col-md-4'>
+      <table class='table'>
+        <tr>
+          <th>{{strings.sig-reviewed}}</th>
+          <td>{{sig_reviewed}}</td>
+        </tr>
+        <tr>
+          <th>{{strings.not-sig-reviewed}}</th>
+          <td>{{not_sig_reviewed}}</td>
+        </tr>
+        <tr>
+          <th>{{strings.sig-ok}}</th>
+          <td>{{sig_ok}}</td>
+        </tr>
+        <tr>
+          <th>{{strings.sig-nok}}</th>
+          <td>{{sig_nok}}</td>
+        </tr>
         </tbody>
-    </table>
+      </table>
+    </div>
+    <div class='col-md-4'>
+      <table class='table'>
+        <tr>
+          <th>{{strings.can-use}}</th>
+          <td>{{can_use}}</td>
+        </tr>
+        <tr>
+          <th>{{strings.can-not-use}}</th>
+          <td>{{can_not_use}}</td>
+        </tr>
+        <tr>
+          <th>{{strings.eoo}}</th>
+          <td>{{eoo}}</td>
+        </tr>
+        <tr>
+          <th>{{strings.aoo}}</th>
+          <td>{{aoo}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
     {{/stats}}
 
     <a name="map"></a>
-    <div id="map"></div>
+    <div class='col-md-12'>
+      <div id="map"></div>
+    </div>
     <script type="text/javascript">
       occurrences = {{{occurrences_json}}};
     </script>

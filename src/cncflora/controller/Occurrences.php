@@ -13,6 +13,9 @@ class Occurrences {
     $specie =  (new \cncflora\repository\Taxon($db))->getSpecie($name);
     $repo = new \cncflora\repository\Occurrences($db);
     $occurrences = $repo->listOccurrences($name);
+    $stats = $repo->getStats($occurrences);
+    $stats['eoo']=number_format($stats['eoo'],2)."km²";
+    $stats['aoo']=number_format($stats['aoo'],2)."km²";
 
     $user = $_SESSION['user'];
 
@@ -23,6 +26,7 @@ class Occurrences {
       'sig'=>$sig,
       'analysis'=>$analysis,
       'validate'=>$validate,
+      'stats'=>$stats,
       'specie'=>$specie,
       'occurrences'=>$occurrences,
       'occurrences_json'=>json_encode($occurrences)
@@ -41,6 +45,18 @@ class Occurrences {
     $occurrences = $repo->listOccurrences($name);
 
     $res->setContent(json_encode($occurrences));
+    return $res;
+  }
+
+  public function stats($req,$res,$args) {
+    $db = $args['db'];
+    $name = urldecode($args['name']);
+
+    $repo = new \cncflora\repository\Occurrences($db);
+    $occurrences = $repo->listOccurrences($name);
+    $stats = $repo->getSats($occurrences);
+
+    $res->setContent(json_encode($stats));
     return $res;
   }
 

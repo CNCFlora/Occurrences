@@ -6,18 +6,22 @@ var map = function() {
     var ocm = L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
     var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png')//.addTo(map);
 
-    var markersOk = new L.MarkerClusterGroup(); // clustered valid points
-    var pointsOk  = new L.layerGroup(); // valid points
+    var markersUsable = new L.MarkerClusterGroup(); 
+    var pointsUsable  = new L.layerGroup(); 
 
-    var markersNok = new L.MarkerClusterGroup(); // clustered invalid points
-    var pointsNok  = new L.layerGroup(); // invalid points
+    var markersUnusable = new L.MarkerClusterGroup(); 
+    var pointsUnusable  = new L.layerGroup();
+
+    var markersValid = new L.MarkerClusterGroup(); // clustered valid points
+    var pointsValid  = new L.layerGroup(); // valid points
+
+    var markersInvalid = new L.MarkerClusterGroup(); // clustered invalid points
+    var pointsInvalid  = new L.layerGroup(); // invalid points
 
     var markersUnk = new L.MarkerClusterGroup(); // clustered unkown points
     var pointsUnk  = new L.layerGroup(); // unkown points
 
     var points  = {};
-
-    var calc = [];
 
     for(var i in occurrences) {
         var feature = occurrences[i];
@@ -29,6 +33,7 @@ var map = function() {
         if(typeof feature.decimalLatitude == 'string') {
           feature.decimalLatitude=parseFloat(feature.decimalLatitude);
         }
+
         if(typeof feature.decimalLongitude == 'string') {
           feature.decimalLongitude=parseFloat(feature.decimalLongitude);
         }
@@ -39,37 +44,32 @@ var map = function() {
         var marker = L.marker(new L.LatLng(feature.decimalLatitude,feature.decimalLongitude));
         marker.bindPopup(makePopup(feature));
 
-        if(typeof feature.validation == 'object') {
-            if(typeof feature.validation.status == 'string') {
-                if(feature.validation.status == 'valid') {
-                    markersOk.addLayer(marker);
-                    pointsOk.addLayer(marker);
-                    calc.push(feature);
-                } else if(feature.validation.status == 'invalid') {
-                    markersNok.addLayer(marker);
-                    pointsNok.addLayer(marker);
-                } else {
-                    markersUnk.addLayer(marker);
-                    pointsUnk.addLayer(marker);
-                    calc.push(feature);
-                }
-            } else {
-                markersUnk.addLayer(marker);
-                pointsUnk.addLayer(marker);
-                calc.push(feature);
-            }
+        if(feature.validation.done) {
+          if(feature.valid) {
+            markersValid.addLayer(marker);
+            pointsValid.addLayer(marker);
+          } else {
+            markersInvalid.addLayer(marker);
+            pointsInvalid.addLayer(marker);
+          }
         } else {
-            markersUnk.addLayer(marker);
-            pointsUnk.addLayer(marker);
-            calc.push(feature);
+          markersUnk.addLayer(marker);
+          pointsUnk.addLayer(marker);
+        }
+
+        if(feature.metadata.status=='valid') {
+          markersUsable.addLayer(marker);
+          pointsUsable.addLayer(marker);
+        } else {
+          markersUnusable.addLayer(marker);
+          pointsUnusable.addLayer(marker);
         }
 
         points[feature.occurrenceID] = marker;
     }
 
-    map.addLayer(markersOk);
-    map.addLayer(markersNok);
-    map.addLayer(markersUnk);
+    map.addLayer(markersUsable);
+    map.addLayer(markersUnusable);
 
     var base = {
         Landscape: land,
@@ -78,10 +78,15 @@ var map = function() {
     };
 
     var layers = {
-        'Valid points': pointsOk,
-        'Valid points clustered': markersOk,
-        'Non-valid points': pointsNok,
-        'Non-valid points clustered': markersNok,
+        'Usable points': pointsUsable,
+        'Usable points clustered': markersUsable,
+        'Non-Usable points': pointsUnusable,
+        'Non-Usable points clustered': markersUnusable,
+        'Usable points clustered': markersUsable,
+        'Valid points': pointsValid,
+        'Valid points clustered': markersValid,
+        'Non-valid points': pointsInvalid,
+        'Non-valid points clustered': markersInvalid,
         'Non-validated points': pointsUnk,
         'Non-validated points clustered': markersUnk
     };

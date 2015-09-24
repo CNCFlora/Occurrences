@@ -1,5 +1,6 @@
 
-<div class="occurrence {{#validationBy}} validated {{/validationBy}} {{#valid}} valid {{/valid}}" >
+<div class="occurrence {{^validation.done}} not-validated {{/validation.done}}
+    {{#validation.done}} validated {{#valid}} valid {{/valid}} {{^valid}} invalid {{/valid}} {{/validation.done}}" >
 
     <div class='actions alabel'>
         {{^validation.done}}

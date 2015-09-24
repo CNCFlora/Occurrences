@@ -148,5 +148,12 @@
     "acceptedNameUsage":"Nome aceito",
     "save-analysis":"Salvar dados",
     "save-validation":"Salvar validação",
-    "save-sig":"Salvar SIG"
+    "save-sig":"Salvar SIG",
+    "stats":"Status",
+    "can-use":"Usados nos cálculos",
+    "can-not-use":"Não usados nos cálculos",
+    "sig-ok":"SIG OK",
+    "sig-nok":"SIG Não OK",
+    "sig-reviewed":"SIG revisado",
+    "not-sig-reviewed":"SIG não revisado"
 }

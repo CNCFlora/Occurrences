@@ -181,16 +181,82 @@ class Occurrences {
     $this->updateOccurrence($occurrence);
   }
 
+
+  public function getStats($occurrences){
+    $stats = [
+      'total'=>0,
+      'eoo'=>'n/a',
+      'aoo'=>'n/a',
+      'validated'=>0,
+      'not_validated'=>0,
+      'valid'=>0,
+      'invalid'=>0,
+      'sig_reviewed'=>0,
+      'not_sig_reviewed'=>0,
+      'sig_ok'=>0,
+      'sig_nok'=>0,
+      'can_use'=>0,
+      'can_not_use'=>0
+    ];
+
+    $stats['total']=count($occurrences);
+    $to_calc=[];
+    foreach($occurrences as $occ){
+      if($this->canUse($occ)) {
+        $stats['can_use']++;
+        $to_calc[]=['decimalLatitude'=>$occ['decimalLatitude'],'decimalLongitude'=>$occ['decimalLongitude']];
+      } else {
+        $stats['can_not_use']++;
+      }
+      if($this->isValidated($occ)) {
+        $stats['validated']++;
+        if($this->isValid($occ)) {
+          $stats['valid']++;
+        } else {
+          $stats['invalid']++;
+        }
+      } else {
+        $stats['not_validated']++;
+      }
+      if($this->hasSig($occ)) {
+        $stats['sig_reviewed']++;
+        if($this->isSigOK($occ)) {
+          $stats['sig_ok']++;
+        } else {
+          $stats['sig_nok']++;
+        }
+      } else {
+        $stats['not_sig_reviewed']++;
+      }
+    }
+
+    $client = new \GuzzleHttp\Client();
+    $res = $client->request('POST',DWC_SERVICES.'/api/v1/analysis/all',['json'=>$to_calc]);
+    $calc = json_decode($res->getBody(),true);
+
+    $stats['eoo']=$calc['eoo']['all']['area'];
+    $stats['aoo']=$calc['aoo']['all']['area'];
+
+    return $stats;
+  }
+
   public function canUse($occ) {
-    return $this->isValid($occ) && $this->isSigOk($occ);
+    return (!$this->isValidated($occ) || $this->isValid($occ)) && $this->isSigOk($occ);
   }
 
   public function isValid($occ) {
     return $occ['valid'] === true;
   }
 
+  public function isValidated($occ) {
+    return $occ['validation']['done']===true;
+  }
+
+  public function hasSig($occ) {
+    return (isset($occ['georeferenceVerificationStatus']) && strlen($occ['georeferenceVerificationStatus']) >= 2);
+  }
   public function isSigOk($occ) {
-    return isset($doc["georeferenceVerificationStatus"]) && $doc["georeferenceVerificationStatus"] == "ok";
+    return isset($occ["georeferenceVerificationStatus"]) && $occ["georeferenceVerificationStatus"] == "ok";
   }
 
   public function fixAllRaw($docs) {

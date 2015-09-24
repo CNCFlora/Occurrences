@@ -53,7 +53,7 @@ class Occurrences {
       if(isset($hit['_source']['deleted'])) continue;
       $occs[]=$hit['_source'];
     }
-    $occs=$this->fixAll($occs);
+    $occs=$this->prepareAll($occs);
 
     usort($occs,function($a,$b) { return strcmp($a['occurrenceID'],$b['occurrenceID']);});
 
@@ -61,11 +61,11 @@ class Occurrences {
   }
 
   public function getOccurrence($id) {
-    return $this->fix($this->couchdb->findDocument($id)->body);
+    return $this->prepare($this->couchdb->findDocument($id)->body);
   }
 
   public function insertOccurrence($occurrence){
-    $occurrence=$this->fixRaw($occurrence);
+    $occurrence=$this->fix($occurrence);
 
     $occurrence['metadata']['created']=time();
     $occurrence['metadata']['modified']=time();
@@ -93,7 +93,7 @@ class Occurrences {
   }
 
   public function insertOccurrences($occurrences) {
-    $occurrences=$this->fixAllRaw($occurrences);
+    $occurrences=$this->fixAll($occurrences);
 
     foreach($occurrences as $i=>$occurrence) {
       $occurrence['metadata']['created']=time();
@@ -130,7 +130,7 @@ class Occurrences {
   }
 
   public function updateOccurrence($occurrence) {
-    $occurrence=$this->metalog($this->fixRaw($occurrence));
+    $occurrence=$this->metalog($this->fix($occurrence));
     vaR_dump($occurrence);
     try {
       $r=$this->couchdb->postDocument($occurrence);
@@ -149,7 +149,7 @@ class Occurrences {
   }
 
   public function updateOccurrences($occurrences) {
-    $occurrences=$this->fixAllRaw($occurrences);
+    $occurrences=$this->fixAll($occurrences);
 
     foreach($occurrences as $i=>$occ) {
       $occurrences[$i] = $this->metalog($occ);
@@ -249,7 +249,7 @@ class Occurrences {
   }
 
   public function isValidated($occ) {
-    return $occ['validation']['done']===true;
+    return isseT($occ['validation']) && isset($occ['validation']['done']) && $occ['validation']['done']===true;
   }
 
   public function hasSig($occ) {
@@ -259,7 +259,7 @@ class Occurrences {
     return isset($occ["georeferenceVerificationStatus"]) && $occ["georeferenceVerificationStatus"] == "ok";
   }
 
-  public function fixAllRaw($docs) {
+  public function fixAll($docs) {
     $client = new \GuzzleHttp\Client();
     $res = $client->request('POST',DWC_SERVICES.'/api/v1/fix',['json'=>$docs]);
     $redocs = json_decode($res->getBody(),true);
@@ -272,17 +272,17 @@ class Occurrences {
     return $docs;
   }
 
-  public function fixAll($docs) {
-    $docs=$this->fixAllRaw($docs);
+  public function prepareAll($docs) {
+    $docs=$this->fixAll($docs);
 
     foreach($docs as $i=>$doc) {
-      $docs[$i] = $this->fix($doc,false);
+      $docs[$i] = $this->prepare($doc,false);
     }
 
     return $docs;
   }
 
-  public function fixRaw($doc) {
+  public function fix($doc) {
     $client = new \GuzzleHttp\Client();
     $res = $client->request('POST',DWC_SERVICES.'/api/v1/fix',[
       'json'=>[$doc]]);
@@ -299,7 +299,7 @@ class Occurrences {
 
     return $doc;
   }
-  public function fix($doc,$dwc=true) {
+  public function prepare($doc,$dwc=true) {
     if($dwc) {
       $doc=$this->fixRaw($doc);
     }

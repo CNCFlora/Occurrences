@@ -16,36 +16,7 @@ class Occurrences {
 
     $user = $_SESSION['user'];
 
-    $sig=false;
-    $analysis=false;
-    $validate=true;
-    foreach($user->roles as $role) {
-      if($role->context == $db) {
-        foreach($role->roles as $sub_role) {
-          if(strtolower($sub_role->role) == 'sig') {
-            $sig=true;
-          } else if(strtolower($sub_role->role) == 'analyst') {
-            foreach($sub_role->entities as $ent) {
-              $ent = strtolower($ent);
-              if($ent == 'all' 
-                || $ent == strtolower($specie->family) 
-                || $ent == strtolower($specie->scientificNameWithoutAuthorship)) {
-                $analysis=true;
-              }
-            }
-          } else if(strtolower($sub_role->role) == 'validator') {
-            foreach($sub_role->entities as $ent) {
-              $ent = strtolower($ent);
-              if($ent == 'all' 
-                || $ent == strtolower($specie->family) 
-                || $ent == strtolower($specie->scientificNameWithoutAuthorship)) {
-                $validate=true;
-              }
-            }
-          }
-        }
-      }
-    }
+    list($sig,$analysis,$validate) = \cncflora\ACL::listPermissions($user,$db,$specie);
 
     $data =[
       'db'=>$db,

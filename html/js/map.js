@@ -2,6 +2,8 @@ var map = function() {
 
     var map = L.map('map',{crs:L.CRS.EPSG3857}).setView([-15.79889,-47.866667],4);
 
+    var complete = (!document.getElementById('map').classList.contains('simple'));
+
     var land = L.tileLayer('http://{s}.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png')//.addTo(map);
     var ocm = L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
     var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png')//.addTo(map);
@@ -20,6 +22,8 @@ var map = function() {
 
     var markersUnk = new L.MarkerClusterGroup(); // clustered unkown points
     var pointsUnk  = new L.layerGroup(); // unkown points
+
+    var markersAll = new L.MarkerClusterGroup();
 
     var points  = {};
 
@@ -43,6 +47,11 @@ var map = function() {
 
         var marker = L.marker(new L.LatLng(feature.decimalLatitude,feature.decimalLongitude));
         marker.bindPopup(makePopup(feature));
+
+        if(!complete) {
+          markersAll.addLayer(marker);
+          continue;
+        }
 
         if(feature.validation.done) {
           if(feature.valid) {
@@ -68,8 +77,12 @@ var map = function() {
         points[feature.occurrenceID] = marker;
     }
 
-    map.addLayer(markersUsable);
-    map.addLayer(markersUnusable);
+    if(complete) {
+      map.addLayer(markersUsable);
+      map.addLayer(markersUnusable);
+    } else {
+      map.addLayer(markersAll);
+    }
 
     var base = {
         Landscape: land,
@@ -77,7 +90,9 @@ var map = function() {
         OpenStreetMap: osm
     };
 
-    var layers = {
+    var layers = {};
+    if(complete) {
+      layers = {
         'Usable points': pointsUsable,
         'Usable points clustered': markersUsable,
         'Non-Usable points': pointsUnusable,
@@ -89,7 +104,8 @@ var map = function() {
         'Non-valid points clustered': markersInvalid,
         'Non-validated points': pointsUnk,
         'Non-validated points clustered': markersUnk
-    };
+      };
+    }
 
     if(typeof eoo == 'object' && typeof eoo.geometry == 'object' && eoo.geometry != null) {
         var eool = L.geoJson(eoo.geometry).addTo(map);

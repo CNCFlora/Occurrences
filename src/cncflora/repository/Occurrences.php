@@ -111,6 +111,7 @@ class Occurrences {
     $bulk=$this->couchdb->createBulkUpdater();
     $bulk->updateDocuments($occurrences);
     $res=$bulk->execute();
+    var_dump($res);
     if(isset($r->body->error)){
       return false;
     }
@@ -272,11 +273,11 @@ class Occurrences {
     return $docs;
   }
 
-  public function prepareAll($docs) {
-    $docs=$this->fixAll($docs);
+  public function prepareAll($docs,$fix=true,$taxon=false) {
+    if($fix) $docs=$this->fixAll($docs);
 
     foreach($docs as $i=>$doc) {
-      $docs[$i] = $this->prepare($doc,false);
+      $docs[$i] = $this->prepare($doc,false,$taxon);
     }
 
     return $docs;
@@ -299,15 +300,22 @@ class Occurrences {
 
     return $doc;
   }
-  public function prepare($doc,$dwc=true) {
+  public function prepare($doc,$dwc=true,$taxon=false) {
     if($dwc) {
       $doc=$this->fixRaw($doc);
     }
+    if($taxon) {
+      $doc=$this->fixSpecie($doc);
+    }
 
-    if(isset($doc["occurrenceID"])) {
-      $doc["_id"] = $doc["occurrenceID"];
-    }else{
+    if(!isset($doc['_id']) && isset($doc['occurrenceID'])) {
+      $doc['_id']=$doc['occurrenceID'];
+    } else if(!isset($doc['_id'])) {
       $doc['_id'] = 'occurrence:'.uniqid(true);
+    }
+
+    if(!isset($doc["occurrenceID"])) {
+      $doc['occurrenceID'] = $doc['_id'];
     }
 
     if(!isset($doc['metadata'])) {
@@ -316,8 +324,12 @@ class Occurrences {
 
     $doc['metadata']['type']='occurrence';
 
-    $doc['metadata']['modified_date'] = date('Y-m-d',$doc['metadata']['modified']);
-    $doc['metadata']['created_date'] = date('Y-m-d',$doc['metadata']['created']);
+    if(isset($doc['metadata']['modified'])) {
+      $doc['metadata']['modified_date'] = date('Y-m-d',$doc['metadata']['modified']);
+    }
+    if(isset($doc['metadata']['created'])) {
+      $doc['metadata']['created_date'] = date('Y-m-d',$doc['metadata']['created']);
+    }
 
     if(isset($doc["georeferenceVerificationStatus"])) {
       if($doc["georeferenceVerificationStatus"] == "1" || $doc["georeferenceVerificationStatus"] == "ok") {
@@ -348,8 +360,10 @@ class Occurrences {
     if(isset($doc["validation"])) {
       if(is_array($doc["validation"])) {
         foreach($doc["validation"] as $k=>$v) {
-          $kk = $k."-".$v;
-          $doc['validation'][$kk]=$v;
+          if(is_string($v)) {
+            $kk = $k."-".$v;
+            $doc['validation'][$kk]=$v;
+          }
         }
 
         if(isset($doc["validation"]["status"])) {
@@ -402,10 +416,19 @@ class Occurrences {
             )
           ) {
             $doc["valid"]=true;
-            $doc['validation']['done']=true;
           } else {
             $doc["valid"]=false;
+          }
+          if(   isset($doc["validation"]["taxonomy"])
+             || isset($doc["validation"]["georeference"])
+             || isset($doc["validation"]["native"])
+             || isset($doc["validation"]["presence"])
+             || isset($doc["validation"]["cultivated"])
+             || isset($doc["validation"]["duplicated"])
+          ) {
             $doc['validation']['done']=true;
+          } else {
+            $doc['validation']['done']=false;
           }
         }
       } else {
@@ -453,5 +476,93 @@ class Occurrences {
     $metadata['modified'] = time();
     $occurrence[ 'metadata' ] = $metadata;
     return $occurrence;
+  }
+
+
+  public function fixSpecie($occ) {
+
+    $name = null; 
+    if(isset( $occ["acceptedNameUsage"] ) && strlen(trim( $occ["acceptedNameUsage"]) ) >= 5){
+      $name=trim($occ["acceptedNameUsage"]);
+    } else if(isset( $occ["scientificNameWithoutAuthorship"] ) && strlen(trim( $occ["scientificNameWithoutAuthorship"] )) >= 3) {
+      $name=trim($occ["scientificNameWithoutAuthorship"]);
+    } else if(isset($occ["scientificName"]) && strlen(trim( $occ["scientificName"] )) >=5) {
+      $name=trim($occ["scientificName"]);
+    } else if(
+          isset( $occ["genus"] ) && strlen(trim( $occ["genus"] )) >=5
+       && isset( $occ["specificEpithet"] ) && strlen(trim( $occ["specificEpithet"] )) >=5
+    ) {
+      $name=trim($occ["genus"])." ".trim($occ["specificEpithet"]);
+    }
+
+      $params['body']['query']['bool']['should'][]
+        = ['match'=>['scientificName'=>['query'=>$name,'operator'=>'and']]];
+      $params['body']['query']['bool']['should'][]
+        = ['match'=>['scientificNameWithoutAuthorship'=>['query'=>$name,'operator'=>'and']]];
+
+    $occ['specie']=null;
+
+    if($name != null) {
+      $params=[
+        'index'=>$this->db,
+        'type'=>'taxon',
+        'body'=>[
+          'size'=> 9999,
+          'query'=>[
+            'multi_match'=>[
+            'query'=>$name,
+            'operator'=>'and',
+            'fields'=>['scientificName','scientificNameWithoutAuthorship']
+            ]
+          ]
+        ]
+      ];
+      $result = $this->elasticsearch->search($params);
+
+      $spps= [];
+      foreach($result['hits']['hits'] as $hit) {
+        $spp = $hit['_source'];
+        $spp['family']=strtoupper(trim($spp['family']));
+        $spps[] = $spp;
+      }
+
+      if(count($spps) ==1){
+        if($spps[0]['taxonomicStatus']=='accepted') {
+          $occ['specie']=$spps[0];
+        } else {
+          $params=[
+            'index'=>$this->db,
+            'type'=>'taxon',
+            'body'=>[
+              'size'=> 9999,
+              'query'=>[
+                'bool'=>[
+                  'must'=>[
+                    [
+                      'match'=>[
+                        'taxonomicStatus'=>'accepted'
+                      ]
+                    ],
+                    [
+                      'match'=>[
+                        'scientificNameWithoutAuthorshop'=>$spps[0]['acceptedNameUsage']
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ];
+          $result = $this->elasticsearch->search($params);
+          if(isset($result['hits']['hits'][0])) {
+            $spp = $result['hits']['hits'][0]['_source'];
+            $spp['family']=strtoupper(trim($spp['family']));
+            $occ['specie']=$spp;
+          }
+        }
+      } 
+    }
+
+    return $occ;
   }
 }

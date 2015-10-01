@@ -22,6 +22,10 @@ $r->post("/{db}/occurrence/{id}/analysis",'\cncflora\controller\Occurrences::ana
 $r->post("/{db}/occurrence/{id}/validate",'\cncflora\controller\Occurrences::validate');
 $r->post("/{db}/occurrence/{id}/sig",'\cncflora\controller\Occurrences::sig');
 
+$r->get("/{db}/upload",'\cncflora\controller\Upload::index');
+$r->post("/{db}/upload",'\cncflora\controller\Upload::process');
+$r->post("/{db}/upload/insert",'\cncflora\controller\Upload::insert');
+
 $r->subscribe('request.received', function ($evt,$req) use ($r){
   $uri = explode("?",$req->getRequestURI())[0];
   if(isset($_SESSION['logged']) && $_SESSION['logged'] === true) {

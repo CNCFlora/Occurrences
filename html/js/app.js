@@ -73,7 +73,7 @@ $(function(){
 
     var dup = $("input[name=duplicated]:checked",form);
     if(dup.length ==0){
-      $("input[name=duplicated][value=no]",form).prop("checked",true);
+      //$("input[name=duplicated][value=no]",form).prop("checked",true);
     }
 
     taxonomy.change(function(){
@@ -92,6 +92,10 @@ $(function(){
        taxonomy.parent().parent().show();
        comments.parent().show();
     }
+  });
+
+  $(".insert").submit(function(){
+      return confirm(strings['confirm-insert']);
   });
 
 });

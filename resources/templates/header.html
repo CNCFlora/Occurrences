@@ -44,9 +44,9 @@
                 {{#db}}
                 <li><a href="{{base}}/{{db}}/workflow">{{strings.summary}}</a></li>
                 <li><a href="{{base}}/{{db}}/families">{{strings.families}}</a></li>
-                {{#role-analyst}}
+                {{#logged}}
                 <li><a href="{{base}}/{{db}}/upload">{{strings.send-occurrences}}</a></li>
-                {{/role-analyst}}
+                {{/logged}}
                 {{/db}}
                 <li id='logout'><a href="#">{{strings.logout}}</a></li>
                 {{/logged}}

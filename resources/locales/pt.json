@@ -19,10 +19,10 @@
     "reviewed":"Revisado",
     "family":"Família",
     "specie":"Espécie",
-    "templates":"Templates/Modelos",
+    "templates":"Modelos de planilhas para envio",
     "send":"Enviar",
     "upload-file":"Enviar arquivo",
-    "inserted":"inseridos",
+    "inserted":"Inseridos",
     "success":"Sucesso",
     "errors":"Erros",
     "species-inserted":"Espécies com novos registros",
@@ -155,5 +155,13 @@
     "sig-ok":"SIG OK",
     "sig-nok":"SIG Não OK",
     "sig-reviewed":"SIG revisado",
-    "not-sig-reviewed":"SIG não revisado"
+    "not-sig-reviewed":"SIG não revisado",
+    "upload-result":"Arquivo enviado",
+    "system-taxon":"Taxonomia reconhecida no sistema",
+    "original-taxon":"Taxonomia original do registro",
+    "missing-taxon":"Nenhuma especie reconhecida",
+    "upload-warn":"Tenha certeza de ter conferido todos os registros antes de inserir",
+    "insert":"Inserir",
+    "insert-all":"Inserir todos",
+    "confirm-insert":"Confirma inserir os dados que acabou de revisar?"
 }

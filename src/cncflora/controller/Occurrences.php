@@ -37,14 +37,42 @@ class Occurrences {
     return $res;
   }
 
-  public function occurrences($req,$res,$args) {
+  public function download($req,$res,$args) {
     $db = $args['db'];
     $name = urldecode($args['name']);
+    $to = $args['format'];
 
     $repo = new \cncflora\repository\Occurrences($db);
     $occurrences = $repo->listOccurrences($name);
 
-    $res->setContent(json_encode($occurrences));
+    foreach($occurrences as $i=>$occ) {
+      foreach($occ as $k=>$v) {
+        if(strpos($k,'-') >= 1) {
+          unset($occurrences[$i][$k]);
+        }else if(is_array($v)) {
+          foreach($v as $kk=>$vv) {
+            if(strpos($kk,'-') >= 1) {
+              unset($occurrences[$i][$k][$kk]);
+            }else if(is_string($vv) || is_integer($vv) || is_double($vv)) {
+              $occurrences[$i][$k."_".$kk]=  $vv;
+            } else if(is_bool($vv)) {
+              $occurrences[$i][$k."_".$kk]=  $vv?"true":"false";
+            }
+          }
+          unset($occurrences[$i][$k]);
+        } else if(is_bool($v)) {
+          $occurrences[$i][$k] = $v?"true":"false";
+        }
+      }
+    }
+
+    $client = new \GuzzleHttp\Client();
+    $dwc_res = $client->request('POST',DWC_SERVICES.'/api/v1/convert?from=json&to='.$to,['json'=>$occurrences]);
+
+    header('Content-Type: application/octet-stream');
+    header("Content-Transfer-Encoding: Binary"); 
+    header("Content-disposition: attachment; filename=\"" .str_replace(" ","_",$name ).".".$to . "\"");
+    $res->setContent($dwc_res->getBody());
     return $res;
   }
 

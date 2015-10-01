@@ -22,9 +22,19 @@
         </a>
         {{/assessments_url}}
         {{#sig}}
+          <a href="{{base}}/{{db}}/specie/{{specie.scientificNameWithoutAuthorship}}/table" class="btn btn-default">
+            <span class="glyphicon glyphicon-edit"></span>
+            {{strings.table-editor}}
+          </a>
         {{/sig}}
-        <a href="{{base}}/{{db}}/specie/{{specie.scientificNameWithoutAuthorship}}/download/csv" class="btn btn-default">Download CSV</a>
-        <a href="{{base}}/{{db}}/specie/{{specie.scientificNameWithoutAuthorship}}/download/xlsx" class="btn btn-default">Download XLSX</a>
+        <a href="{{base}}/{{db}}/specie/{{specie.scientificNameWithoutAuthorship}}/download/csv" class="btn btn-default">
+            <span class="glyphicon glyphicon-download"></span>
+          Download CSV
+        </a>
+        <a href="{{base}}/{{db}}/specie/{{specie.scientificNameWithoutAuthorship}}/download/xlsx" class="btn btn-default">
+            <span class="glyphicon glyphicon-download"></span>
+          Download XLSX
+        </a>
     </p>
 </div>
 

@@ -15,7 +15,9 @@ $r->get("/{db}/families",'\cncflora\controller\Taxon::families');
 $r->get("/{db}/family/{family}",'\cncflora\controller\Taxon::family');
 
 $r->get("/{db}/specie/{name}",'\cncflora\controller\Occurrences::specie');
-$r->get("/{db}/specie/{name}/calcs",'\cncflora\controller\Occurrences::calcs');
+$r->get("/{db}/specie/{name}/table",'\cncflora\controller\Occurrences::table');
+$r->get("/{db}/specie/{name}/stats",'\cncflora\controller\Occurrences::stats');
+$r->get("/{db}/specie/{name}/occurrences",'\cncflora\controller\Occurrences::occurrences');
 $r->get("/{db}/specie/{name}/download/{format}",'\cncflora\controller\Occurrences::download');
 
 $r->post("/{db}/occurrence/{id}/analysis",'\cncflora\controller\Occurrences::analysis');

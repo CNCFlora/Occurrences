@@ -163,5 +163,6 @@
     "upload-warn":"Tenha certeza de ter conferido todos os registros antes de inserir",
     "insert":"Inserir",
     "insert-all":"Inserir todos",
-    "confirm-insert":"Confirma inserir os dados que acabou de revisar?"
+    "confirm-insert":"Confirma inserir os dados que acabou de revisar?",
+    "occurrenceID":"ID"
 }

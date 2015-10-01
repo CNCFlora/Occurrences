@@ -24,6 +24,10 @@ $(function(){
     map();
   }
 
+  if(typeof table == 'function') {
+    table();
+  }
+
   $(".glyphicon-question-sign,.glyphicon-remove-circle,.glyphicon-ok-circle").tooltip({});
 
   $(".sig-form").each(function(i,e){

@@ -1,0 +1,68 @@
+{{> header}}
+
+
+<table class="col-md-12 table">
+  <thead>
+    <tr>
+      <th>{{strings.occurrenceID}}</th>
+      <th>{{strings.family}}</th>
+      <th>{{strings.specie}}</th>
+      <th>{{strings.recordedBy}}</th>
+      <th>{{strings.recordNumber}}</th>
+      <th>{{strings.collectionCode}}</th>
+      <th>{{strings.catalogNumber}}</th>
+      <th>{{strings.year}}</th>
+      <th>{{strings.stateProvince}}</th>
+      <th>{{strings.municipality}}</th>
+      <th>{{strings.locality}}</th>
+      <th>{{strings.remarks}}</th>
+      <th>{{strings.comments}}</th>
+      <th>{{strings.decimalLatitude}}</th>
+      <th>{{strings.decimalLongitude}}</th>
+      <th>{{strings.georeferenceVerificationStatus}}</th>
+      <th>{{strings.georeferenceProtocol}}</th>
+      <th>{{strings.georeferenceUncertaintyInMeters}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#occurrences}}
+    <tr>
+      <td>
+        {{occurrenceID}}
+      </td>
+      <td>
+        {{specie.family}}
+      </td>
+      <td>
+        {{specie.scientificNameWithoutAuthorship}}
+      </td>
+      <td>
+        {{recordedBy}}
+      </td>
+      <td>
+        {{recordNumber}}
+      </td>
+      <td>
+        {{collectionCode}}
+      </td>
+      <td>
+        {{catalogNumber}}
+      </td>
+      <td>
+        {{year}}
+      </td>
+      <td>
+        {{stateProvince}}
+      </td>
+      <td>
+        {{municipality}}
+      </td>
+    </tr>
+    {{/occurrences}}
+  </tbody>
+</table>
+
+<link rel="stylesheet" href="{{base}}/css/table.css" />
+<script src="{{base}}/js/table.js" type="text/javascript"></script>
+
+{{> footer}}

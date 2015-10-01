@@ -565,4 +565,28 @@ class Occurrences {
 
     return $occ;
   }
+
+  function flatten($occurrences) {
+    foreach($occurrences as $i=>$occ) {
+      foreach($occ as $k=>$v) {
+        if(strpos($k,'-') >= 1) {
+          unset($occurrences[$i][$k]);
+        }else if(is_array($v)) {
+          foreach($v as $kk=>$vv) {
+            if(strpos($kk,'-') >= 1) {
+              unset($occurrences[$i][$k][$kk]);
+            }else if(is_string($vv) || is_integer($vv) || is_double($vv)) {
+              $occurrences[$i][$k."_".$kk]=  $vv;
+            } else if(is_bool($vv)) {
+              $occurrences[$i][$k."_".$kk]=  $vv?"true":"false";
+            }
+          }
+          unset($occurrences[$i][$k]);
+        } else if(is_bool($v)) {
+          $occurrences[$i][$k] = $v?"true":"false";
+        }
+      }
+    }
+    return $occurrences;
+  }
 }

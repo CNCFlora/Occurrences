@@ -43,28 +43,7 @@ class Occurrences {
     $to = $args['format'];
 
     $repo = new \cncflora\repository\Occurrences($db);
-    $occurrences = $repo->listOccurrences($name);
-
-    foreach($occurrences as $i=>$occ) {
-      foreach($occ as $k=>$v) {
-        if(strpos($k,'-') >= 1) {
-          unset($occurrences[$i][$k]);
-        }else if(is_array($v)) {
-          foreach($v as $kk=>$vv) {
-            if(strpos($kk,'-') >= 1) {
-              unset($occurrences[$i][$k][$kk]);
-            }else if(is_string($vv) || is_integer($vv) || is_double($vv)) {
-              $occurrences[$i][$k."_".$kk]=  $vv;
-            } else if(is_bool($vv)) {
-              $occurrences[$i][$k."_".$kk]=  $vv?"true":"false";
-            }
-          }
-          unset($occurrences[$i][$k]);
-        } else if(is_bool($v)) {
-          $occurrences[$i][$k] = $v?"true":"false";
-        }
-      }
-    }
+    $occurrences = $repo->flatten($repo->listOccurrences($name));
 
     $client = new \GuzzleHttp\Client();
     $dwc_res = $client->request('POST',DWC_SERVICES.'/api/v1/convert?from=json&to='.$to,['json'=>$occurrences]);
@@ -73,6 +52,33 @@ class Occurrences {
     header("Content-Transfer-Encoding: Binary"); 
     header("Content-disposition: attachment; filename=\"" .str_replace(" ","_",$name ).".".$to . "\"");
     $res->setContent($dwc_res->getBody());
+    return $res;
+  }
+
+  public function table($req,$res,$args) {
+    $db = $args['db'];
+    $name = urldecode($args['name']);
+
+    $repo = new \cncflora\repository\Occurrences($db);
+    $occurrences = $repo->listOccurrences($name);
+
+    $data =[
+      'db'=>$db,
+      'occurrences'=>$occurrences
+    ];
+    $view = new View('table',$data);
+    $res->setContent($view);
+    return $res;
+  }
+
+  public function occurrences($req,$res,$args) {
+    $db = $args['db'];
+    $name = urldecode($args['name']);
+
+    $repo = new \cncflora\repository\Occurrences($db);
+    $occurrences = $repo->flatten($repo->listOccurrences($name));
+
+    $res->setContent(json_encode($occurrences));
     return $res;
   }
 

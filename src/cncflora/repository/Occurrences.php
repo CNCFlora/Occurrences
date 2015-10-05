@@ -141,7 +141,7 @@ class Occurrences {
         'body'=>$occurrence
       ]);
       sleep(1);
-      return $occurrence;
+      return $this->prepare( $occurrence ,false);
     } catch(Exception $e) {
       return false;
     }
@@ -172,7 +172,7 @@ class Occurrences {
     }
     sleep(1);
 
-    return $occurrences;
+    return $this->prepareAll($occurrences,false);
   }
 
   public function deleteOccurrence($occurrence){

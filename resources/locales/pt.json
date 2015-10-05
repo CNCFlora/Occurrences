@@ -165,5 +165,7 @@
     "insert-all":"Inserir todos",
     "confirm-insert":"Confirma inserir os dados que acabou de revisar?",
     "occurrenceID":"ID",
-    "add-direct":"Adicionar registro"
+    "add-direct":"Adicionar registro",
+    'delete':"Excluir",
+    "confirm-delete":"Confirma excluir os dados?"
 }

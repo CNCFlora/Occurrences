@@ -40,6 +40,7 @@ $(function(){
       }
     }
   });
+
   $(".analysis-form").each(function(i,e){
     var form=e;
     if(form.getAttribute("rel")!='ok') {
@@ -61,46 +62,88 @@ $(function(){
       }
     }
 
-    form = $(e);
-    var taxonomy = $("input[name=taxonomy]",form);
-    var comments = $("textarea[name=comment]",form);
-    form.submit(function(){
-        var taxonomy_sel = $("input[name=taxonomy]:checked",form);
-        var len = $("input:checked",form).length;
+    form.onsubmit=function(){
+        var taxonomy_sel = $("input[name=taxonomy]:checked",$(form));
+        var len = $("input:checked",$(form)).length;
         if(taxonomy_sel.val() == 'valid' && len != 6) {
           alert("É preciso responder todas as perguntas");
           return false;
         } else {
-          return true;
+          var data={};
+          var radios=form.querySelectorAll('input[type=radio]:checked');
+          for(var i=0;i<radios.length;i++) {
+            data[radios[i].getAttribute('name')]=radios[i].value;
+          }
+          data['remarks']=form.querySelector('textarea').value;
+          var to = form.getAttribute('action');
+          var datauri = "";
+          for(var k in data) {
+            datauri+="&"+k+'='+encodeURIComponent(data[k]);
+          }
+          $.post(to+'?raw=true',datauri,function(r){
+              console.log(r);
+            updateStats();
+            var div = document.getElementById('occ-'+r['occurrenceID']+'-unit').querySelector('div:first-child');
+            var classes=div.classList;
+
+            if(r.valid){
+              classes.remove('not-validated');
+              classes.remove('invalid');
+              classes.add('valid');
+
+              var label = div.querySelector('.label-valid');
+              label.classList.remove('label-warning');
+              label.classList.remove('label-danger');
+              label.classList.add('label-success');
+              label.querySelector('span').classList.remove('glyphicon-question-sign');
+              label.querySelector('span').classList.remove('glyphicon-remove-sign');
+              label.querySelector('span').classList.add('glyphicon-ok-sign');
+              label.querySelector('.in-label').innerHTML=strings['valid'];
+            }else  {
+              classes.remove('not-validated');
+              classes.remove('valid');
+              classes.add('invalid');
+              var label = div.querySelector('.label-valid');
+              label.classList.remove('label-warning');
+              label.classList.remove('label-success');
+              label.classList.add('label-danger');
+              label.querySelector('span').classList.remove('glyphicon-question-sign');
+              label.querySelector('span').classList.remove('glyphicon-ok-sign');
+              label.querySelector('span').classList.add('glyphicon-remove-sign');
+              label.querySelector('.in-label').innerHTML=strings['invalid'];
+            }
+
+          });
         }
-    });
+        return false;
+    };
 
-    var dup = $("input[name=duplicated]:checked",form);
-    if(dup.length ==0){
-      //$("input[name=duplicated][value=no]",form).prop("checked",true);
-    }
-
-    taxonomy.change(function(){
-      var taxonomy_sel = $("input[name=taxonomy]:checked",form);
-      if(taxonomy_sel.val() == "invalid") {
-          $(".form-group",form).hide();
-          taxonomy.parent().parent().show();
-          comments.parent().show();
-      } else {
-          $(".form-group",form).show();
-      }
-    });
-    var taxonomy_sel = $("input[name=taxonomy]:checked",form);
-    if(taxonomy_sel.val() =='invalid') {
-       $(".form-group",form).hide();
-       taxonomy.parent().parent().show();
-       comments.parent().show();
-    }
-  });
+});
 
   $(".insert").submit(function(){
       return confirm(strings['confirm-insert']);
   });
+
+  $(".delete").click(function(evt){
+    if(confirm(strings['confirm-delete'])){
+      var id = evt.target.getAttribute('rel');
+      $.post(base+'/'+db+'/occurrence/'+id+'/delete',null,function(a,b){
+        console.log(a,b);
+      });
+      document.getElementById('occ-'+id+'-unit').remove();
+      updateStats();
+    }
+    return false;
+  });
+
+  function updateStats()  {
+    $.getJSON(location.href+'/stats',function(stats){
+        for(var k in stats) {
+          var el = document.querySelector(".stats-"+k);
+          if(el != null) el.innerHTML=stats[k];
+        }
+    });
+  };
 
 });
 

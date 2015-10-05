@@ -101,8 +101,12 @@ class Occurrences {
 
     $repo = new \cncflora\repository\Occurrences($db);
     $occurrences = $repo->listOccurrences($name);
-    $stats = $repo->getSats($occurrences);
+    $stats = $repo->getStats($occurrences);
 
+    $stats['eoo']=number_format($stats['eoo'],2)."km²";
+    $stats['aoo']=number_format($stats['aoo'],2)."km²";
+
+    header('Content-Type: application/json');
     $res->setContent(json_encode($stats));
     return $res;
   }
@@ -163,9 +167,14 @@ class Occurrences {
 
     $back=$repo->updateOccurrence($occ);
 
-    header('Location: '.$_SERVER['HTTP_REFERER'],true,303);
-    die();
-    return $res;
+    if($_GET['raw']) {
+      header('Content-Type: application/json');
+      $res->setContent(json_encode($back));
+      return $res;
+    } else {
+      header('Location: '.$_SERVER['HTTP_REFERER'],true,303);
+      die();
+    }
   }
   public function data($req,$res,$args){
     $db = $args['db'];
@@ -184,5 +193,32 @@ class Occurrences {
     $res->setContent(json_encode($back));
     return $res;
   }
+  public function delete($req,$res,$args){
+    $db = $args['db'];
+    $id = $args['id'];
+
+    $user = $_SESSION['user'];
+    $repo = new \cncflora\repository\Occurrences($db,$_SESSION['user']);
+    $occ = $repo->getOccurrence($id);
+
+    $occ['deleted']=true;
+
+    $back=$repo->updateOccurrence($occ);
+
+    $res->setContent(json_encode($back));
+    return $res;
+  }
+  public function occurrence($req,$res,$args) {
+    $db = $args['db'];
+    $id = $args['id'];
+
+    $repo = new \cncflora\repository\Occurrences($db);
+    $occurrence = $repo->flatten($repo->getOccurrence($id));
+
+    $res->setContent(json_encode($occurrence));
+    return $res;
+  }
+
+
 }
 

@@ -22,6 +22,11 @@ $r->get("/{db}/specie/{name}/download/{format}",'\cncflora\controller\Occurrence
 
 $r->post("/{db}/occurrences",'\cncflora\controller\Upload::add');
 
+$r->post("/{db}/occurrence/{id}/delete",'\cncflora\controller\Occurrences::delete');
+$r->delete("/{db}/occurrence/{id}",'\cncflora\controller\Occurrences::delete');
+
+$r->get("/{db}/occurrence/{id}",'\cncflora\controller\Occurrences::occurrence');
+
 $r->post("/{db}/occurrence/{id}/analysis",'\cncflora\controller\Occurrences::analysis');
 $r->post("/{db}/occurrence/{id}/validate",'\cncflora\controller\Occurrences::validate');
 $r->post("/{db}/occurrence/{id}/sig",'\cncflora\controller\Occurrences::sig');

@@ -4,23 +4,29 @@
 
     <div class='actions alabel'>
         {{^validation.done}}
-            <span class='label label-warning'>
+            <span class='label label-warning label-valid'>
                 <span class="glyphicon glyphicon-question-sign"></span>
-                {{strings.missing-validation}}
+                <span class='in-label'>
+                  {{strings.missing-validation}}
+                </span>
             </span>
         {{/validation.done}}
 
         {{#validation.done}}
             {{#valid}}
-                <span class="label label-success">
+                <span class="label label-success label-valid">
                     <span class="glyphicon glyphicon-ok-sign"></span>
-                    {{strings.valid}}
+                    <span class='in-label'>
+                      {{strings.valid}}
+                    </span>
                 </span>
             {{/valid}}
             {{^valid}}
-                <span class="label label-danger">
+                <span class="label label-danger label-valid">
                     <span class="glyphicon glyphicon-remove-sign"></span>
-                    {{strings.invalid}}
+                    <span class='in-label'>
+                      {{strings.invalid}}
+                    </span>
                 </span>
             {{/valid}}
         {{/validation.done}}
@@ -28,7 +34,9 @@
         {{^georeferenceVerificationStatus}}
         <span  class='label label-warning'>
             <span class="glyphicon glyphicon-globe"></span>
-            {{strings.missing-sig}}
+            <span class='in-label'>
+              {{strings.missing-sig}}
+            </span>
         </span>
         {{/georeferenceVerificationStatus}}
 
@@ -36,20 +44,20 @@
             {{#sig-ok}}
             <span class="label label-primary">
                 <span class="glyphicon glyphicon-globe"></span>
-                {{strings.verified}}
+                <span class='in-label'>
+                  {{strings.verified}}
+                </span>
             </span>
             {{/sig-ok}}
             {{^sig-ok}}
             <span class="label label-danger">
                 <span class="glyphicon glyphicon-globe"></span>
-                {{strings.verified-bad}}
+                <span class='in-label'>
+                  {{strings.verified-bad}}
+                </span>
             </span>
             {{/sig-ok}}
         {{/georeferenceVerificationStatus}}
-
-        {{^decimalLatitude}}
-        <span class='label small-label label-warning'>{{strings.no-points}}</span>
-        {{/decimalLatitude}}
     </div>
 
     <div class="taxon col-md-12">

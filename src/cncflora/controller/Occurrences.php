@@ -145,11 +145,16 @@ class Occurrences {
     $occ['coordinateUncertaintyInMeters'] =$_POST['coordinateUncertaintyInMeters'];
     $occ['georeferencedBy'] = $user->name;
 
-    $repo->updateOccurrence($occ);
+    $back=$repo->updateOccurrence($occ);
 
-    header('Location: '.$_SERVER['HTTP_REFERER'],true,303);
-    die();
-    return $res;
+    if($_GET['raw']) {
+      header('Content-Type: application/json');
+      $res->setContent(json_encode($back));
+      return $res;
+    } else {
+      header('Location: '.$_SERVER['HTTP_REFERER'],true,303);
+      die();
+    }
   }
 
   public function validate($req,$res,$args){

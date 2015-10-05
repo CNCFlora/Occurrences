@@ -141,7 +141,7 @@ class Occurrences {
         'body'=>$occurrence
       ]);
       sleep(1);
-      return $this->prepare( $occurrence ,false);
+      return $this->prepare($occurrence,false);
     } catch(Exception $e) {
       return false;
     }

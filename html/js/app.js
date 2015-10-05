@@ -39,6 +39,43 @@ $(function(){
         fields[i].setAttribute('readonly','readonly');
       }
     }
+    form.onsubmit=function(){
+      var data={};
+      var radios=form.querySelectorAll('input[type=radio]:checked');
+      for(var i=0;i<radios.length;i++) {
+        data[radios[i].getAttribute('name')]=radios[i].value;
+      }
+      var texts=form.querySelectorAll('input[type=text],textarea');
+      for(var i=0;i<texts.length;i++) {
+        data[texts[i].getAttribute('name')]=texts[i].value;
+      }
+      var to = form.getAttribute('action');
+      var datauri = "";
+      for(var k in data) {
+        datauri+="&"+k+'='+encodeURIComponent(data[k]);
+      }
+      $.post(to+'?raw=true',datauri,function(r){
+        console.log(r);
+        updateStats();
+        var div = document.getElementById('occ-'+r['occurrenceID']+'-unit').querySelector('div:first-child');
+
+        if(r['sig-ok']){
+          var label = div.querySelector('.label-sig');
+          label.classList.remove('label-warning');
+          label.classList.remove('label-danger');
+          label.classList.add('label-success');
+          label.querySelector('.in-label').innerHTML=strings['sig-ok'];
+        }else  {
+          var label = div.querySelector('.label-sig');
+          label.classList.remove('label-warning');
+          label.classList.remove('label-success');
+          label.classList.add('label-danger');
+          label.querySelector('.in-label').innerHTML=strings['sig-nok'];
+        }
+
+      });
+      return false;
+    }
   });
 
   $(".analysis-form").each(function(i,e){
@@ -81,7 +118,6 @@ $(function(){
             datauri+="&"+k+'='+encodeURIComponent(data[k]);
           }
           $.post(to+'?raw=true',datauri,function(r){
-              console.log(r);
             updateStats();
             var div = document.getElementById('occ-'+r['occurrenceID']+'-unit').querySelector('div:first-child');
             var classes=div.classList;

@@ -32,7 +32,7 @@
         {{/validation.done}}
 
         {{^georeferenceVerificationStatus}}
-        <span  class='label label-warning'>
+        <span  class='label label-warning label-sig'>
             <span class="glyphicon glyphicon-globe"></span>
             <span class='in-label'>
               {{strings.missing-sig}}
@@ -42,7 +42,7 @@
 
         {{#georeferenceVerificationStatus}}
             {{#sig-ok}}
-            <span class="label label-primary">
+            <span class="label label-primary label-sig">
                 <span class="glyphicon glyphicon-globe"></span>
                 <span class='in-label'>
                   {{strings.verified}}
@@ -50,7 +50,7 @@
             </span>
             {{/sig-ok}}
             {{^sig-ok}}
-            <span class="label label-danger">
+            <span class="label label-danger label-sig">
                 <span class="glyphicon glyphicon-globe"></span>
                 <span class='in-label'>
                   {{strings.verified-bad}}

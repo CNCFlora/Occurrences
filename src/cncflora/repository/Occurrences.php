@@ -111,7 +111,6 @@ class Occurrences {
     $bulk=$this->couchdb->createBulkUpdater();
     $bulk->updateDocuments($occurrences);
     $res=$bulk->execute();
-    var_dump($res);
     if(isset($r->body->error)){
       return false;
     }
@@ -132,7 +131,6 @@ class Occurrences {
 
   public function updateOccurrence($occurrence) {
     $occurrence=$this->metalog($this->fix($occurrence));
-    vaR_dump($occurrence);
     try {
       $r=$this->couchdb->postDocument($occurrence);
       $occurrence['_rev']=$r[1];
@@ -302,7 +300,7 @@ class Occurrences {
   }
   public function prepare($doc,$dwc=true,$taxon=false) {
     if($dwc) {
-      $doc=$this->fixRaw($doc);
+      $doc=$this->fix($doc);
     }
     if($taxon) {
       $doc=$this->fixSpecie($doc);

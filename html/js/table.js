@@ -1,42 +1,47 @@
 
 function table() {
 
-  var headers =[];
-  var got_header={};
-  var rows=[];
+  var headers =[
+    {name:"occurrenceID",type:"string",editor:'DisabledEditor'},
+    {name:"recordedBy",type:"string",editor:'DisabledEditor'},
+    {name:"recordNumber",type:"string",editor:'DisabledEditor'},
+    {name:"collectionCode",type:"string",editor:'DisabledEditor'},
+    {name:"catalogNumber",type:"string",editor:'DisabledEditor'},
+    {name:"year",type:"string",editor:'DisabledEditor'},
+    {name:"stateProvince",type:"string",editor:'DisabledEditor'},
+    {name:"municipality",type:"string",editor: 'DisabledEditor'},
+    {name:"locality",type:"string",editor: 'DisabledEditor'},
+    {name:"remarks",type:"string",editor:'DisabledEditor'},
+    {name:"comments",type:"string",editor:'DisabledEditor'},
+    {name:"decimalLatitude",type:"float"},
+    {name:"decimalLongitude",type:"float",},
+    {name:"georeferenceVerificationStatus",type:"string",editor:'SelectEditor',editorProps:{values: ['','ok','nok','uncertain-locality'] }},
+    {name:"georeferenceProtocol",type:"string",editor:'SelectEditor',editorProps:{values: ['','coletor','sig'] }},
+    {name:"coordinateUncertaintyInMeters",type:"string"}
+  ];
 
-  for(var i=0;i<occurrences.length;i++){
-    for(var k in occurrences[i]) {
-      if(typeof got_header[k] == 'undefined') {
-        headers.push(k);
-        got_header[k]=true;
-      }
-    }
-  }
-  for(var i=0;i<occurrences.length;i++){
-    var row=[];
-    for(var k in headers){
-      row.push(occurrences[i][headers[k]]);
-    }
-    rows.push(row);
-  }
+  var rows=occurrences;
 
-  var data = {
-    Head: [ headers ],
-    Body: rows
+  var opts={
+    sortable: true
   };
-  console.log(data);
 
-  var grid = new Grid("grid",{
-      srcType: 'json',
-      srcData: data,
-       allowGridResize : true, 
-         allowColumnResize : true, 
-           allowClientSideSorting : true, 
-             allowSelections : true, 
-               allowMultipleSelections : true, 
-                 showSelectionColumn : true, 
-                   fixedCols : 1
+  var grid = $(".table").grid(rows,headers,opts);
+
+  grid.registerEditor(BasicEditor);
+  grid.registerEditor(SelectEditor);
+  grid.registerEditor(DisabledEditor);
+
+  grid.events.on('editor:save',function(data,$cell){
+      var who = $cell[0].parentNode.querySelector('td:first-child').textContent;
+      var field = Object.keys(data)[0];
+      var value = data[field];
+      console.log(who,field,value);
+      $.post(base+'/'+db+'/occurrence/'+who+'/data/'+field,'value='+encodeURIComponent(value),function(a,b){
+        console.log(a,b);
+      });
   });
+
+  grid.render();
 }
 

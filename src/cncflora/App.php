@@ -23,6 +23,7 @@ $r->get("/{db}/specie/{name}/download/{format}",'\cncflora\controller\Occurrence
 $r->post("/{db}/occurrence/{id}/analysis",'\cncflora\controller\Occurrences::analysis');
 $r->post("/{db}/occurrence/{id}/validate",'\cncflora\controller\Occurrences::validate');
 $r->post("/{db}/occurrence/{id}/sig",'\cncflora\controller\Occurrences::sig');
+$r->post("/{db}/occurrence/{id}/data/{field}",'\cncflora\controller\Occurrences::data');
 
 $r->get("/{db}/upload",'\cncflora\controller\Upload::index');
 $r->post("/{db}/upload",'\cncflora\controller\Upload::process');

@@ -59,12 +59,16 @@ class Occurrences {
     $db = $args['db'];
     $name = urldecode($args['name']);
 
+    $specie =  (new \cncflora\repository\Taxon($db))->getSpecie($name);
+
     $repo = new \cncflora\repository\Occurrences($db);
     $occurrences = $repo->listOccurrences($name);
 
     $data =[
       'db'=>$db,
-      'occurrences'=>$occurrences
+      'occurrences'=>$occurrences,
+      'occurrences_json'=>json_encode($occurrences),
+      'specie'=>$specie
     ];
     $view = new View('table',$data);
     $res->setContent($view);
@@ -152,6 +156,23 @@ class Occurrences {
 
     header('Location: '.$_SERVER['HTTP_REFERER'],true,303);
     die();
+    return $res;
+  }
+  public function data($req,$res,$args){
+    $db = $args['db'];
+    $id = $args['id'];
+    $field = $args['field'];
+    $value = $_POST['value'];
+
+    $user = $_SESSION['user'];
+    $repo = new \cncflora\repository\Occurrences($db,$_SESSION['user']);
+    $occ = $repo->getOccurrence($id);
+
+    $occ[$field] = $value;
+
+    $back=$repo->updateOccurrence($occ);
+
+    $res->setContent(json_encode($back));
     return $res;
   }
 }

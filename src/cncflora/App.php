@@ -20,6 +20,8 @@ $r->get("/{db}/specie/{name}/stats",'\cncflora\controller\Occurrences::stats');
 $r->get("/{db}/specie/{name}/occurrences",'\cncflora\controller\Occurrences::occurrences');
 $r->get("/{db}/specie/{name}/download/{format}",'\cncflora\controller\Occurrences::download');
 
+$r->post("/{db}/occurrences",'\cncflora\controller\Upload::add');
+
 $r->post("/{db}/occurrence/{id}/analysis",'\cncflora\controller\Occurrences::analysis');
 $r->post("/{db}/occurrence/{id}/validate",'\cncflora\controller\Occurrences::validate');
 $r->post("/{db}/occurrence/{id}/sig",'\cncflora\controller\Occurrences::sig');

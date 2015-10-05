@@ -7,7 +7,12 @@ use \cncflora\View;
 class Upload {
 
   public function index($req,$res,$args) {
-    $res->setContent(new View('upload',['db'=>$args['db']]));
+    $data = [
+      'db'=>$args['db'],
+      'scientificName'=>isset($_GET['scientificName'])?$_GET['scientificName']:"",
+      'family'=>isset($_GET['family'])?$_GET['family']:""
+    ];
+    $res->setContent(new View('upload',$data));
     return $res;
   }
 
@@ -59,6 +64,21 @@ class Upload {
       'names'=>array_values( $names )
     ];
     $res->setContent(new View('upload',$data));
+    return $res;
+  }
+
+
+  public function add($req,$res,$args) {
+    $occ= $_POST;
+
+    (new \cncflora\repository\Occurrences($args['db'],$_SESSION['user']))->insertOccurrence($occ);
+
+    $data = [
+      'db'=>$args['db'],
+      'inserted'=>true
+    ];
+    header('Location: '.$_SERVER['HTTP_REFERER'],true,303);
+    die();
     return $res;
   }
 

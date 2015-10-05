@@ -290,10 +290,18 @@ class Occurrences {
       $doc[$k] = $v;
     }
 
-    foreach($doc['validation'] as $k=>$v) {
-      if(strpos($k,'-') >0) {
-        unset($doc['validation'][$k]);
+    if(isset($doc['validation'])) {
+      foreach($doc['validation'] as $k=>$v) {
+        if(strpos($k,'-') >0) {
+          unset($doc['validation'][$k]);
+        }
       }
+    }
+
+    if(!isset($doc['_id']) && isset($doc['occurrenceID'])) {
+      $doc['_id']=$doc['occurrenceID'];
+    } else if(!isset($doc['_id'])) {
+      $doc['_id'] = 'occurrence:'.uniqid(true);
     }
 
     return $doc;

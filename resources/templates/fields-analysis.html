@@ -48,6 +48,7 @@
           <label for="dateIdentified">{{strings.identification-date}}</label>
           <input id="dateIdentified" name="dateIdentified" type="text" class="form-control" value="{{dateIdentified}}" />
         </div>
+
         {{#analysis}}
         <div class='form-group'>
           <button class="btn btn-success" type='submit'>{{strings.save-analysis}}</button>
@@ -79,23 +80,46 @@
           <label for="decimalLatitude">{{strings.latitude}} &amp; {{strings.longitude}}</label>
           <div class='row'>
             <div class='col-md-6'>
-              <input name="decimalLatitude" value="{{decimalLatitude}}" class='form-control' type="text" />
+              <input name="decimalLatitude" value="{{decimalLatitude}}" class='form-control' type="text" readonly />
             </div>
             <div class='col-md-6'>
-              <input name="decimalLongitude" value="{{decimalLongitude}}" class='form-control' type="text" />
+              <input name="decimalLongitude" value="{{decimalLongitude}}" class='form-control' type="text" readonly />
             </div>
           </div>
         </div>
+
+        <div class='form-group'>
+            <label for="coordinateUncertaintyInMeters">
+              {{strings.coordinateUncertaintyInMeters}}
+              &amp;
+              {{strings.georeferenceProtocol}}
+            </label>
+            <div class='row'>
+              <div class='col-md-6'>
+                <input name="coordinateUncertaintyInMeters" value="{{coordinateUncertaintyInMeters}}" class='form-control' type="text" readonly />
+              </div>
+              <div class="col-md-6">
+                <input name="georeferenceProtocol" value="{{georeferenceProtocol}}" class='form-control' type="text" readonly />
+              </div>
+            </div>
+        </div>
+
       </div>
 
       <div class='col-md-4'>
+
         <div class="form-group">
             <label for="bibliographicCitation">{{strings.literature}}</label>
             <input name="bibliographicCitation" value="{{bibliographicCitation}}" class='form-control' type="text" />
         </div>
 
         <div class="form-group">
-            <label for="comments">{{strings.comment}}</label>
+            <label for="comments">{{strings.comment-sig}}</label>
+            <textarea name="comments" class='form-control' readonly>{{georeferenceRemarks}}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="comments">{{strings.comment-analyst}}</label>
             <textarea name="comments" class='form-control'>{{comments}}</textarea>
         </div>
 

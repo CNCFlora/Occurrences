@@ -60,30 +60,47 @@
         {{/georeferenceVerificationStatus}}
     </div>
 
-    <div class="taxon col-md-12">
+    <div class="taxon col-md-6">
       <h4>Taxonomia reconhecida no sistema</h4>
       <p>{{specie.family}} <i>{{specie.scientificNameWithoutAuthorship}}</i> {{scpecie.scientificNameAuthorship}}</p>
       <h4>Taxonomia original do registro</h4>
       <p>
         {{#family}}
-        <strong>{{strings.family}}</strong>:{{family}}; <br />
+        <strong>{{strings.family}}</strong>: {{family}}; <br />
         {{/family}}
         {{#genus}}
-        <strong>{{strings.genus}}</strong>:{{genus}}; <br />
+        <strong>{{strings.genus}}</strong>: {{genus}}; <br />
         {{/genus}}
         {{#specificEpithet}}
-        <strong>{{strings.specificEpithet}}</strong>:{{specificEpithet}}; <br />
+        <strong>{{strings.specificEpithet}}</strong>: {{specificEpithet}}; <br />
         {{/specificEpithet}}
         {{#scientificName}}
-        <strong>{{strings.scientificName}}</strong>:{{scientificName}}; <br />
+        <strong>{{strings.scientificName}}</strong>: {{scientificName}}; <br />
         {{/scientificName}}
         {{#scientificNameWithoutAuthorship}}
-        <strong>{{strings.scientificNameWithoutAuthorship}}</strong>:{{scientificNameWithoutAuthorship}}; <br />
+        <strong>{{strings.scientificNameWithoutAuthorship}}</strong>: {{scientificNameWithoutAuthorship}}; <br />
         {{/scientificNameWithoutAuthorship}}
         {{#acceptedNameUsage}}
-        <strong>{{strings.acceptedNameUsage}}</strong>:{{acceptedNameUsage}}; <br />
+        <strong>{{strings.acceptedNameUsage}}</strong>: {{acceptedNameUsage}}; <br />
         {{/acceptedNameUsage}}
       </p>
+    </div>
+
+    <div class="metadata col-md-6">
+      {{#metadata}}
+      <h4 class='col-md-12'>{{strings.metadata}}</h4>
+      <div class="col-md-10">
+      <p><strong>{{strings.identifier}}</strong>: {{occurrenceID}}</p>
+      <p><strong>{{strings.creator}}</strong>: <Br>{{creator}}</p>
+      <p><strong>{{strings.contributor}}</strong>: {{contributor}}</p>
+      <p><strong>{{strings.contact}}</strong>: {{contact}}</p>
+      </div>
+      <div class="col-md-2">
+      <p><strong>{{strings.created}}</strong>: {{created_date}}</p>
+      <p><strong>{{strings.modified}}</strong>: {{modified_date}}</p>
+      <p><strong>{{strings.status}}</strong>: {{status}}</p>
+      </div>
+      {{/metadata}}
     </div>
     <div class="data col-md-12">
       {{> form-analysis}}
@@ -97,18 +114,6 @@
       {{> form-sig}}
     </div>
 
-    <div class="metadata col-md-3">
-      <h4>Metadata</h4>
-      {{#metadata}}
-      <p><strong>{{strings.identifier}}</strong>:<Br />{{occurrenceID}}</p>
-      <p><strong>{{strings.creator}}</strong>:<Br>{{creator}}</p>
-      <p><strong>{{strings.contributor}}</strong>:<br />{{contributor}}</p>
-      <p><strong>{{strings.contact}}</strong>:<br />{{contact}}</p>
-      <p><strong>{{strings.created}}</strong>:<br />{{created_date}}</p>
-      <p><strong>{{strings.modified}}</strong>:<br />{{modified_date}}</p>
-      <p><strong>{{strings.status}}</strong>:<br />{{status}}</p>
-      {{/metadata}}
-    </div>
 
 </div>
 

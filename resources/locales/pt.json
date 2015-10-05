@@ -167,5 +167,7 @@
     "occurrenceID":"ID",
     "add-direct":"Adicionar registro",
     'delete':"Excluir",
-    "confirm-delete":"Confirma excluir os dados?"
+    "confirm-delete":"Confirma excluir os dados?",
+    "comment-analyst":"Comentários do analista",
+    "comment-sig":"Comentários SIG"
 }

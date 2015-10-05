@@ -45,6 +45,15 @@ class Occurrences {
     $repo = new \cncflora\repository\Occurrences($db);
     $occurrences = $repo->flatten($repo->listOccurrences($name));
 
+    foreach($occurrences as $i=>$occ) {
+      unset($occ['_id']);
+      unset($occ['id']);
+      foreach($occ as $k=>$v) {
+        $occ[$k] = utf8_encode($v);
+      }
+      $occurrences[$i] = $occ;
+    }
+
     $client = new \GuzzleHttp\Client();
     $dwc_res = $client->request('POST',DWC_SERVICES.'/api/v1/convert?from=json&to='.$to,['json'=>$occurrences]);
 

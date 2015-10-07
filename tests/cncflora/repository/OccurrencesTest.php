@@ -77,6 +77,18 @@ class OccurrencesTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals('you',$occ2["collector"]);
     }
 
-    public function testValidity() {
+    public function testValidityChecks() {
+    }
+
+    public function testStats() {
+    }
+
+    public function testMetadata(){
+    }
+
+    public function testCleanInsertFullListing() {
+    }
+
+    public function testSpecieAssociation() {
     }
 }

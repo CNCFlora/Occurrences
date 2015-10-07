@@ -48,5 +48,12 @@ class TaxonTest extends \PHPUnit_Framework_TestCase {
       $this->assertEquals('Vicia alba',$spps[0]);
       $this->assertEquals('Vicia faba',$spps[1]);
     }
+
+    public function testGetSpecie() {
+      $repo = new Taxon('test0');
+
+      $spp = $repo->getSpecie('Aphelandra longiflora');
+      $this->assertEquals('Aphelandra longiflora',$spp['scientificNameWithoutAuthorship']);
+    }
 }
 

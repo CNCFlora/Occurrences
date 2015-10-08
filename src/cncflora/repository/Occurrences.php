@@ -61,7 +61,8 @@ class Occurrences {
   }
 
   public function getOccurrence($id) {
-    return $this->prepare($this->couchdb->findDocument($id)->body);
+    $doc=$this->prepare($this->couchdb->findDocument($id)->body);
+    return $doc;
   }
 
   public function insertOccurrence($occurrence){
@@ -130,6 +131,7 @@ class Occurrences {
   }
 
   public function updateOccurrence($occurrence) {
+    if($occurrence == null || isset($occurrence['error'])) return false;
     $occurrence=$this->metalog($this->fix($occurrence));
     try {
       $r=$this->couchdb->postDocument($occurrence);
@@ -282,6 +284,8 @@ class Occurrences {
   }
 
   public function fix($doc) {
+    $doc=$this->fixId($doc);
+
     $client = new \GuzzleHttp\Client();
     $res = $client->request('POST',DWC_SERVICES.'/api/v1/fix',[
       'json'=>[$doc]]);
@@ -298,31 +302,43 @@ class Occurrences {
       }
     }
 
-    if(!isset($doc['_id']) && isset($doc['occurrenceID'])) {
-      $doc['_id']=$doc['occurrenceID'];
-    } else if(!isset($doc['_id'])) {
-      $doc['_id'] = 'occurrence:'.uniqid(true);
-    }
+    $doc=$this->fixId($doc);
 
     return $doc;
   }
-  public function prepare($doc,$dwc=true,$taxon=false) {
-    if($dwc) {
-      $doc=$this->fix($doc);
-    }
-    if($taxon) {
-      $doc=$this->fixSpecie($doc);
+
+  public function fixId($doc) {
+    if(!isset($doc['_id']) && isset($doc['occurrenceID'])) {
+      $doc['_id'] = $doc['occurrenceID'];
+    } else if(!isset($doc['_id']) && !isset($doc['occurrenceID'])) {
+      $doc['_id'] = 'occurrence:'.uniqid(true);
+      $doc['occurrenceID'] = $doc['_id'];
     }
 
-    if(!isset($doc['_id']) && isset($doc['occurrenceID'])) {
-      $doc['_id']=$doc['occurrenceID'];
-    } else if(!isset($doc['_id'])) {
+    if(!isset($doc['_id'])) {
       $doc['_id'] = 'occurrence:'.uniqid(true);
     }
 
     if(!isset($doc["occurrenceID"])) {
       $doc['occurrenceID'] = $doc['_id'];
     }
+
+    $doc['_id'] = $doc['occurrenceID'];
+    return $doc;
+  }
+
+  public function prepare($doc,$dwc=true,$taxon=false) {
+    $doc = $this->fixId($doc);
+
+    if($dwc) {
+      $doc=$this->fix($doc);
+    }
+
+    if($taxon) {
+      $doc=$this->fixSpecie($doc);
+    }
+
+    $doc = $this->fixId($doc);
 
     if(!isset($doc['metadata'])) {
       $doc['metadata']=[];
@@ -453,6 +469,13 @@ class Occurrences {
 
   public function metalog($occurrence) {
     $metadata = $occurrence['metadata'];
+
+    if(!isset($metadata['concat'])) {
+      $metadata['contact']='';
+    }
+    if(!isset($metadata['concat'])) {
+      $metadata['contributor']='';
+    }
 
     if($this->user != null) {
       if(strpos($metadata['contact'],$this->user->email) === false) {

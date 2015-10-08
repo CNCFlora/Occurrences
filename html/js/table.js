@@ -22,26 +22,25 @@ function table() {
 
   var rows=occurrences;
 
+  var rows=occurrences;
+
   var opts={
     sortable: true
   };
 
-  var grid = $(".table").grid(rows,headers,opts);
-
-  grid.registerEditor(BasicEditor);
-  grid.registerEditor(SelectEditor);
-  grid.registerEditor(DisabledEditor);
-
-  grid.events.on('editor:save',function(data,$cell){
-      var who = $cell[0].parentNode.querySelector('td:first-child').textContent;
-      var field = Object.keys(data)[0];
-      var value = data[field];
-      console.log(who,field,value);
-      $.post(base+'/'+db+'/occurrence/'+who+'/data/'+field,'value='+encodeURIComponent(value),function(a,b){
-        console.log(a,b);
-      });
+  var grid= new Supagrid({
+    fields: headers.map(function(h){return h.name}),
+    data: occurrences,
+    element: document.getElementById('table'),
+    on: {
+      change: function(obj,field,value){
+        console.log(encodeURIComponent(obj.occurrenceID),obj);
+        $.post(base+'/'+db+'/occurrence/'+encodeURIComponent(obj.occurrenceID)+'/data/'+field,'value='+encodeURIComponent(value),function(a,b){
+          console.log(a,b);
+        });
+      }
+    }
   });
 
-  grid.render();
 }
 

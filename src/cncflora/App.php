@@ -6,6 +6,8 @@ Config::config();
 
 $r=new \Proton\Application;
 
+$router = $r->GetRouter();
+
 $r->get("/",'\cncflora\controller\Home::index');
 
 $r->post("/login",'\cncflora\controller\Home::login');

@@ -113,7 +113,7 @@ class Occurrences {
 
   public function analysis($req,$res,$args) {
     $db = $args['db'];
-    $id = $args['id'];
+    $id = urldecode($args['id']);
 
     $repo = new \cncflora\repository\Occurrences($db,$_SESSION['user']);
     $occ = $repo->getOccurrence($id);
@@ -131,7 +131,7 @@ class Occurrences {
 
   public function sig($req,$res,$args) {
     $db = $args['db'];
-    $id = $args['id'];
+    $id = urldecode($args['id']);
 
     $user = $_SESSION['user'];
     $repo = new \cncflora\repository\Occurrences($db,$_SESSION['user']);
@@ -159,7 +159,7 @@ class Occurrences {
 
   public function validate($req,$res,$args){
     $db = $args['db'];
-    $id = $args['id'];
+    $id = urldecode($args['id']);
 
     $user = $_SESSION['user'];
     $repo = new \cncflora\repository\Occurrences($db,$_SESSION['user']);
@@ -183,7 +183,7 @@ class Occurrences {
   }
   public function data($req,$res,$args){
     $db = $args['db'];
-    $id = $args['id'];
+    $id = urldecode($args['id']);
     $field = $args['field'];
     $value = $_POST['value'];
 
@@ -200,7 +200,7 @@ class Occurrences {
   }
   public function delete($req,$res,$args){
     $db = $args['db'];
-    $id = $args['id'];
+    $id = urldecode($args['id']);
 
     $user = $_SESSION['user'];
     $repo = new \cncflora\repository\Occurrences($db,$_SESSION['user']);
@@ -215,7 +215,7 @@ class Occurrences {
   }
   public function occurrence($req,$res,$args) {
     $db = $args['db'];
-    $id = $args['id'];
+    $id = urldecode($args['id']);
 
     $repo = new \cncflora\repository\Occurrences($db);
     $occurrence = $repo->flatten($repo->getOccurrence($id));

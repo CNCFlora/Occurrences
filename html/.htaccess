@@ -10,4 +10,4 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^resources/(.*)$ $1 [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ index.php?q=/$1 [QSA]
+RewriteRule ^(.*)$ index.php [QSA]

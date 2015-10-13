@@ -143,3 +143,19 @@ form.insert {
   border-radius: 2px;
 }
 
+#saving {
+  display: none;
+  position: fixed;
+  top: 20px ;
+  right: 20px;
+  width: 250px;
+  background-color: #ccc;;
+  text-align:center;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+#saving:after {
+  content: "..."
+}
+

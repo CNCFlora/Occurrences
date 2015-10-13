@@ -54,8 +54,8 @@ $(function(){
       for(var k in data) {
         datauri+="&"+k+'='+encodeURIComponent(data[k]);
       }
+      $("#saving").show();
       $.post(to+'?raw=true',datauri,function(r){
-        console.log(r);
         updateStats();
         var div = document.getElementById('occ-'+r['occurrenceID']+'-unit').querySelector('div:first-child');
 
@@ -73,6 +73,7 @@ $(function(){
           label.querySelector('.in-label').innerHTML=strings['sig-nok'];
         }
 
+        $("#saving").hide();
       });
       return false;
     }
@@ -117,6 +118,8 @@ $(function(){
           for(var k in data) {
             datauri+="&"+k+'='+encodeURIComponent(data[k]);
           }
+
+          $("#saving").show();
           $.post(to+'?raw=true',datauri,function(r){
             updateStats();
             var div = document.getElementById('occ-'+r['occurrenceID']+'-unit').querySelector('div:first-child');
@@ -148,7 +151,7 @@ $(function(){
               label.querySelector('span').classList.add('glyphicon-remove-sign');
               label.querySelector('.in-label').innerHTML=strings['invalid'];
             }
-
+            $("#saving").hide();
           });
         }
         return false;

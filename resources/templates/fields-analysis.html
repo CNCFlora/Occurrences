@@ -80,10 +80,10 @@
           <label for="decimalLatitude">{{strings.latitude}} &amp; {{strings.longitude}}</label>
           <div class='row'>
             <div class='col-md-6'>
-              <input name="decimalLatitude" value="{{decimalLatitude}}" class='form-control' type="text" readonly />
+              <input name="decimalLatitude" value="{{decimalLatitude}}" class='form-control' type="text" />
             </div>
             <div class='col-md-6'>
-              <input name="decimalLongitude" value="{{decimalLongitude}}" class='form-control' type="text" readonly />
+              <input name="decimalLongitude" value="{{decimalLongitude}}" class='form-control' type="text" />
             </div>
           </div>
         </div>
@@ -96,10 +96,10 @@
             </label>
             <div class='row'>
               <div class='col-md-6'>
-                <input name="coordinateUncertaintyInMeters" value="{{coordinateUncertaintyInMeters}}" class='form-control' type="text" readonly />
+                <input name="coordinateUncertaintyInMeters" value="{{coordinateUncertaintyInMeters}}" class='form-control' type="text" />
               </div>
               <div class="col-md-6">
-                <input name="georeferenceProtocol" value="{{georeferenceProtocol}}" class='form-control' type="text" readonly />
+                <input name="georeferenceProtocol" value="{{georeferenceProtocol}}" class='form-control' type="text" />
               </div>
             </div>
         </div>
@@ -115,7 +115,7 @@
 
         <div class="form-group">
             <label for="comments">{{strings.comment-sig}}</label>
-            <textarea name="comments" class='form-control' readonly>{{georeferenceRemarks}}</textarea>
+            <textarea name="comments" class='form-control' >{{georeferenceRemarks}}</textarea>
         </div>
 
         <div class="form-group">

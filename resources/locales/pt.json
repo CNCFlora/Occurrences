@@ -169,5 +169,6 @@
     'delete':"Excluir",
     "confirm-delete":"Confirma excluir os dados?",
     "comment-analyst":"Comentários do analista",
-    "comment-sig":"Comentários SIG"
+    "comment-sig":"Comentários SIG",
+    "saving":"Salvando"
 }

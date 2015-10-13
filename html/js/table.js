@@ -34,9 +34,9 @@ function table() {
     element: document.getElementById('table'),
     on: {
       change: function(obj,field,value){
-        console.log(encodeURIComponent(obj.occurrenceID),obj);
+        $("#saving").show();
         $.post(base+'/'+db+'/occurrence/'+encodeURIComponent(obj.occurrenceID)+'/data/'+field,'value='+encodeURIComponent(value),function(a,b){
-          console.log(a,b);
+          $("#saving").hide();
         });
       }
     }

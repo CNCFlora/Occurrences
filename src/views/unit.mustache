@@ -176,8 +176,11 @@
     {{/remarks}}
 
     {{#georeferencedBy}}
-        <p><strong>{{strings.georeference-remarks}}</strong> {{georeferencedBy}} - {{{georeferenceRemarks}}}</p>
+        <p><strong>{{strings.georeference-by}}</strong> {{georeferencedBy}}</p>
     {{/georeferencedBy}}
+    {{#georeferenceRemarks}}
+        <p><strong>{{strings.georeference-remarks}}</strong>{{{georeferenceRemarks}}}</p>
+    {{/georeferenceRemarks}}
     {{#coordinateUncertaintyInMeters}}
     <p><strong>Geo Precisão</strong> {{coordinateUncertaintyInMeters}}</p>
     <p><strong>Geo Protoclo</strong> {{georeferenceProtocol}}</p>

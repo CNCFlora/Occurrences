@@ -225,9 +225,11 @@ get '/:db/search' do
                                :payload=>JSON.dump(to_send), :headers=>{ :content_type => "json", :accept => :json }, :timeout => 15)
                 eoo_r = JSON.parse(eoo_j)
                 eoo_meters = eoo_r["area"]*1000
-                eoo_kmeters = (eoo_meters.to_f/1000).round(2)
-                eoo_poli = {"type"=>"Feature","geometry"=> eoo_r["geo"] }.to_json
-                eoo = "#{eoo_kmeters.to_s.reverse.gsub(".",",").gsub(/(\d{3})(?=\d)/, '\\1.').reverse}km²"
+                if eoo_meters != 0 then
+                  eoo_kmeters = (eoo_meters.to_f/1000).round(2)
+                  eoo_poli = {"type"=>"Feature","geometry"=> eoo_r["geo"] }.to_json
+                  eoo = "#{eoo_kmeters.to_s.reverse.gsub(".",",").gsub(/(\d{3})(?=\d)/, '\\1.').reverse}km²"
+                end
             rescue Exception => e
                 puts "EOO exception #{e.message}"
             end

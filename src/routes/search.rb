@@ -92,6 +92,10 @@ get '/:db/search' do
 
         if occ.has_key?("validation")
 
+            if !occ['validation'].is_a?(Hash) then 
+              occ['validation']={}
+            end
+
             if occ["validation"].has_key?("taxonomy")
                if (occ["validation"]["taxonomy"].nil? || occ["validation"]["taxonomy"] == 'valid') && 
                   (occ["validation"]["georeference"].nil? || occ['validation']['georeference'] == 'valid') &&

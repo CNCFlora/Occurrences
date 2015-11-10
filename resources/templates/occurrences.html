@@ -50,6 +50,23 @@
     <h3>{{strings.results}} ({{stats.total}})</h3>
 
     {{#stats}}
+
+    <p class='col-md-12'>
+      {{#sig_done}}
+      <span class="glyphicon glyphicon-globe done">{{strings.sig-done}}</span> 
+      {{/sig_done}}
+      {{^sig_done}}
+      <span class="glyphicon glyphicon-globe notdone">{{strings.sig-not-done}}</span> 
+      {{/sig_done}}
+      <br />
+      {{#validation_done}}
+      <span class="glyphicon glyphicon-check done">{{strings.validation-done}}</span> 
+      {{/validation_done}}
+      {{^validation_done}}
+      <span class="glyphicon glyphicon-check notdone">{{strings.validation-not-done}}</span> 
+      {{/validation_done}}
+    </p>
+
     <div class='col-md-4'>
       <table class='table'>
         <tr>

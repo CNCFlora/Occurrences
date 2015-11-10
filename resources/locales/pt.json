@@ -174,5 +174,7 @@
     "non-known":"Nenhuma reconhecida",
     "validation-done":"Validação pronta",
     "sig-done":"SIG pronto",
-    "done":"Pronto"
+    "done":"Pronto",
+    "sig-not-done":"SIG não terminado",
+    "validation-not-done":"Validação não terminada"
 }

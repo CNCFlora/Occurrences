@@ -37,6 +37,42 @@ class Occurrences {
     return $res;
   }
 
+
+  public function downloadFamily($req,$res,$args) {
+    $db = $args['db'];
+    $family = urldecode($args['family']);
+    $to = $args['format'];
+
+    $repo = new \cncflora\repository\Occurrences($db);
+    $repoTaxon = new \cncflora\repository\Taxon($db);
+
+    $spps = $repoTaxon->listFamily($family);
+    $names = [];
+    foreach($spps as $spp) {
+      $names = array_merge($names,$repoTaxon->listNames($spp['scientificNameWithoutAuthorship']));
+    }
+
+    $occurrences = $repo->flatten($repo->listOccurrences($names,false));
+
+    foreach($occurrences as $i=>$occ) {
+      unset($occ['_id']);
+      unset($occ['id']);
+      foreach($occ as $k=>$v) {
+        $occ[$k] = utf8_encode($v);
+      }
+      $occurrences[$i] = $occ;
+    }
+
+    $client = new \GuzzleHttp\Client();
+    $dwc_res = $client->request('POST',DWC_SERVICES.'/api/v1/convert?from=json&to='.$to,['json'=>$occurrences]);
+
+    header('Content-Type: application/octet-stream');
+    header("Content-Transfer-Encoding: Binary"); 
+    header("Content-disposition: attachment; filename=\"" .str_replace(" ","_",$family ).".".$to . "\"");
+    $res->setContent($dwc_res->getBody());
+    return $res;
+  }
+
   public function download($req,$res,$args) {
     $db = $args['db'];
     $name = urldecode($args['name']);

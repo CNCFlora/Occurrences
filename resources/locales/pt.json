@@ -171,5 +171,8 @@
     "comment-analyst":"Comentários do analista",
     "comment-sig":"Comentários SIG",
     "saving":"Salvando",
-    "non-known":"Nenhuma reconhecida"
+    "non-known":"Nenhuma reconhecida",
+    "validation-done":"Validação pronta",
+    "sig-done":"SIG pronto",
+    "done":"Pronto"
 }

@@ -159,3 +159,10 @@ form.insert {
   content: "..."
 }
 
+
+.glyphicon.notdone {
+  color: red;
+}
+.glyphicon.done {
+  color: green;
+}

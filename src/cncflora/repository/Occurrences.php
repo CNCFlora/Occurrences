@@ -16,8 +16,12 @@ class Occurrences {
     $this->user = $user;
   }
 
-  public function listOccurrences($name) {
-    $names = (new Taxon($this->db))->listNames($name);
+  public function listOccurrences($name,$fix=true) {
+    if(is_array($name)) {
+      $names=$name;
+    } else {
+      $names = (new Taxon($this->db))->listNames($name);
+    }
 
     $occs=[];
 
@@ -53,7 +57,7 @@ class Occurrences {
       if(isset($hit['_source']['deleted'])) continue;
       $occs[]=$hit['_source'];
     }
-    $occs=$this->prepareAll($occs);
+    $occs=$this->prepareAll($occs,$fix);
 
     usort($occs,function($a,$b) { return strcmp($a['occurrenceID'],$b['occurrenceID']);});
 
@@ -187,7 +191,7 @@ class Occurrences {
   }
 
 
-  public function getStats($occurrences){
+  public function getStats($occurrences,$calc=true){
     $stats = [
       'total'=>0,
       'eoo'=>'n/a',
@@ -201,7 +205,10 @@ class Occurrences {
       'sig_ok'=>0,
       'sig_nok'=>0,
       'can_use'=>0,
-      'can_not_use'=>0
+      'can_not_use'=>0,
+      'validation_done'=>false,
+      'sig_done'=>false,
+      'done'=>false
     ];
 
     $stats['total']=count($occurrences);
@@ -235,12 +242,18 @@ class Occurrences {
       }
     }
 
-    $client = new \GuzzleHttp\Client();
-    $res = $client->request('POST',DWC_SERVICES.'/api/v1/analysis/all',['json'=>$to_calc]);
-    $calc = json_decode($res->getBody(),true);
+    if($calc) {
+      $client = new \GuzzleHttp\Client();
+      $res = $client->request('POST',DWC_SERVICES.'/api/v1/analysis/all',['json'=>$to_calc]);
+      $calc = json_decode($res->getBody(),true);
 
-    $stats['eoo']=$calc['eoo']['all']['area'];
-    $stats['aoo']=$calc['aoo']['all']['area'];
+      $stats['eoo']=$calc['eoo']['all']['area'];
+      $stats['aoo']=$calc['aoo']['all']['area'];
+    }
+
+    $stats['validation_done']=$stats['validated']==$stats['total'];
+    $stats['sig_done']=$stats['sig_reviewed']==$stats['total'];
+    $stats['done']=$stats['sig_done']&&$stats['validation_done'];
 
     return $stats;
   }

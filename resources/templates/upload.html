@@ -11,7 +11,8 @@
 </div>
 {{/has_errors}}
 
-<form action="{{base}}/{{db}}/upload" method='POST' enctype="multipart/form-data" class='col-md-12'>
+{{^inserted}}
+<form action="{{base}}/{{db}}/upload" method='POST' enctype="multipart/form-data" class='col-md-12 upload'>
     <fieldset>
         <legend>{{strings.upload-file}}:</legend>
         <p class='col-md-8'>
@@ -25,7 +26,7 @@
               <select id="type" name="type" class="">
                 <option value="xlsx">XLSX</option>
                 <option value="csv">CSV</option>
-                <!--
+                    <!--
                     <option value="kml">KML</option>
                     <option value="json">JSON</option>
                     <option value="geojson">GEOJSON</option>
@@ -42,6 +43,7 @@
     </fieldset>
 </form>
 
+{{^uploaded}}
 <form action="{{base}}/{{db}}/occurrences" class='col-md-12' method='POST'>
   <fieldset>
     <legend>{{strings.add-direct}}:</legend>
@@ -68,6 +70,7 @@
     </div>
   </fieldset>
 </form>
+{{/uploaded}}
 
 {{#uploaded}}
 
@@ -157,13 +160,17 @@
     <button class="btn btn-success col-md-12" type='submit'>{{strings.insert-all}}</button>
   </form>
 {{/uploaded}}
+{{/inserted}}
 
 {{#inserted}}
 <div class="col-md-12">
-  <h3>{{strings.inserted}}</h3>
+  <h3>{{strings.inserted}} ({{total}}): </h3>
   <ul>
     {{#names}}
       <li><a href="{{Base}}/{{db}}/specie/{{name}}">{{name}}</a> ({{count}})</li>
+    {{/names}}
+    {{^names}}
+      <li>{{strings.non-known}}</li>
     {{/names}}
   </ul>
 </div>

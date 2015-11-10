@@ -23,19 +23,43 @@ class Upload {
     ];
     $file = fopen($_FILES['file']['tmp_name'],'r');
     $client = new \GuzzleHttp\Client();
-    $dwc_res = $client->request('POST',DWC_SERVICES.'/api/v1/convert?'
-      .'from='.$_POST['type'].'&to=json&fixes=true'
-      ,['body'=>$file,'content-type'=>$types[$_POST['type']]]);
-    $occs = json_decode($dwc_res->getBody(),true);
 
-    $occs= (new \cncflora\repository\Occurrences($args['db']))->prepareAll($occs,false,true);
+    $occs=[];
+    $ok=false;
+    try {
+      $dwc_res = $client->request('POST',DWC_SERVICES.'/api/v1/convert?'
+        .'from='.$_POST['type'].'&to=json&fixes=true'
+        ,['body'=>$file,'content-type'=>$types[$_POST['type']]]);
+      $occs = json_decode($dwc_res->getBody(),true);
+      $ok=true;
+    } catch (Exception $e) {
+      var_dump($e);
+      $ok=false;
+    }
 
-    $data = [
-      'db'=>$args['db'],
-      'uploaded'=>true,
-      'occurrences'=>$occs,
-      'occurrences_json'=>json_encode($occs)
-    ];
+    if($ok) {
+      foreach($occs as $k=>$occ) {
+        if(count($occ) == 1) {
+          unset($occs[$k]);
+        }
+      }
+      $occs = array_values($occs);
+
+      $occs= (new \cncflora\repository\Occurrences($args['db']))->prepareAll($occs,false,true);
+
+      $data = [
+        'db'=>$args['db'],
+        'uploaded'=>true,
+        'occurrences'=>$occs,
+        'occurrences_json'=>json_encode($occs)
+      ];
+    } else {
+      $data=[
+        'db'=>$args['db'],
+        'uploaded'=>false,
+        'error'=>true
+      ];
+    }
 
     $res->setContent(new View('upload',$data));
     return $res;
@@ -45,6 +69,7 @@ class Upload {
     $occs = json_decode($_POST['json'],'true');
     $names=[];
 
+    $total=0;
     foreach($occs as $i=>$occ) {
       if(!isset($occ['specie']) || $occ['specie'] == null) {
         unset($occs[$i]);
@@ -54,6 +79,7 @@ class Upload {
       $name = $occ['specie']['scientificNameWithoutAuthorship'];
       if(!isset($names[$name])) $names[$name]=['name'=>$name,'count'=>0];
       $names[$name]['count']++;
+      $total++;
     }
 
     (new \cncflora\repository\Occurrences($args['db'],$_SESSION['user']))->insertOccurrences($occs);
@@ -61,7 +87,8 @@ class Upload {
     $data = [
       'db'=>$args['db'],
       'inserted'=>true,
-      'names'=>array_values( $names )
+      'total'=>$total,
+      'names'=>array_values($names)
     ];
     $res->setContent(new View('upload',$data));
     return $res;

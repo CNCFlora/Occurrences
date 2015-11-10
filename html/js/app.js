@@ -97,6 +97,7 @@ $(function(){
       var fields = form.querySelectorAll("input,textarea,select");
       for(var i=0;i<fields.length;i++) {
         fields[i].setAttribute('readonly','readonly');
+        fields[i].setAttribute('disabled','disabled');
       }
     }
 
@@ -157,7 +158,11 @@ $(function(){
         return false;
     };
 
-});
+  });
+
+  $("form.upload #file").change(function(e){
+      $("form.upload #type").val(e.target.files[0].name.match(/\.[a-zA-Z]{3,4}$/)[0].replace(".",""));
+  });
 
   $(".insert").submit(function(){
       return confirm(strings['confirm-insert']);

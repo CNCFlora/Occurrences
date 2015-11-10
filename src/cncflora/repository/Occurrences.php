@@ -117,17 +117,21 @@ class Occurrences {
     }
 
     foreach($res->body as $i=>$r) {
-      $occurrences[$i]['_rev']=$r['rev'];
-      $ri=$this->elasticsearch->index([
-        'index'=>$this->db,
-        'type'=>'occurrence',
-        'id'=>$occurrences[$i]['_id'],
-        'body'=>$occurrences[$i]
-      ]);
+      if(isset($r['error'])) {
+        unset($occurrences[$i]);
+      } else {
+        $occurrences[$i]['_rev']=$r['rev'];
+        $ri=$this->elasticsearch->index([
+          'index'=>$this->db,
+          'type'=>'occurrence',
+          'id'=>$occurrences[$i]['_id'],
+          'body'=>$occurrences[$i]
+        ]);
+      }
     }
     sleep(1);
 
-    return $occurrences;
+    return array_values($occurrences);
   }
 
   public function updateOccurrence($occurrence) {

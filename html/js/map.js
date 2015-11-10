@@ -8,6 +8,8 @@ var map = function() {
     var ocm = L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png').addTo(map);
     var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png')//.addTo(map);
 
+    var ggl = new L.Google();
+
     var markersUsable = new L.MarkerClusterGroup(); 
     var pointsUsable  = new L.layerGroup(); 
 
@@ -87,7 +89,8 @@ var map = function() {
     var base = {
         Landscape: land,
         OpenCycleMap: ocm,
-        OpenStreetMap: osm
+        OpenStreetMap: osm,
+        Google: ggl
     };
 
     var layers = {};

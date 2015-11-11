@@ -9,7 +9,23 @@
     {{specie.family}}
   </a>
 </h3>
-<h2 class='col-md-12'><i>{{specie.scientificNameWithoutAuthorship}}</i> {{ specie.scientificNameAuthorship }}</h2>
+<h2 class='col-md-12'>
+  <i>{{specie.scientificNameWithoutAuthorship}}</i> {{ specie.scientificNameAuthorship }}
+  {{#stats}}
+  {{#sig_done}}
+  <span class="glyphicon glyphicon-globe done"></span> 
+  {{/sig_done}}
+  {{^sig_done}}
+  <span class="glyphicon glyphicon-globe notdone"></span> 
+  {{/sig_done}}
+  {{#validation_done}}
+  <span class="glyphicon glyphicon-check done"></span> 
+  {{/validation_done}}
+  {{^validation_done}}
+  <span class="glyphicon glyphicon-check notdone"></span> 
+  {{/validation_done}}
+  {{/stats}}
+</h2>
 
 <div class="col-md-12">
     <p>
@@ -52,19 +68,6 @@
     {{#stats}}
 
     <p class='col-md-12'>
-      {{#sig_done}}
-      <span class="glyphicon glyphicon-globe done">{{strings.sig-done}}</span> 
-      {{/sig_done}}
-      {{^sig_done}}
-      <span class="glyphicon glyphicon-globe notdone">{{strings.sig-not-done}}</span> 
-      {{/sig_done}}
-      <br />
-      {{#validation_done}}
-      <span class="glyphicon glyphicon-check done">{{strings.validation-done}}</span> 
-      {{/validation_done}}
-      {{^validation_done}}
-      <span class="glyphicon glyphicon-check notdone">{{strings.validation-not-done}}</span> 
-      {{/validation_done}}
     </p>
 
     <div class='col-md-4'>

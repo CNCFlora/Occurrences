@@ -30,9 +30,9 @@ connect:
     volumes:
         - /var/data/connect:/var/floraconnect:rw
 dwcservices:
-    image: diogok/dwc-services
+    image: cncflora/dwc-services
     ports:
-        - 80
+        - 8282:80
 floradata:
     image: cncflora/floradata
     ports:

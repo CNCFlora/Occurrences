@@ -8,7 +8,7 @@
         "alexbilbie/proton": "~1.4",
         "mustache/mustache": "dev-master",
         "symfony/yaml": "2.5.*@dev",
-        "guzzlehttp/guzzle": "~6.0",
+        "guzzlehttp/guzzle": "6.1.1",
         "elasticsearch/elasticsearch": "~2.0",
         "doctrine/couchdb": "@dev"
     },

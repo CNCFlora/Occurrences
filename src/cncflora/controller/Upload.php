@@ -19,17 +19,18 @@ class Upload {
   public function process($req,$res,$args) {
     $types = [
       'xlsx'=> 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'csv'=>'text/csv'
+      'csv'=> 'text/csv'
     ];
-    $file = fopen($_FILES['file']['tmp_name'],'r');
+    $file = fopen($_FILES['file']['tmp_name'],'rb');
     $client = new \GuzzleHttp\Client();
 
     $occs=[];
     $ok=false;
     try {
-      $dwc_res = $client->request('POST',DWC_SERVICES.'/api/v1/convert?'
-        .'from='.$_POST['type'].'&to=json&fixes=true'
-        ,['body'=>$file,'content-type'=>$types[$_POST['type']]]);
+      $type = $_POST['type'];
+      $url = DWC_SERVICES.'/api/v1/convert?from='.$type.'&to=json&fixes=true';
+      $opts = ['body'=>$file,'headers'=>['Content-Type'=>$types[$type]]];
+      $dwc_res = $client->request('POST',$url,$opts);
       $occs = json_decode($dwc_res->getBody(),true);
       $ok=true;
     } catch (Exception $e) {

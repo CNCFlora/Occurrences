@@ -23,7 +23,7 @@ couchdb2:
     volumes:
         - /var/data/couchdb.test:/var/lib/couchdb:rw
 dwcservices:
-    image: diogok/dwc-services
+    image: cncflora/dwc-services
     ports:
         - 80
 selenium:

@@ -46,6 +46,8 @@ class Occurrences {
         = ['match'=>['scientificName'=>['query'=>$name,'operator'=>'and']]];
       $params['body']['query']['bool']['should'][]
         = ['match'=>['scientificNameWithoutAuthorship'=>['query'=>$name,'operator'=>'and']]];
+      $params['body']['query']['bool']['should'][]
+        = ['match'=>['specificEpithet'=>['query'=>$name,'operator'=>'and']]];
 
       $parts = explode(" ",$name);
       $params['body']['query']['bool']['should'][]

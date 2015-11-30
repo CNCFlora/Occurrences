@@ -37,6 +37,7 @@ $(function(){
       var fields = form.querySelectorAll("input,textarea,select");
       for(var i=0;i<fields.length;i++) {
         fields[i].setAttribute('readonly','readonly');
+        fields[i].setAttribute('disabled','disabled');
       }
     }
     form.onsubmit=function(){

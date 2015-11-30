@@ -18,18 +18,18 @@ class ACL {
           } else if(strtolower($sub_role->role) == 'analyst') {
             foreach($sub_role->entities as $ent) {
               $ent = strtolower($ent);
-              if($ent == 'all' 
-                || $ent == strtolower($specie->family) 
-                || $ent == strtolower($specie->scientificNameWithoutAuthorship)) {
+              if($ent == 'all'
+                || $ent == strtolower($specie['family'])
+                || $ent == strtolower($specie['scientificNameWithoutAuthorship'])) {
                 $analysis=true;
               }
             }
           } else if(strtolower($sub_role->role) == 'validator') {
             foreach($sub_role->entities as $ent) {
               $ent = strtolower($ent);
-              if($ent == 'all' 
-                || $ent == strtolower($specie->family) 
-                || $ent == strtolower($specie->scientificNameWithoutAuthorship)) {
+              if($ent == 'all'
+                || $ent == strtolower($specie['family'])
+                || $ent == strtolower($specie['scientificNameWithoutAuthorship'])) {
                 $validate=true;
               }
             }

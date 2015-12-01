@@ -190,5 +190,18 @@ $(function(){
     });
   };
 
+  $('.glyphicon-globe.done').each(function(i,e){
+    $(e).attr('title','SIG DONE').tooltip();
+  });
+  $('.glyphicon-globe.notdone').each(function(i,e){
+    $(e).attr('title','SIG NOT DONE').tooltip();
+  });
+  $('.glyphicon-check.done').each(function(i,e){
+    $(e).attr('title','Validtion DONE').tooltip();
+  });
+  $('.glyphicon-check.notdone').each(function(i,e){
+    $(e).attr('title','Validation NOT DONE').tooltip();
+  });
+
 });
 

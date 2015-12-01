@@ -82,6 +82,7 @@ class Upload {
       $names[$name]['count']++;
       $total++;
     }
+    sort($occs);
 
     (new \cncflora\repository\Occurrences($args['db'],$_SESSION['user']))->insertOccurrences($occs);
 

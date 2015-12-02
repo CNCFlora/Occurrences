@@ -13,6 +13,8 @@ $r->get("/",'\cncflora\controller\Home::index');
 $r->post("/login",'\cncflora\controller\Home::login');
 $r->post("/logout",'\cncflora\controller\Home::logout');
 
+$r->get("/{db}/workflow",'\cncflora\controller\Taxon::families');
+
 $r->get("/{db}/families",'\cncflora\controller\Taxon::families');
 $r->get("/{db}/family/{family}",'\cncflora\controller\Taxon::family');
 $r->get("/{db}/family/{family}/download/{format}",'\cncflora\controller\Occurrences::downloadFamily');
@@ -53,7 +55,7 @@ $r->subscribe('request.received', function ($evt,$req) use ($r){
     $res->headers->add(['Location'=>'/?back_to='.$req->getURI()]);
     $r->terminate($req,$res);
     */
-    header('Location: '.BASE.'/?back_to='.$req->getURI());
+    header('Location: '.BASE.'/?back_to='.BASE.$uri);
     exit;
     //return $res;
   }

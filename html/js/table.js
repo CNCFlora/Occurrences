@@ -51,7 +51,7 @@ function table() {
     colHeaders: fields,
     columns: headers,
     rowHeaders:true,
-    columnSorting: true,
+    //columnSorting: true,
     undo: true,
     allowInsertColumn:false,
     allowInsertRow:false,

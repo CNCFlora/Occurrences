@@ -176,5 +176,8 @@
     "sig-done":"SIG pronto",
     "done":"Pronto",
     "sig-not-done":"SIG não terminado",
-    "validation-not-done":"Validação não terminada"
+    "validation-not-done":"Validação não terminada",
+    "taxonomy-recognised":"Taxonomia reconhecida no sistema",
+    "taxonomy-original":"Taxonomia original do registro",
+    "to-map":"Ver no mapa"
 }

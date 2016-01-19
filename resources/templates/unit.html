@@ -1,6 +1,9 @@
 
 <div class="occurrence {{^validation.done}} not-validated {{/validation.done}}
-    {{#validation.done}} validated {{#valid}} valid {{/valid}} {{^valid}} invalid {{/valid}} {{/validation.done}}" >
+    {{#validation.done}} validated {{#valid}} valid {{/valid}} {{^valid}} invalid {{/valid}} {{/validation.done}}" 
+     rel="{{occurrenceID}}"
+     id="{{occurrenceID}}">
+    <a name="{{occurrenceID}}"></a>
 
     <div class='actions alabel'>
         {{^validation.done}}
@@ -61,9 +64,9 @@
     </div>
 
     <div class="taxon col-md-6">
-      <h4>Taxonomia reconhecida no sistema</h4>
+      <h4>{{strings.taxonomy-recognised}}</h4>
       <p>{{specie.family}} <i>{{specie.scientificNameWithoutAuthorship}}</i> {{scpecie.scientificNameAuthorship}}</p>
-      <h4>Taxonomia original do registro</h4>
+      <h4>{{strings.taxonomy-original}}</h4>
       <p>
         {{#family}}
         <strong>{{strings.family}}</strong>: {{family}}; <br />
@@ -101,6 +104,13 @@
       <p><strong>{{strings.status}}</strong>: {{status}}</p>
       </div>
       {{/metadata}}
+    </div>
+
+    <div class="col-md-12 extras">
+      <a href="#map" class="btn btn-default to-map" rel='{{occurrenceID}}'>
+        <span class="glyphicon glyphicon-globe"></span>
+        {{strings.to-map}}
+      </a>
     </div>
     <div class="data col-md-12">
       {{> form-analysis}}

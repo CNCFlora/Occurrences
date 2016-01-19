@@ -50,6 +50,15 @@ var map = function() {
         var marker = L.marker(new L.LatLng(feature.decimalLatitude,feature.decimalLongitude));
         marker.bindPopup(makePopup(feature));
 
+        (function(occ,marker){
+          $("[rel='"+occ.occurrenceID+"'] a").click(function(){
+              setTimeout(function(){
+                map.setView(marker.getLatLng(),14);
+                marker.openPopup();
+              },400);
+          });
+        })(feature,marker);
+
         if(!complete) {
           markersAll.addLayer(marker);
           continue;
@@ -138,8 +147,12 @@ function makePopup(props) {
   var table = document.createElement('table');
   table.setAttribute('class','table table-striped');
 
+  var tr0=document.createElement('tr');
+  var th0=document.createElement('th');
+  th0.innerHTML="<a href='#"+props['occurrenceID']+"'>ver na lista</a>";
+  tr0.appendChild(th0);
+  table.appendChild(tr0);
   for(var k in props) {
-
     if(k == 'id' || k== '_id' || k =='rev' ||k=='_rev') {
     } else if(typeof props[k] == 'object') {
       for(var kk in props[k]) {

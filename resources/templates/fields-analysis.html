@@ -51,9 +51,15 @@
 
         {{#analysis}}
         <div class='form-group'>
-          <button class="btn btn-success" type='submit'>{{strings.save-analysis}}</button>
+          <button class="btn btn-success" type='submit'>
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            {{strings.save-analysis}}
+          </button>
           {{#occurrenceID}}
-          <button type='button' class="btn btn-danger delete" rel='{{occurrenceID}}' type='submit'>{{strings.delete}}</button>
+          <button type='button' class="btn btn-danger delete" rel='{{occurrenceID}}' type='submit'>
+            <span class="glyphicon glyphicon-trash"></span>
+            {{strings.delete}}
+          </button>
           {{/occurrenceID}}
         </div>
         {{/analysis}}

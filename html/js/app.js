@@ -28,7 +28,7 @@ $(function(){
     table();
   }
 
-  $(".glyphicon-question-sign,.glyphicon-remove-circle,.glyphicon-ok-circle").tooltip({});
+  $(".glyphicon-question-sign,.glyphicon-info-sign,.glyphicon-remove-circle,.glyphicon-ok-circle").tooltip({});
 
   $(".sig-form").each(function(i,e){
     var form=e;

@@ -1,0 +1,129 @@
+
+<div class="occurrence {{^validation.done}} not-validated {{/validation.done}}
+    {{#validation.done}} validated {{#valid}} valid {{/valid}} {{^valid}} invalid {{/valid}} {{/validation.done}}" 
+     rel="{{occurrenceID}}"
+     id="{{occurrenceID}}">
+    <a name="{{occurrenceID}}"></a>
+
+    <div class='actions alabel'>
+        {{^validation.done}}
+            <span class='label label-warning label-valid'>
+                <span class="glyphicon glyphicon-question-sign"></span>
+                <span class='in-label'>
+                  {{strings.missing-validation}}
+                </span>
+            </span>
+        {{/validation.done}}
+
+        {{#validation.done}}
+            {{#valid}}
+                <span class="label label-success label-valid">
+                    <span class="glyphicon glyphicon-ok-sign"></span>
+                    <span class='in-label'>
+                      {{strings.valid}}
+                    </span>
+                </span>
+            {{/valid}}
+            {{^valid}}
+                <span class="label label-danger label-valid">
+                    <span class="glyphicon glyphicon-remove-sign"></span>
+                    <span class='in-label'>
+                      {{strings.invalid}}
+                    </span>
+                </span>
+            {{/valid}}
+        {{/validation.done}}
+
+        {{^georeferenceVerificationStatus}}
+        <span  class='label label-warning label-sig'>
+            <span class="glyphicon glyphicon-globe"></span>
+            <span class='in-label'>
+              {{strings.missing-sig}}
+            </span>
+        </span>
+        {{/georeferenceVerificationStatus}}
+
+        {{#georeferenceVerificationStatus}}
+            {{#sig-ok}}
+            <span class="label label-primary label-sig">
+                <span class="glyphicon glyphicon-globe"></span>
+                <span class='in-label'>
+                  {{strings.verified}}
+                </span>
+            </span>
+            {{/sig-ok}}
+            {{^sig-ok}}
+            <span class="label label-danger label-sig">
+                <span class="glyphicon glyphicon-globe"></span>
+                <span class='in-label'>
+                  {{strings.verified-bad}}
+                </span>
+            </span>
+            {{/sig-ok}}
+        {{/georeferenceVerificationStatus}}
+    </div>
+
+    <div class="taxon col-md-6">
+      <h4>{{strings.taxonomy-recognised}}</h4>
+      <p>{{specie.family}} <i>{{specie.scientificNameWithoutAuthorship}}</i> {{scpecie.scientificNameAuthorship}}</p>
+      <h4>{{strings.taxonomy-original}}</h4>
+      <p>
+        {{#family}}
+        <strong>{{strings.family}}</strong>: {{family}}; <br />
+        {{/family}}
+        {{#genus}}
+        <strong>{{strings.genus}}</strong>: {{genus}}; <br />
+        {{/genus}}
+        {{#specificEpithet}}
+        <strong>{{strings.specificEpithet}}</strong>: {{specificEpithet}}; <br />
+        {{/specificEpithet}}
+        {{#scientificName}}
+        <strong>{{strings.scientificName}}</strong>: {{scientificName}}; <br />
+        {{/scientificName}}
+        {{#scientificNameWithoutAuthorship}}
+        <strong>{{strings.scientificNameWithoutAuthorship}}</strong>: {{scientificNameWithoutAuthorship}}; <br />
+        {{/scientificNameWithoutAuthorship}}
+        {{#acceptedNameUsage}}
+        <strong>{{strings.acceptedNameUsage}}</strong>: {{acceptedNameUsage}}; <br />
+        {{/acceptedNameUsage}}
+      </p>
+    </div>
+
+    <div class="metadata col-md-6">
+      {{#metadata}}
+      <h4 class='col-md-12'>{{strings.metadata}}</h4>
+      <div class="col-md-10">
+      <p><strong>{{strings.identifier}}</strong>: {{occurrenceID}}</p>
+      <p><strong>{{strings.creator}}</strong>: <Br>{{creator}}</p>
+      <p><strong>{{strings.contributor}}</strong>: {{contributor}}</p>
+      <p><strong>{{strings.contact}}</strong>: {{contact}}</p>
+      </div>
+      <div class="col-md-2">
+      <p><strong>{{strings.created}}</strong>: {{created_date}}</p>
+      <p><strong>{{strings.modified}}</strong>: {{modified_date}}</p>
+      <p><strong>{{strings.status}}</strong>: {{status}}</p>
+      </div>
+      {{/metadata}}
+    </div>
+
+    <div class="col-md-12 extras">
+      <a href="#map" class="btn btn-default to-map" rel='{{occurrenceID}}'>
+        <span class="glyphicon glyphicon-globe"></span>
+        {{strings.to-map}}
+      </a>
+    </div>
+    <div class="data col-md-12">
+      {{> form-analysis}}
+    </div>
+
+    <div class='validation col-md-5'>
+      {{> form-validation}}
+    </div>
+
+    <div class="sig col-md-4">
+      {{> form-sig}}
+    </div>
+
+
+</div>
+

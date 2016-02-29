@@ -1,0 +1,13 @@
+<h4>{{strings.occurrence-data}}</h4>
+<form method="POST" 
+  {{#analysis}}
+  action="{{base}}/{{db}}/occurrence/{{occurrenceID}}/analysis" 
+  rel='ok'
+  {{/analysis}}
+  class='analysis-form form-horizontal' >
+    <fieldset>
+
+      {{> fields-analysis}}
+
+    </fieldset>
+</form>

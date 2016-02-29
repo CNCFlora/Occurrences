@@ -1,0 +1,47 @@
+occurrences2:
+    image: cncflora/apache
+    volumes:
+        - ../:/var/www
+    ports:
+        - 8888:80
+    links:
+        - elasticsearch2:elasticsearch
+        - couchdb2:couchdb
+        - dwcservices:dwc_services
+    environment:
+        - PHP_ENV=test
+elasticsearch2:
+    image: cncflora/elasticsearch
+    ports:
+        - 9200
+    volumes:
+        - /var/data/elasticsearch.test/data:/usr/share/elasticsearch/data:rw
+couchdb2:
+    image: cncflora/couchdb
+    ports:
+        - 5984
+    volumes:
+        - /var/data/couchdb.test:/var/lib/couchdb:rw
+dwcservices:
+    image: cncflora/dwc-services
+    ports:
+        - 80
+selenium:
+    image: cncflora/selenium
+    links:
+        - occurrences2:occurrences
+    ports:
+        - 4444:4444
+        - 5900:5900
+tester:
+    image: cncflora/apache
+    volumes:
+        - ..:/var/www
+    links:
+        - occurrences2:occurrences
+        - elasticsearch2:elasticsearch
+        - couchdb2:couchdb
+        - selenium:selenium
+        - dwcservices:dwc_services
+    environment:
+        - PHP_ENV=test

@@ -1,0 +1,193 @@
+
+<h4>{{strings.validation}}</h4>
+
+{{#verbatimValidation.status}}
+<p>
+  <strong>{{strings.verbatim-validation}}</strong> <strong>{{verbatimValidation.status}}</strong> {{{verbatimValidation.remarks}}}
+</p>
+{{/verbatimValidation.status}}
+
+{{#validation.by}}
+<p>
+  <strong>{{strings.validation-by}}</strong> {{validation.by}} <br />
+</p>
+{{/validation.by}}
+
+{{#validation.georeference-invalid}}
+  {{#sig}}
+    <span class="label label-warning glyphicon glyphicon-globe">CHECK GEO</span>
+  {{/sig}}
+{{/validation.georeference-invalid}}
+
+<form method="POST" 
+  {{#validate}}
+  action="{{base}}/{{db}}/occurrence/{{occurrenceID}}/validate" 
+  rel='ok'
+  {{/validate}}
+  class='validation validation-form'>
+    <fieldset>
+      <p><small>Caso em dúvida, passe o mouse sobre o ícone de informação <span class='glyphicon glyphicon-info-sign'></span>. </small></p>
+
+      <div class='form-group'>
+          <p>
+            <strong>{{strings.valid-taxonomy}}</strong>
+            <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="top" title="{{strings.help-taxonomy}}" ></span>
+          </p>
+          <div>
+            <label class='radio-inline'>
+              <input name="taxonomy" type="radio" value="valid" {{#validation.taxonomy-valid}} checked {{/validation.taxonomy-valid}} /> 
+              {{strings.yes}}
+              <span class='glyphicon glyphicon-ok-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-ok}}" ></span>
+            </label>
+            <label class='radio-inline'>
+              <input name="taxonomy" type="radio" value="invalid"  {{#validation.taxonomy-invalid}} checked {{/validation.taxonomy-invalid}} /> 
+              {{strings.no}}
+              <span class='glyphicon glyphicon-remove-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-remove}}" ></span>
+            </label>
+            <label class='radio-inline'>
+              <input name="taxonomy" type="radio" value="unknown"  {{#validation.taxonomy-unknown}} checked {{/validation.taxonomy-unknown}} /> 
+              {{strings.unknown}}
+              <span class='glyphicon glyphicon-remove-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-remove}}" ></span>
+            </label>
+          </div>
+      </div>
+
+      <div class='form-group'>
+        <p>
+          <strong>{{strings.valid-geo}}</strong>
+          <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="top" title="{{strings.help-geo}}" ></span>
+        </p>
+        <div>
+          <label class='radio-inline'>
+            <input name="georeference" type="radio" value="valid" {{#validation.georeference-valid}} checked {{/validation.georeference-valid}} /> 
+            {{strings.yes}}
+            <span class='glyphicon glyphicon-ok-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-ok}}" ></span>
+          </label>
+          <label class='radio-inline'>
+            <input name="georeference" type="radio" value="invalid"  {{#validation.georeference-invalid}} checked {{/validation.georeference-invalid}} /> 
+            {{strings.no}}
+            <span class='glyphicon glyphicon-remove-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-remove-geo}}" ></span>
+          </label>
+          <label class='radio-inline'>
+            <input name="georeference" type="radio" value="unknown"  {{#validation.georeference-unknown}} checked {{/validation.georeference-unknown}} /> 
+            {{strings.unknown}}
+            <span class='glyphicon glyphicon-remove-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-remove}}" ></span>
+          </label>
+        </div>
+      </div>
+
+      {{#validation}}
+      {{present}}
+      {{/validation}}
+
+      <div class='form-group' rel='valid'>
+          <p>
+            <strong>{{strings.valid-presence}}</strong>
+            <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="top" title="{{strings.help-presence}}" ></span>
+          </p>
+          <div>
+            <label class='radio-inline'>
+              <input name="presence" type="radio" value="present" {{#validation.presence-present}} checked {{/validation.presence-present}} /> 
+              {{strings.yes}} ({{strings.present}})
+              <span class='glyphicon glyphicon-ok-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-ok}}" ></span>
+            </label>
+            <label class='radio-inline'>
+              <input name="presence" type="radio" value="absent" {{#validation.presence-absent}} checked {{/validation.presence-absent}} /> 
+              {{strings.no}} ({{strings.absent}})
+              <span class='glyphicon glyphicon-remove-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-remove-loc}}" ></span>
+            </label>
+            <label class='radio-inline'>
+              <input name="presence" type="radio" value="unknown" {{#validation.presence-unknown}} checked {{/validation.presence-unknown}} /> 
+              {{strings.unknown}}
+              <span class='glyphicon glyphicon-ok-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-ok}}" ></span>
+            </label>
+          </div>
+      </div>
+
+      <div class='form-group' rel='valid'>
+        <p>
+          <strong>{{strings.valid-native}}</strong>
+          <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="top" title="{{strings.help-native}}" ></span>
+        </p>
+        <div>
+          <label class='radio-inline'>
+              <input name="native" type="radio" value="native" {{#validation.native-native}} checked {{/validation.native-native}} /> 
+              {{strings.yes}} ({{strings.native}})
+              <span class='glyphicon glyphicon-ok-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-ok}}" ></span>
+          </label>
+          <label class='radio-inline'>
+              <input name="native" type="radio" value="non-native" {{#validation.native-non-native}} checked {{/validation.native-non-native}} /> 
+              {{strings.no}} ({{strings.non-native}})
+              <span class='glyphicon glyphicon-remove-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-remove-native}}" ></span>
+          </label>
+          <label class='radio-inline'>
+              <input name="native" type="radio" value="unknown" {{#validation.native-unknown}} checked {{/validation.native-unknown}} /> 
+              {{strings.unknown}}
+              <span class='glyphicon glyphicon-ok-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-ok}}" ></span>
+          </label>
+        </div>
+      </div>
+
+      <div class='form-group' rel='valid'>
+        <p>
+          <strong>{{strings.valid-cultivated}}</strong>
+          <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="top" title="{{strings.help-cultivated}}" ></span>
+        </p>
+        <div>
+          <label class='radio-inline'>
+            <input name="cultivated" type="radio" value="yes" {{#validation.cultivated-yes}} checked {{/validation.cultivated-yes}} /> 
+            {{strings.yes}}
+            <span class='glyphicon glyphicon-remove-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-remove}}" ></span>
+          </label>
+          <label class='radio-inline'>
+            <input name="cultivated" type="radio" value="no" {{#validation.cultivated-no}} checked {{/validation.cultivated-no}} /> 
+            {{strings.no}}
+            <span class='glyphicon glyphicon-ok-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-ok}}" ></span>
+          </label>
+          <label class='radio-inline'>
+            <input name="cultivated" type="radio" value="unknown" {{#validation.cultivated-unknown}} checked {{/validation.cultivated-unknown}} /> 
+            {{strings.unknown}}
+            <span class='glyphicon glyphicon-ok-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-ok}}" ></span>
+          </label>
+        </div>
+      </div>
+
+      <div class='form-group' rel='valid'>
+          <p>
+            <strong>{{strings.valid-duplicated}}</strong>
+            <span class='glyphicon glyphicon-info-sign' data-toggle="tooltip" data-placement="top" title="{{strings.help-duplicated}}" ></span>
+          </p>
+          <div>
+            <label class='radio-inline'>
+              <input name="duplicated" type="radio" value="yes" {{#validation.duplicated-yes}} checked {{/validation.duplicated-yes}} /> 
+              {{strings.yes}}
+              <span class='glyphicon glyphicon-remove-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-remove-dup}}" ></span>
+            </label>
+            <label class='radio-inline'>
+              <input name="duplicated" type="radio" value="no" {{#validation.duplicated-no}} checked {{/validation.duplicated-no}} /> 
+              {{strings.no}}
+              <span class='glyphicon glyphicon-ok-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-ok}}" ></span>
+            </label>
+            <label class='radio-inline'>
+              <input name="duplicated" type="radio" value="unknown" {{#validation.duplicated-unknown}} checked {{/validation.duplicated-unknown}} /> 
+              {{strings.unknown}}
+              <span class='glyphicon glyphicon-ok-circle' data-toggle="tooltip" data-placement="top" title="{{strings.help-ok}}" ></span>
+            </label>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="remarks">{{strings.valid-comments}}</label>
+          <textarea name="remarks" class='form-control'>{{validation.remarks}}</textarea>
+      </div>
+
+      {{#validate}}
+        <p> 
+          <button class="btn btn-success" type='submit'>
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            {{strings.save-validation}}
+          </button> 
+        </p>
+      {{/validate}}
+</fieldset>
+</form>

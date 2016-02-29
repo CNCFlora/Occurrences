@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CNCFlora Table Editor</title>
+  <script type="text/javascript">
+    var base = "{{{base}}}";
+    var db = "{{{db}}}";
+  </script>
+</head>
+<body>
+
+  <div id="saving">{{strings.saving}}</div>
+
+  <h2 class='col-md-12'>
+    <a href='{{base}}/{{db}}/family/{{specie.family}}'>
+      {{specie.family}}
+    </a>
+    <a href='{{base}}/{{db}}/specie/{{specie.scientificNameWithoutAuthorship}}'>
+      <i>{{specie.scientificNameWithoutAuthorship}}</i> 
+      {{ specie.scientificNameAuthorship }}
+    </a>
+  </h2>
+  
+  <div id='table' class="table col-md-12"></div>
+
+  <link rel="stylesheet" href="{{base}}/css/table.css" />
+  <link rel="stylesheet" href="{{base}}/css/handsontable.full.css" />
+  <style type="text/css">
+    th {
+      font-size: 14px;
+    }
+    #table .body {
+      height: 80vh;
+    }
+  </style>
+
+  <script src="{{base}}/js/jquery.min.js" type="text/javascript"></script>
+  <script src="{{base}}/js/handsontable.full.js" type="text/javascript"></script>
+  <script src="{{base}}/js/table.js" type="text/javascript"></script>
+
+  <script type="text/javascript">var occurrences = {{{occurrences_json}}};</script>
+  <script type="text/javascript">table()</script>
+
+</body>
+</html>
+

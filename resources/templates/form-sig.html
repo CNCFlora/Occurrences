@@ -1,0 +1,71 @@
+<h4>Georeferenciamento</h4>
+  {{#georeferencedBy}}
+    <p><strong>{{strings.sig-by}}</strong>: {{georeferencedBy}}</p>
+  {{/georeferencedBy}}
+<form method="POST" 
+  {{#sig}}
+  action="{{base}}/{{db}}/occurrence/{{occurrenceID}}/sig" 
+  rel='ok'
+  {{/sig}}
+  class='sig-form'>
+    <fieldset>
+
+        <div class='form-group'>
+          <p>
+            <strong>{{strings.status-sig}}</strong>
+          </p>
+          <div>
+            <label class='radio-inline'>
+              <input name="status" type="radio" value="ok" {{#sig-status-ok}} checked {{/sig-status-ok}} /> 
+              {{strings.ok}}
+            </label>
+            <label class='radio-inline'>
+              <input name="status" type="radio" value="nok" {{#sig-status-nok}} checked {{/sig-status-nok}} /> 
+              {{strings.nok}}
+            </label>
+            <label class='radio-inline'>
+              <input name="status" type="radio" value="uncertain-locality" {{#sig-status-uncertain-locality}} checked {{/sig-status-uncertain-locality}} /> 
+              {{strings.uncertain-locality}}
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="decimalLatitude">{{strings.latitude}} &amp; {{strings.longitude}}</label>
+          <div class='row'>
+            <div class='col-md-6'>
+              <input name="decimalLatitude" value="{{decimalLatitude}}" class='form-control' type="text" />
+            </div>
+            <div class='col-md-6'>
+              <input name="decimalLongitude" value="{{decimalLongitude}}" class='form-control' type="text" />
+            </div>
+          </div>
+        </div>
+
+        <div class='form-group'>
+            <label for="coordinateUncertaintyInMeters">{{strings.coordinateUncertaintyInMeters}}</label>
+            <input name="coordinateUncertaintyInMeters" value="{{coordinateUncertaintyInMeters}}" class='form-control' type="text" />
+        </div>
+
+        <div class='form-group'>
+            <label for="georeferenceProtocol">{{strings.georeferenceProtocol}}</label>
+            <input name="georeferenceProtocol" value="{{georeferenceProtocol}}" class='form-control' type="text" />
+        </div>
+
+        <div class="form-group">
+            <label for="comment">{{strings.comment}}</label>
+            <textarea name="georeferenceRemarks" class='form-control'>{{georeferenceRemarks}}</textarea>
+        </div>
+
+        {{#sig}}
+        <br /><br />
+        <div class='form-group'>
+          <button class="btn btn-success" type='submit'>
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            {{strings.save-sig}}
+          </button>
+        </div>
+        {{/sig}}
+    </fieldset>
+</form>
+

@@ -1,0 +1,53 @@
+{{> header}}
+
+<div class="col-md-12">
+    <h2>{{strings.families}}</h2>
+
+      <table class='table'>
+        <tr>
+          <th></th>
+          <th>{{strings.name}}</th>
+          <th>{{strings.validated}}</th>
+          <th>{{strings.not-validated}}</th>
+          <th>{{strings.sig-reviewed}}</th>
+          <th>{{strings.not-sig-reviewed}}</th>
+          <!--
+          <th>{{strings.can-use}}</th>
+          <th>{{strings.can-not-use}}</th>
+          -->
+          <th>{{strings.total}}</th>
+        </tr>
+        {{#families}}
+        <tr>
+          <td>
+            {{#sig_done}}
+            <span class="glyphicon glyphicon-globe done"></span>
+            {{/sig_done}}
+            {{^sig_done}}
+            <span class="glyphicon glyphicon-globe notdone"></span>
+            {{/sig_done}}
+            {{#validation_done}}
+            <span class="glyphicon glyphicon-check done"></span>
+            {{/validation_done}}
+            {{^validation_done}}
+            <span class="glyphicon glyphicon-check notdone"></span>
+            {{/validation_done}}
+          </td>
+          <td>
+            <a href="{{base}}/{{db}}/family/{{family}}">{{family}}</a>
+          </td>
+          <td class='stats-validated'>{{validated}}</td>
+          <td class='stats-not_validated'>{{not_validated}}</td>
+          <td class='stats-sig_reviewer'>{{sig_reviewed}}</td>
+          <td class='stats-not_sig_reviewed'>{{not_sig_reviewed}}</td>
+          <!--
+          <td class='stats-can_use'>{{can_use}}</td>
+          <td class='stats-can_not_use'>{{can_not_use}}</td>
+          -->
+          <td class="stats-total">{{total}}</td>
+        </tr>
+        {{/families}}
+      </table>
+</div>
+
+{{> footer}}

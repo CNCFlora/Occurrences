@@ -1,0 +1,18 @@
+
+#saving {
+  display: none;
+  position: fixed;
+  top:0 ;
+  left: 50%;
+  width: 250px;
+  margin-left: -125px;
+  background-color: #ccc;;
+  text-align:center;
+  padding: 20px;
+  opacity: 0.6;
+  border-radius: 5px;
+}
+
+#saving:after {
+  content: "..."
+}

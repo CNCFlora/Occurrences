@@ -1,0 +1,95 @@
+{{> header}}
+
+<div class="col-md-12">
+    <h2>{{family}}</h2>
+    <p>
+      <a href="{{base}}/{{db}}/family/{{family}}/download/csv" class="btn btn-default">
+        <span class="glyphicon glyphicon-download"></span>
+        Download CSV
+      </a>
+      <a href="{{base}}/{{db}}/family/{{family}}/download/xlsx" class="btn btn-default">
+        <span class="glyphicon glyphicon-download"></span>
+        Download XLSX
+      </a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>{{strings.specie}}</th>
+                <th>{{strings.validated}}</th>
+                <th>{{strings.not-validated}}</th>
+                <!--
+                <th>{{strings.validation-done}}</th>
+                -->
+                <th>{{strings.sig-reviewed}}</th>
+                <th>{{strings.not-sig-reviewed}}</th>
+                <!--
+                <th>{{strings.sig-done}}</th>
+                -->
+                <!--
+                <th>{{strings.can-use}}</th>
+                <th>{{strings.can-not-use}}</th>
+                -->
+                <th>{{strings.total}}</th>
+                <!--
+                <th>{{strings.done}}</th>
+                -->
+            </tr>
+        </thead>
+        <tbody>
+            {{#species}}
+            <tr>
+                <td>
+                  {{#sig_done}}
+                  <span class="glyphicon glyphicon-globe done"></span>
+                  {{/sig_done}}
+                  {{^sig_done}}
+                  <span class="glyphicon glyphicon-globe notdone"></span>
+                  {{/sig_done}}
+                  {{#validation_done}}
+                  <span class="glyphicon glyphicon-check done"></span>
+                  {{/validation_done}}
+                  {{^validation_done}}
+                  <span class="glyphicon glyphicon-check notdone"></span>
+                  {{/validation_done}}
+                </td>
+                <td>
+                  {{#permission}}<strong><span class='glyphicon glyphicon-chevron-right'></span>{{/permission}}
+                    <i><a href='{{base}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}'>{{scientificNameWithoutAuthorship}}</a></i>
+                  {{#permission}}</strong>{{/permission}}
+                  {{scientificNameAuthorship}}</td>
+                  <td class='stats-validated'>{{validated}}</td>
+                  <td class='stats-not_validated'>{{not_validated}}</td>
+                  <!--
+                  <td class="stats-validation_done">
+                    {{#validation_done}}{{strings.yes}}{{/validation_done}}
+                    {{^validation_done}}{{strings.no}}{{/validation_done}}
+                  </td>
+                  -->
+                  <td class='stats-sig_reviewer'>{{sig_reviewed}}</td>
+                  <td class='stats-not_sig_reviewed'>{{not_sig_reviewed}}</td>
+                  <!--
+                  <td class="stats-sig_done">
+                    {{#sig_done}}{{strings.yes}}{{/sig_done}}
+                    {{^sig_done}}{{strings.no}}{{/sig_done}}
+                  </td>
+                  -->
+                  <!--
+                  <td class='stats-can_use'>{{can_use}}</td>
+                  <td class='stats-can_not_use'>{{can_not_use}}</td>
+                  -->
+                  <td class="stats-total">{{total}}</td>
+                  <!--
+                  <td class="stats-done">
+                    {{#done}}{{strings.yes}}{{/done}}
+                    {{^done}}{{strings.no}}{{/done}}
+                  </td>
+                  -->
+            </tr>
+            {{/species}}
+        </tbody>
+    </table>
+</div>
+
+{{> footer}}

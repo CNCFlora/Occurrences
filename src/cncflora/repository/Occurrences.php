@@ -400,6 +400,35 @@ class Occurrences {
 
     if(isset($doc["validation"])) {
       if(is_array($doc["validation"])) {
+        if(isset($doc["validation"]["status"])) {
+          if($doc["validation"]["status"] == "" || $doc["validation"]["status"] == null) {
+            unset($doc['validation']['status']);
+          }
+        }
+        if(isset($doc["validation"]["remarks"])) {
+          if($doc["validation"]["remarks"] == "" || $doc["validation"]["remarks"] == null) {
+            unset($doc['validation']['remarks']);
+          }
+        }
+        if(isset($doc["validation"]["by"])) {
+          if($doc["validation"]["by"] == "" || $doc["validation"]["by"] == null) {
+            unset($doc['validation']['by']);
+          }
+        }
+      }
+      if($doc["validation"]==[]) {
+        unset($doc["validation"]);
+      }
+    }
+
+    if(!isset($doc['validation'])){
+      $doc['validation']=['done'=>false,'valid'=>null,'status'=>''];
+      $doc["valid"]=null;
+    } else if(isset($doc["validation"])) {
+      if(!is_array($doc['validation'])) {
+        $doc['validation']=['done'=>false,'valid'=>null,'status'=>''];
+        $doc["valid"]=null;
+      } else if(is_array($doc["validation"])) {
         foreach($doc["validation"] as $k=>$v) {
           if(is_string($v)) {
             $kk = $k."-".$v;
@@ -407,7 +436,9 @@ class Occurrences {
           }
         }
 
-        if(isset($doc["validation"]["status"])) {
+        if(isset($doc["validation"]["status"])
+          && $doc["validation"]["status"] != ""
+          && $doc["validation"]["status"] != null) {
           if($doc["validation"]["status"] == "valid") {
             $doc["valid"]=true;
             $doc['validation']['done']=true;
@@ -420,6 +451,16 @@ class Occurrences {
           }
         } else {
           if(
+            !isset($doc["validation"]["taxonomy"])
+           && !isset($doc["validation"]["georeference"])
+           && !isset($doc["validation"]["native"])
+           && !isset($doc["validation"]["presence"])
+           && !isset($doc["validation"]["cultivated"])
+           && !isset($doc["validation"]["duplicated"])
+          ) {
+            $doc["valid"]=null;
+            $doc['validation']['done']=false;
+          } else if(
             (
                  !isset($doc["validation"]["taxonomy"])
               || $doc["validation"]["taxonomy"] == null
@@ -457,19 +498,10 @@ class Occurrences {
             )
           ) {
             $doc["valid"]=true;
-          } else {
-            $doc["valid"]=false;
-          }
-          if(   isset($doc["validation"]["taxonomy"])
-             || isset($doc["validation"]["georeference"])
-             || isset($doc["validation"]["native"])
-             || isset($doc["validation"]["presence"])
-             || isset($doc["validation"]["cultivated"])
-             || isset($doc["validation"]["duplicated"])
-          ) {
             $doc['validation']['done']=true;
           } else {
-            $doc['validation']['done']=false;
+            $doc["valid"]=false;
+            $doc['validation']['done']=true;
           }
         }
       } else {

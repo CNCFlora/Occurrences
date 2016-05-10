@@ -366,10 +366,10 @@ class Occurrences {
     $doc['metadata']['type']='occurrence';
 
     if(isset($doc['metadata']['modified'])) {
-      $doc['metadata']['modified_date'] = date('Y-m-d',$doc['metadata']['modified']);
+      $doc['metadata']['modified_date'] = date('Y-m-d',(int)$doc['metadata']['modified']);
     }
     if(isset($doc['metadata']['created'])) {
-      $doc['metadata']['created_date'] = date('Y-m-d',$doc['metadata']['created']);
+      $doc['metadata']['created_date'] = date('Y-m-d',(int)$doc['metadata']['created']);
     }
 
     if(isset($doc["georeferenceVerificationStatus"])) {
@@ -396,6 +396,10 @@ class Occurrences {
       }
     } else {
       $doc['sig-ok']=null;
+    }
+
+    if(isset($doc["verbatimValidation"])) {
+
     }
 
     if(isset($doc["validation"])) {

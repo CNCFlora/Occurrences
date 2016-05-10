@@ -529,6 +529,11 @@ class Occurrences {
       $doc['validation']['done']=false;
     }
 
+    if($doc[ 'valid' ] == null && $verbatim != null) {
+      $doc['validation']=['done'=>true,'valid'=>$verbatim,'status'=>($verbatim?'valid':'invalid')];
+      $doc['valid']=$verbatim;
+    }
+
     $doc['metadata']['status'] = $this->canUse($doc)?"valid":"invalid";
 
     return $doc;

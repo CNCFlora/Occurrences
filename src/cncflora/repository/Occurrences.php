@@ -398,8 +398,17 @@ class Occurrences {
       $doc['sig-ok']=null;
     }
 
+    $verbatim = null;
     if(isset($doc["verbatimValidation"])) {
-
+      $vvv = $doc["verbatimValidation"];
+      if($vvv != null && is_array($vvv) && isset($vvv["status"]) && $vvv["status"] != null) {
+        $status = $vvv["status"];
+        if($status == "valid" || $status == '1' || $status == 1 || $status == true) {
+          $verbatim=true;
+        } else {
+          $verbatim=false;
+        }
+      }
     }
 
     if(isset($doc["validation"])) {
@@ -425,7 +434,10 @@ class Occurrences {
       }
     }
 
-    if(!isset($doc['validation'])){
+    if(!isset($doc['validation']) && $verbatim != null){
+      $doc['validation']=['done'=>true,'valid'=>$verbatim,'status'=>($verbatim?'valid':'invalid')];
+      $doc['valid']=$verbatim;
+    } else if(!isset($doc['validation'])){
       $doc['validation']=['done'=>false,'valid'=>null,'status'=>''];
       $doc["valid"]=null;
     } else if(isset($doc["validation"])) {

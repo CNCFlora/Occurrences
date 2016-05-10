@@ -13,12 +13,18 @@
         </div>
 
         <div class="form-group">
-          <label for="recordedBy">{{strings.recordedBy}} &amp; {{strings.recordNumber}}</label>
+          <label for="recordedBy">{{strings.recordedBy}}</label>
           <div class='row'>
-            <div class='col-md-6'>
+            <div class='col-md-12'>
               <input id="recordedBy" name="recordedBy" type="text" class="form-control" value="{{recordedBy}}" />
             </div>
-            <div class='col-md-6'>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="recordedBy">{{strings.recordNumber}}</label>
+          <div class='row'>
+             <div class='col-md-12'>
               <input id="recordNumber" name="recordNumber" type="text" class="form-control" value="{{recordNumber}}" />
             </div>
           </div>
@@ -68,7 +74,7 @@
       <div class='col-md-3'>
         <div class="form-group">
           <label for="locality">{{strings.locality}}</label>
-          <input id="locality" name="locality" type="text" class="form-control" value="{{locality}}" />
+          <textarea name="locality" class='form-control'>{{locality}}</textarea>
         </div>
 
 
@@ -116,12 +122,12 @@
 
         <div class="form-group">
             <label for="bibliographicCitation">{{strings.literature}}</label>
-            <input name="bibliographicCitation" value="{{bibliographicCitation}}" class='form-control' type="text" />
+            <textarea name="bibliographicCitation" class='form-control'>{{bibliographicCitation}}</textarea>
         </div>
 
         <div class="form-group">
             <label for="comments">{{strings.comment-sig}}</label>
-            <textarea name="comments" class='form-control' >{{georeferenceRemarks}}</textarea>
+            <textarea name="georeferenceRemarks" class='form-control' >{{georeferenceRemarks}}</textarea>
         </div>
 
         <div class="form-group">

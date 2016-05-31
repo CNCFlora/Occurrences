@@ -403,7 +403,7 @@ class Occurrences {
       $vvv = $doc["verbatimValidation"];
       if($vvv != null && is_array($vvv) && isset($vvv["status"]) && $vvv["status"] != null) {
         $status = $vvv["status"];
-        if($status == "valid" || $status == '1' || $status == 1 || $status == true) {
+        if($status === "valid" || $status === '1' || $status === 1 || $status === true) {
           $verbatim=true;
         } else {
           $verbatim=false;

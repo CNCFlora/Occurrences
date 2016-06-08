@@ -67,10 +67,14 @@ class Taxon {
     ];
     $result = $this->elasticsearch->search($params);
 
+    $got=[];
     foreach($result['hits']['hits'] as $hit) {
       $spp = $hit['_source'];
       $spp['family']=strtoupper(trim($spp['family']));
-      $spps[] = $spp;
+      if(!isset($got[$spp['scientificNameWithoutAuthorship']])) {
+        $spps[] = $spp;
+        $got[$spp['scientificNameWithoutAuthorship']]=true;
+      }
     }
 
     usort($spps,function($a,$b){
@@ -99,8 +103,13 @@ class Taxon {
       ]
     ];
     $result = $this->elasticsearch->search($params);
+    $got=[];
     foreach($result['hits']['hits'] as $hit) {
-      $names[]=trim($hit['_source']['scientificNameWithoutAuthorship']);
+      $name = trim($hit['_source']['scientificNameWithoutAuthorship']);
+      if(!isset($got[$name])) {
+        $names[]=$name;
+        $got[$name]=true;
+      }
     }
     sort($names);
     $names=array_unique($names);

@@ -261,7 +261,7 @@ class Occurrences {
   }
 
   public function canUse($occ) {
-    return (!$this->isValidated($occ) || $this->isValid($occ)) && $this->isSigOk($occ);
+    return (!$this->isValidated($occ) || $this->isValid($occ)) && $this->isSigOk($occ) && isset($occ->decimalLatitude) && isset($occ->decimalLongitude) && !is_null($occ->decimalLatitude) && !is_null($occ->decimalLongitude);
   }
 
   public function isValid($occ) {
@@ -393,6 +393,9 @@ class Occurrences {
         $doc['sig-status-ok']=false;
         $doc['sig-status-nok']=false;
         $doc['sig-status-uncertain-locality']=true;
+      } else {
+        $doc['georeferenceVerificationStatus']="ok";
+        return $this->prepare($doc);
       }
     } else {
       $doc['sig-ok']=null;
@@ -542,10 +545,10 @@ class Occurrences {
   public function metalog($occurrence) {
     $metadata = $occurrence['metadata'];
 
-    if(!isset($metadata['concat'])) {
+    if(!isset($metadata['contact'])) {
       $metadata['contact']='';
     }
-    if(!isset($metadata['concat'])) {
+    if(!isset($metadata['contributor'])) {
       $metadata['contributor']='';
     }
 

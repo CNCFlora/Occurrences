@@ -2,14 +2,15 @@
 #saving {
   display: none;
   position: fixed;
-  top:0 ;
+  top:20 ;
   left: 50%;
+  z-index: 99;
   width: 250px;
   margin-left: -125px;
   background-color: #ccc;;
   text-align:center;
   padding: 20px;
-  opacity: 0.6;
+  opacity: 0.8;
   border-radius: 5px;
 }
 

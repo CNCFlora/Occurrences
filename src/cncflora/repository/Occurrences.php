@@ -454,11 +454,19 @@ class Occurrences {
             $doc['validation'][$kk]=$v;
           }
         }
+        if(   isset($doc["validation"]["taxonomy"])
+           || isset($doc["validation"]["georeference"])
+           || isset($doc["validation"]["native"])
+           || isset($doc["validation"]["presence"])
+           || isset($doc["validation"]["cultivated"])
+           || isset($doc["validation"]["duplicated"])) {
+           unset($doc["validation"]["status"]);
+        }
 
         if(isset($doc["validation"]["status"])
           && $doc["validation"]["status"] != ""
           && $doc["validation"]["status"] != null) {
-          if($doc["validation"]["status"] == "valid") {
+          if($doc["validation"]["status"] === "valid") {
             $doc["valid"]=true;
             $doc['validation']['done']=true;
           } else if($doc["validation"]["status"] == "invalid") {
@@ -478,62 +486,70 @@ class Occurrences {
            && !isset($doc["validation"]["duplicated"])
           ) {
             $doc["valid"]=null;
+            $doc['validation']['status']=null;
             $doc['validation']['done']=false;
           } else if(
             (
                  !isset($doc["validation"]["taxonomy"])
-              || $doc["validation"]["taxonomy"] == null
+              || $doc["validation"]["taxonomy"] === null
               || $doc["validation"]["taxonomy"] == 'valid'
             )
             &&
             (
                  !isset($doc["validation"]["georeference"])
-              || $doc["validation"]["georeference"] == null
+              || $doc["validation"]["georeference"] === null
               || $doc["validation"]["georeference"] == 'valid'
             )
             && 
             (
                  !isset($doc["validation"]["native"])
-              || $doc["validation"]["native"] == null
+              || $doc["validation"]["native"] === null
               || $doc["validation"]["native"] != 'non-native'
             )
             && 
             (
                  !isset($doc["validation"]["presence"])
-              || $doc["validation"]["presence"] == null
+              || $doc["validation"]["presence"] === null
               || $doc["validation"]["presence"] != 'absent'
             )
             && 
             (
                  !isset($doc["validation"]["cultivated"])
-              || $doc["validation"]["cultivated"] == null
+              || $doc["validation"]["cultivated"] === null
               || $doc["validation"]["cultivated"] != 'yes'
             )
             && 
             (
                  !isset($doc["validation"]["duplicated"])
-              || $doc["validation"]["duplicated"] == null
+              || $doc["validation"]["duplicated"] === null
               || $doc["validation"]["duplicated"] != 'yes'
             )
           ) {
             $doc["valid"]=true;
+            $doc['validation']['status']=true;
             $doc['validation']['done']=true;
           } else {
             $doc["valid"]=false;
+            $doc['validation']['status']=false;
             $doc['validation']['done']=true;
           }
         }
       } else {
         $doc["valid"] = null;
+        $doc['validation']['status']=null;
         $doc['validation']['done']=false;
       }
     } else {
       $doc["valid"] = null;
+      $doc['validation']['status']=null;
       $doc['validation']['done']=false;
     }
 
-    if($doc[ 'valid' ] == null && $verbatim != null) {
-      $doc['validation']=['done'=>true,'valid'=>$verbatim,'status'=>($verbatim?'valid':'invalid')];
+    if($doc['valid'] === null && $verbatim != null) {
+      $set=['done'=>true,'valid'=>$verbatim,'status'=>($verbatim?'valid':'invalid')];
+      foreach($set as $k=>$v) {
+        $doc['validation'][$k]=$v;
+      }
       $doc['valid']=$verbatim;
     }
 

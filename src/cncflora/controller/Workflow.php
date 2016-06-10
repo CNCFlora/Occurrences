@@ -56,7 +56,10 @@ class Workflow {
          unset($spps[$i]);
        }
     }
-    sort($spps);
+    //sort($spps);
+    usort($spps,function($s0,$s1){
+      return strcmp(trim(strtolower($s0['scientificNameWithoutAuthorship'])),trim(strtolower($s1['scientificNameWithoutAuthorship'])));
+    });
 
     $res->setContent(new View('family',['db'=>$db,'species'=>$spps,'family'=>$family]));
     return $res;

@@ -261,7 +261,14 @@ class Occurrences {
   }
 
   public function canUse($occ) {
-    return (!$this->isValidated($occ) || $this->isValid($occ)) && $this->isSigOk($occ) && isset($occ->decimalLatitude) && isset($occ->decimalLongitude) && !is_null($occ->decimalLatitude) && !is_null($occ->decimalLongitude);
+    return 
+      (!$this->isValidated($occ) || $this->isValid($occ))
+      && $this->isSigOk($occ) 
+      && isset($occ["decimalLatitude"])
+      && isset($occ["decimalLongitude"]) 
+      && !is_null($occ["decimalLatitude"]) 
+      && !is_null($occ["decimalLongitude"])
+      ;
   }
 
   public function isValid($occ) {
@@ -269,7 +276,7 @@ class Occurrences {
   }
 
   public function isValidated($occ) {
-    return isseT($occ['validation']) && isset($occ['validation']['done']) && $occ['validation']['done']===true;
+    return (isset($occ['validation']) && isset($occ['validation']['done']) && $occ['validation']['done']===true);
   }
 
   public function hasSig($occ) {

@@ -50,7 +50,7 @@ $(function(){
       for(var i=0;i<texts.length;i++) {
         data[texts[i].getAttribute('name')]=texts[i].value;
       }
-      var to = form.getAttribute('action');
+      var to = form.getAttribute('action').replace(form.dataset.id,encodeURIComponent(form.dataset.id));
       var datauri = "";
       for(var k in data) {
         datauri+="&"+k+'='+encodeURIComponent(data[k]);
@@ -115,7 +115,7 @@ $(function(){
             data[radios[i].getAttribute('name')]=radios[i].value;
           }
           data['remarks']=form.querySelector('textarea').value;
-          var to = form.getAttribute('action');
+          var to = form.getAttribute('action').replace(form.dataset.id,encodeURIComponent(form.dataset.id));
           var datauri = "";
           for(var k in data) {
             datauri+="&"+k+'='+encodeURIComponent(data[k]);

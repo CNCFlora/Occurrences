@@ -411,7 +411,7 @@ class Occurrences {
     $verbatim = null;
     if(isset($doc["verbatimValidation"])) {
       $vvv = $doc["verbatimValidation"];
-      if($vvv !== null && is_array($vvv) && isset($vvv["status"]) && $vvv["status"] !== null) {
+      if($vvv !== null && is_array($vvv) && isset($vvv["status"]) && $vvv["status"] !== null && $vvv["status"] != "") {
         $status = $vvv["status"];
         if($status === "valid" || $status === '1' || $status === 1 || $status === true) {
           $verbatim=true;

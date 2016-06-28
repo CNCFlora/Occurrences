@@ -31,7 +31,10 @@ class Taxon {
     ];
     $result = $this->elasticsearch->search($params);
     foreach($result['hits']['hits'] as $hit) {
-      $families[]=strtoupper(trim($hit['_source']['family']));
+      $f = strtoupper(trim($hit['_source']['family']));
+      if(strlen($f) >3) {
+      $families[]=$f;
+      }
     }
     sort($families);
     $families=array_unique($families);

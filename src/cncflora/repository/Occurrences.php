@@ -261,9 +261,9 @@ class Occurrences {
   }
 
   public function canUse($occ) {
+    //Mesmo depois de validas e/ou depois de validadas, ocorrências podem ter seus status alterado
     return 
-      (!$this->isValidated($occ) || $this->isValid($occ))
-      && $this->isSigOk($occ) 
+      $this->isSigOk($occ)
       && isset($occ["decimalLatitude"])
       && isset($occ["decimalLongitude"]) 
       && !is_null($occ["decimalLatitude"]) 

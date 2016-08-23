@@ -216,7 +216,7 @@ class Occurrences {
     $stats['total']=count($occurrences);
     $to_calc=[];
     foreach($occurrences as $occ){
-      if($this->canUse($occ)) {
+      if($this->canUse($occ) && (!$this->isValidated($occ) || $this->isValid($occ))) {
         $stats['can_use']++;
         $to_calc[]=['decimalLatitude'=>$occ['decimalLatitude'],'decimalLongitude'=>$occ['decimalLongitude']];
       } else {
@@ -262,11 +262,11 @@ class Occurrences {
 
   public function canUse($occ) {
     //Mesmo depois de validas e/ou depois de validadas, ocorrências podem ter seus status alterado
-    return 
+    return
       $this->isSigOk($occ)
       && isset($occ["decimalLatitude"])
-      && isset($occ["decimalLongitude"]) 
-      && !is_null($occ["decimalLatitude"]) 
+      && isset($occ["decimalLongitude"])
+      && !is_null($occ["decimalLatitude"])
       && !is_null($occ["decimalLongitude"])
       ;
   }
@@ -517,25 +517,25 @@ class Occurrences {
               || $doc["validation"]["georeference"] === null
               || $doc["validation"]["georeference"] == 'valid'
             )
-            && 
+            &&
             (
                  !isset($doc["validation"]["native"])
               || $doc["validation"]["native"] === null
               || $doc["validation"]["native"] != 'non-native'
             )
-            && 
+            &&
             (
                  !isset($doc["validation"]["presence"])
               || $doc["validation"]["presence"] === null
               || $doc["validation"]["presence"] != 'absent'
             )
-            && 
+            &&
             (
                  !isset($doc["validation"]["cultivated"])
               || $doc["validation"]["cultivated"] === null
               || $doc["validation"]["cultivated"] != 'yes'
             )
-            && 
+            &&
             (
                  !isset($doc["validation"]["duplicated"])
               || $doc["validation"]["duplicated"] === null
@@ -618,7 +618,7 @@ class Occurrences {
 
   public function fixSpecie($occ) {
 
-    $name = null; 
+    $name = null;
     if(isset( $occ["acceptedNameUsage"] ) && strlen(trim( $occ["acceptedNameUsage"]) ) >= 5){
       $name=trim($occ["acceptedNameUsage"]);
     } else if(isset( $occ["scientificNameWithoutAuthorship"] ) && strlen(trim( $occ["scientificNameWithoutAuthorship"] )) >= 3) {
@@ -697,7 +697,7 @@ class Occurrences {
             $occ['specie']=$spp;
           }
         }
-      } 
+      }
     }
 
     return $occ;

@@ -17,7 +17,7 @@ function table() {
     {name:"decimalLongitude",editor:"text", width: 200},
     {name:"georeferenceVerificationStatus",editor:'select',selectOptions: ['','ok','nok','uncertain-locality']},
     {name:"georeferenceProtocol",editor:'select',selectOptions: ['','coletor','sig','google earth']},
-    {name:"coordinateUncertaintyInMeters",editor:'text'}
+    {name:"georeferencePrecision",editor:'text'}
   ];
 
   var fields= headers.map(function(h){return h.name});
@@ -89,4 +89,3 @@ function table() {
 
   Handsontable.hooks.add("afterChange",changed,hot);
 }
-

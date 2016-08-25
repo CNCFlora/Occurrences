@@ -10,10 +10,10 @@ var map = function() {
 
     var ggl = new L.Google();
 
-    var markersUsable = new L.MarkerClusterGroup(); 
-    var pointsUsable  = new L.layerGroup(); 
+    var markersUsable = new L.MarkerClusterGroup();
+    var pointsUsable  = new L.layerGroup();
 
-    var markersUnusable = new L.MarkerClusterGroup(); 
+    var markersUnusable = new L.MarkerClusterGroup();
     var pointsUnusable  = new L.layerGroup();
 
     var markersValid = new L.MarkerClusterGroup(); // clustered valid points
@@ -184,4 +184,3 @@ function makePopup(props) {
 
   return table;
 };
-

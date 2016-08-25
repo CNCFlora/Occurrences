@@ -216,7 +216,7 @@ class Occurrences {
     $stats['total']=count($occurrences);
     $to_calc=[];
     foreach($occurrences as $occ){
-      if($this->canUse($occ) && (!$this->isValidated($occ) || $this->isValid($occ))) {
+      if($this->canUse($occ)) {
         $stats['can_use']++;
         $to_calc[]=['decimalLatitude'=>$occ['decimalLatitude'],'decimalLongitude'=>$occ['decimalLongitude']];
       } else {
@@ -249,6 +249,7 @@ class Occurrences {
       $res = $client->request('POST',DWC_SERVICES.'/api/v1/analysis/all',['json'=>$to_calc]);
       $calc = json_decode($res->getBody(),true);
 
+      $stats['eoo_geo']=$calc['eoo']['all']['geo'];
       $stats['eoo']=$calc['eoo']['all']['area'];
       $stats['aoo']=$calc['aoo']['all']['area'];
     }
@@ -261,9 +262,9 @@ class Occurrences {
   }
 
   public function canUse($occ) {
-    //Mesmo depois de validas e/ou depois de validadas, ocorrências podem ter seus status alterado
     return
       $this->isSigOk($occ)
+      && (!$this->isValidated($occ) || $this->isValid($occ))
       && isset($occ["decimalLatitude"])
       && isset($occ["decimalLongitude"])
       && !is_null($occ["decimalLatitude"])

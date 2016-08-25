@@ -139,7 +139,7 @@
     "sig-by":"Analista SIG",
     "occurrence-data":"Dados da ocorrência",
     "validation":"Validação",
-    "coordinateUncertaintyInMeters":"Geo Precisão",
+    "georeferencePrecision":"Geo Precisão",
     "georeferenceProtocol":"Geo Protocolo",
     "identifier":"Identificador",
     "scientificName":"Nome cientifico",

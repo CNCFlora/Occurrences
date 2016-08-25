@@ -180,6 +180,7 @@ class Occurrences {
     $occ['georeferenceProtocol'] =$_POST['georeferenceProtocol'];
     $occ['georeferenceRemarks'] =$_POST['georeferenceRemarks'];
     $occ['georeferencePrecision'] =$_POST['georeferencePrecision'];
+    $occ['coordinateUncertaintyInMeters'] =$_POST['coordinateUncertaintyInMeters'];
     $occ['georeferencedBy'] = $user->name;
 
     $back=$repo->updateOccurrence($occ);

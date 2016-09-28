@@ -120,7 +120,7 @@ class Occurrences {
     $bulk=$this->couchdb->createBulkUpdater();
     $bulk->updateDocuments($occurrences);
     $res=$bulk->execute();
-    if(isset($r->body->error)){
+    if(isset($r->body->)){
       return false;
     }
 
@@ -563,17 +563,14 @@ class Occurrences {
         $doc["valid"] = null;
         $doc['validation']['status']=null;
         $doc['validation']['done']=false;
-        error_log("AAAAAAAAAAAAA13");
       }
     } else {
       $doc["valid"] = null;
       $doc['validation']['status']=null;
       $doc['validation']['done']=false;
-      error_log("AAAAAAAAAAAAA14");
     }
 
     if($doc['valid'] === null && $verbatim !== null) {
-      error_log("AAAAAAAAAAAAA15");
       $set=['done'=>true,'valid'=>$verbatim,'status'=>($verbatim?'valid':'invalid')];
       foreach($set as $k=>$v) {
         $doc['validation'][$k]=$v;

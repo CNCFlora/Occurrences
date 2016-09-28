@@ -2,9 +2,9 @@
   {{#georeferencedBy}}
     <p><strong>{{strings.sig-by}}</strong>: {{georeferencedBy}}</p>
   {{/georeferencedBy}}
-<form method="POST" 
+<form method="POST"
   {{#sig}}
-  action="{{base}}/{{db}}/occurrence/{{occurrenceID}}/sig" 
+  action="{{base}}/{{db}}/occurrence/{{occurrenceID}}/sig"
   rel='ok'
   {{/sig}}
   data-id="{{occurrenceID}}"
@@ -17,15 +17,15 @@
           </p>
           <div>
             <label class='radio-inline'>
-              <input name="status" type="radio" value="ok" {{#sig-status-ok}} checked {{/sig-status-ok}} /> 
+              <input name="status" type="radio" value="ok" {{#sig-status-ok}} checked {{/sig-status-ok}} />
               {{strings.ok}}
             </label>
             <label class='radio-inline'>
-              <input name="status" type="radio" value="nok" {{#sig-status-nok}} checked {{/sig-status-nok}} /> 
+              <input name="status" type="radio" value="nok" {{#sig-status-nok}} checked {{/sig-status-nok}} />
               {{strings.nok}}
             </label>
             <label class='radio-inline'>
-              <input name="status" type="radio" value="uncertain-locality" {{#sig-status-uncertain-locality}} checked {{/sig-status-uncertain-locality}} /> 
+              <input name="status" type="radio" value="uncertain-locality" {{#sig-status-uncertain-locality}} checked {{/sig-status-uncertain-locality}} />
               {{strings.uncertain-locality}}
             </label>
           </div>
@@ -44,8 +44,8 @@
         </div>
 
         <div class='form-group'>
-            <label for="coordinateUncertaintyInMeters">{{strings.coordinateUncertaintyInMeters}}</label>
-            <input name="coordinateUncertaintyInMeters" value="{{coordinateUncertaintyInMeters}}" class='form-control' type="text" />
+            <label for="georeferencePrecision">{{strings.georeferencePrecision}}</label>
+            <input name="georeferencePrecision" value="{{georeferencePrecision}}" class='form-control' type="text" />
         </div>
 
         <div class='form-group'>
@@ -69,4 +69,3 @@
         {{/sig}}
     </fieldset>
 </form>
-

@@ -57,6 +57,8 @@ class Occurrences {
     $result = $this->elasticsearch->search($params);
     foreach($result['hits']['hits'] as $hit) {
       if(isset($hit['_source']['deleted'])) continue;
+      if(isset($hit['_source']['coordinateUncertaintyInMeters']) && $hit['_source']['coordinateUncertaintyInMeters'] != "")
+        $hit['_source']['georeferencePrecision'] = $hit['_source']['coordinateUncertaintyInMeters'];
       $occs[]=$hit['_source'];
     }
     $occs=$this->prepareAll($occs,$fix);
@@ -249,6 +251,7 @@ class Occurrences {
       $res = $client->request('POST',DWC_SERVICES.'/api/v1/analysis/all',['json'=>$to_calc]);
       $calc = json_decode($res->getBody(),true);
 
+      $stats['eoo_geo']=$calc['eoo']['all']['geo'];
       $stats['eoo']=$calc['eoo']['all']['area'];
       $stats['aoo']=$calc['aoo']['all']['area'];
     }
@@ -262,8 +265,13 @@ class Occurrences {
 
   public function canUse($occ) {
     return
+<<<<<<< HEAD
       (!$this->isValidated($occ) || $this->isValid($occ))
       && $this->isSigOk($occ)
+=======
+      $this->isSigOk($occ)
+      && (!$this->isValidated($occ) || $this->isValid($occ))
+>>>>>>> 60aa67031b0d7879bcd4ab619e4695c76e9e47a1
       && isset($occ["decimalLatitude"])
       && isset($occ["decimalLongitude"])
       && !is_null($occ["decimalLatitude"])

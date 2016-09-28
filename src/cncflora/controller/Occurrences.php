@@ -29,7 +29,8 @@ class Occurrences {
       'stats'=>$stats,
       'specie'=>$specie,
       'occurrences'=>$occurrences,
-      'occurrences_json'=>json_encode($occurrences)
+      'occurrences_json'=>json_encode($occurrences),
+      'eoo_geo_json'=>json_encode($stats['eoo_geo'])
     ];
 
     $view = new View('occurrences',$data);
@@ -67,7 +68,7 @@ class Occurrences {
     $dwc_res = $client->request('POST',DWC_SERVICES.'/api/v1/convert?from=json&to='.$to,['json'=>$occurrences]);
 
     header('Content-Type: application/octet-stream');
-    header("Content-Transfer-Encoding: Binary"); 
+    header("Content-Transfer-Encoding: Binary");
     header("Content-disposition: attachment; filename=\"" .str_replace(" ","_",$family ).".".$to . "\"");
     $res->setContent($dwc_res->getBody());
     return $res;
@@ -94,7 +95,7 @@ class Occurrences {
     $dwc_res = $client->request('POST',DWC_SERVICES.'/api/v1/convert?from=json&to='.$to,['json'=>$occurrences]);
 
     header('Content-Type: application/octet-stream');
-    header("Content-Transfer-Encoding: Binary"); 
+    header("Content-Transfer-Encoding: Binary");
     header("Content-disposition: attachment; filename=\"" .str_replace(" ","_",$name ).".".$to . "\"");
     $res->setContent($dwc_res->getBody());
     return $res;
@@ -178,6 +179,7 @@ class Occurrences {
     $occ['decimalLongitude']= str_replace(",",".",$_POST['decimalLongitude']);
     $occ['georeferenceProtocol'] =$_POST['georeferenceProtocol'];
     $occ['georeferenceRemarks'] =$_POST['georeferenceRemarks'];
+    $occ['georeferencePrecision'] =$_POST['georeferencePrecision'];
     $occ['coordinateUncertaintyInMeters'] =$_POST['coordinateUncertaintyInMeters'];
     $occ['georeferencedBy'] = $user->name;
 
@@ -262,4 +264,3 @@ class Occurrences {
 
 
 }
-

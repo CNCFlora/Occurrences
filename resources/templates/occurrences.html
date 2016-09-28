@@ -13,16 +13,16 @@
   <i>{{specie.scientificNameWithoutAuthorship}}</i> {{ specie.scientificNameAuthorship }}
   {{#stats}}
   {{#sig_done}}
-  <span class="glyphicon glyphicon-globe done"></span> 
+  <span class="glyphicon glyphicon-globe done"></span>
   {{/sig_done}}
   {{^sig_done}}
-  <span class="glyphicon glyphicon-globe notdone"></span> 
+  <span class="glyphicon glyphicon-globe notdone"></span>
   {{/sig_done}}
   {{#validation_done}}
-  <span class="glyphicon glyphicon-check done"></span> 
+  <span class="glyphicon glyphicon-check done"></span>
   {{/validation_done}}
   {{^validation_done}}
-  <span class="glyphicon glyphicon-check notdone"></span> 
+  <span class="glyphicon glyphicon-check notdone"></span>
   {{/validation_done}}
   {{/stats}}
 </h2>
@@ -140,6 +140,9 @@
     </div>
     <script type="text/javascript">
       occurrences = {{{occurrences_json}}};
+      eoo={{{eoo_geo_json}}};
+      if(eoo == null)
+        eoo = "";
     </script>
 
     <div class="occurrences">

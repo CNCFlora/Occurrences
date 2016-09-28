@@ -261,12 +261,12 @@ class Occurrences {
   }
 
   public function canUse($occ) {
-    return 
+    return
       (!$this->isValidated($occ) || $this->isValid($occ))
-      && $this->isSigOk($occ) 
+      && $this->isSigOk($occ)
       && isset($occ["decimalLatitude"])
-      && isset($occ["decimalLongitude"]) 
-      && !is_null($occ["decimalLatitude"]) 
+      && isset($occ["decimalLongitude"])
+      && !is_null($occ["decimalLatitude"])
       && !is_null($occ["decimalLongitude"])
       ;
   }
@@ -496,7 +496,7 @@ class Occurrences {
               $doc["valid"]=$verbatim;
               $doc['validation']['status']=$verbatim;
               $doc['validation']['done']=true;
-            } else if(isset($doc['validation']['by']) && $doc['validation']['by'] !== null && strlen(trim($doc['validation']['by'])) > 3) {
+            } else if(isset($doc['validation']['by']) && $doc['validation']['by'] !== null && strlen(trim($doc['validation']['by'])) > 3 && isset($doc['validation']['status']) && ($doc['validation']['status'] != "") && $doc['validation']['status'] !== null) {
               $doc["valid"]=true;
               $doc['validation']['status']=true;
               $doc['validation']['done']=true;
@@ -507,9 +507,9 @@ class Occurrences {
             }
           } else if(
             (
-                 !isset($doc["validation"]["taxonomy"])
-              || $doc["validation"]["taxonomy"] === null
-              || $doc["validation"]["taxonomy"] == 'valid'
+                 isset($doc["validation"]["taxonomy"])
+              && $doc["validation"]["taxonomy"] !== null
+              && $doc["validation"]["taxonomy"] == 'valid'
             )
             &&
             (
@@ -517,25 +517,25 @@ class Occurrences {
               || $doc["validation"]["georeference"] === null
               || $doc["validation"]["georeference"] == 'valid'
             )
-            && 
+            &&
             (
                  !isset($doc["validation"]["native"])
               || $doc["validation"]["native"] === null
               || $doc["validation"]["native"] != 'non-native'
             )
-            && 
+            &&
             (
                  !isset($doc["validation"]["presence"])
               || $doc["validation"]["presence"] === null
               || $doc["validation"]["presence"] != 'absent'
             )
-            && 
+            &&
             (
                  !isset($doc["validation"]["cultivated"])
               || $doc["validation"]["cultivated"] === null
               || $doc["validation"]["cultivated"] != 'yes'
             )
-            && 
+            &&
             (
                  !isset($doc["validation"]["duplicated"])
               || $doc["validation"]["duplicated"] === null
@@ -555,14 +555,17 @@ class Occurrences {
         $doc["valid"] = null;
         $doc['validation']['status']=null;
         $doc['validation']['done']=false;
+        error_log("AAAAAAAAAAAAA13");
       }
     } else {
       $doc["valid"] = null;
       $doc['validation']['status']=null;
       $doc['validation']['done']=false;
+      error_log("AAAAAAAAAAAAA14");
     }
 
     if($doc['valid'] === null && $verbatim !== null) {
+      error_log("AAAAAAAAAAAAA15");
       $set=['done'=>true,'valid'=>$verbatim,'status'=>($verbatim?'valid':'invalid')];
       foreach($set as $k=>$v) {
         $doc['validation'][$k]=$v;
@@ -618,7 +621,7 @@ class Occurrences {
 
   public function fixSpecie($occ) {
 
-    $name = null; 
+    $name = null;
     if(isset( $occ["acceptedNameUsage"] ) && strlen(trim( $occ["acceptedNameUsage"]) ) >= 5){
       $name=trim($occ["acceptedNameUsage"]);
     } else if(isset( $occ["scientificNameWithoutAuthorship"] ) && strlen(trim( $occ["scientificNameWithoutAuthorship"] )) >= 3) {
@@ -697,7 +700,7 @@ class Occurrences {
             $occ['specie']=$spp;
           }
         }
-      } 
+      }
     }
 
     return $occ;

@@ -120,7 +120,7 @@ class Occurrences {
     $bulk=$this->couchdb->createBulkUpdater();
     $bulk->updateDocuments($occurrences);
     $res=$bulk->execute();
-    if(isset($r->body->)){
+    if(isset($r->body->error)){
       return false;
     }
 
@@ -265,13 +265,8 @@ class Occurrences {
 
   public function canUse($occ) {
     return
-<<<<<<< HEAD
       (!$this->isValidated($occ) || $this->isValid($occ))
       && $this->isSigOk($occ)
-=======
-      $this->isSigOk($occ)
-      && (!$this->isValidated($occ) || $this->isValid($occ))
->>>>>>> 60aa67031b0d7879bcd4ab619e4695c76e9e47a1
       && isset($occ["decimalLatitude"])
       && isset($occ["decimalLongitude"])
       && !is_null($occ["decimalLatitude"])

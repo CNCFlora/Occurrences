@@ -6,6 +6,44 @@ use \cncflora\View;
 
 class Occurrences {
 
+  public function specie_t($req,$res,$args) {
+    $taxonomia_diferente = urldecode($args['taxonomia_diferente']);
+    $db = $args['db'];
+    $name = urldecode($args['name']);
+
+    $specie =  (new \cncflora\repository\Taxon($db))->getSpecie($name);
+    $repo = new \cncflora\repository\Occurrences($db);
+    $occurrences = $repo->listOccurrences($name);
+    $stats = $repo->getStats($occurrences);
+    $stats['eoo']=number_format($stats['eoo'],2)."km²";
+    $stats['aoo']=number_format($stats['aoo'],2)."km²";
+
+    $user = $_SESSION['user'];
+
+    list($sig,$analysis,$validate) = \cncflora\ACL::listPermissions($user,$db,$specie);
+
+    $nomes = explode(";", $taxonomia_diferente);
+
+    $data =[
+      'db'=>$db,
+      'sig'=>$sig,
+      'analysis'=>$analysis,
+      'validate'=>$validate,
+      'stats'=>$stats,
+      'specie'=>$specie,
+      'occurrences'=>$occurrences,
+      'occurrences_json'=>json_encode($occurrences),
+      'taxonomia_diferente'=>true,
+      'taxonomia_diferente_scientificNameWithoutAuthorship'=>$nomes[0],
+      'taxonomia_diferente_scientificNameAuthorship'=>$nomes[1],
+      'eoo_geo_json'=>json_encode($stats['eoo_geo'])
+    ];
+
+    $view = new View('occurrences',$data);
+    $res->setContent($view);
+    return $res;
+  }
+
   public function specie($req,$res,$args) {
     $db = $args['db'];
     $name = urldecode($args['name']);

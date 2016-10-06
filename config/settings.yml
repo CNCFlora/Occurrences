@@ -6,6 +6,7 @@ development:
     connect_url: "http://localhost:8080"
     elasticsearch: "http://elasticsearch:9200"
     dwc_services: "http://dwc_services:80"
+    floradata: "http://floradata:80"
 test:
     lang: "pt"
     base: ""
@@ -14,6 +15,7 @@ test:
     connect_url: "http://localhost:8080"
     elasticsearch: "http://elasticsearch:9200"
     dwc_services: "http://dwc_services:80"
+    floradata: "http://floradata:80"
 production:
     lang: "pt"
     base: "/occurrences"
@@ -24,3 +26,4 @@ production:
     dwc_services: "http://dwc_services"
     assessments_url: "http://$HOST/assessments"
     profiles_url: "http://$HOST/profiles"
+    floradata: "http://floradata:80"

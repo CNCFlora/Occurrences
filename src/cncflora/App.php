@@ -21,6 +21,7 @@ $r->get("/{db}/family/{family}",'\cncflora\controller\Taxon::family');
 $r->get("/{db}/family/{family}/download/{format}",'\cncflora\controller\Occurrences::downloadFamily');
 
 $r->get("/{db}/specie/{name}",'\cncflora\controller\Occurrences::specie');
+$r->get("/{db}/specie/{name}/{taxonomia_diferente}",'\cncflora\controller\Occurrences::specie_t');
 $r->get("/{db}/specie/{name}/table",'\cncflora\controller\Occurrences::table');
 $r->get("/{db}/specie/{name}/stats",'\cncflora\controller\Occurrences::stats');
 $r->get("/{db}/specie/{name}/occurrences",'\cncflora\controller\Occurrences::occurrences');
@@ -63,4 +64,3 @@ $r->subscribe('request.received', function ($evt,$req) use ($r){
 });
 
 $r->run();
-

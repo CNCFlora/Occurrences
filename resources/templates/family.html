@@ -56,9 +56,21 @@
                 </td>
                 <td>
                   {{#permission}}<strong><span class='glyphicon glyphicon-chevron-right'></span>{{/permission}}
-                    <i><a href='{{base}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}'>{{scientificNameWithoutAuthorship}}</a></i>
+                    {{#taxonomia_diferente}}
+                      <i><a href='{{base}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}/{{taxonomia_diferente_scientificName}}'>{{taxonomia_diferente_scientificNameWithoutAuthorship}}</a></i>
+                    {{/taxonomia_diferente}}
+                    {{^taxonomia_diferente}}
+                      <i><a href='{{base}}/{{db}}/specie/{{scientificNameWithoutAuthorship}}'>{{scientificNameWithoutAuthorship}}</a></i>
+                    {{/taxonomia_diferente}}
                   {{#permission}}</strong>{{/permission}}
-                  {{scientificNameAuthorship}}</td>
+
+                  {{#taxonomia_diferente}}
+                    {{taxonomia_diferente_scientificNameAuthorship}}
+                  {{/taxonomia_diferente}}
+                  {{^taxonomia_diferente}}
+                    {{scientificNameAuthorship}}
+                  {{/taxonomia_diferente}}
+                </td>
                   <td class='stats-validated'>{{validated}}</td>
                   <td class='stats-not_validated'>{{not_validated}}</td>
                   <!--

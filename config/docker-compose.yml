@@ -9,6 +9,7 @@ occurrences:
         - couchdb
         - connect
         - dwcservices:dwc_services
+        - floradata
     environment:
         - PHP_ENV=development
 elasticsearch:
@@ -35,6 +36,8 @@ dwcservices:
         - 8282:80
 floradata:
     image: cncflora/floradata
+    environment:
+      SERVICE_80_CHECK_HTTP: /api/v1/families
     ports:
         - 8181:80
         - 9005:9001

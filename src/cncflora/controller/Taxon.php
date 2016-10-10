@@ -39,12 +39,12 @@ class Taxon {
 
     foreach($spps as $i=>$spp) {
        $occs = $repoOcc->listOccurrences($spp['scientificNameWithoutAuthorship'],false);
-       $currentTaxon = $this->getCurrentTaxon($db, $spp['scientificNameWithoutAuthorship']);
-       $taxonomia_diferente = ($currentTaxon->scientificNameWithoutAuthorship != $spp['scientificNameWithoutAuthorship']);
-       $spp['taxonomia_diferente'] = $taxonomia_diferente;
-       $spp['taxonomia_diferente_scientificNameWithoutAuthorship'] = $currentTaxon->scientificNameWithoutAuthorship;
-       $spp['taxonomia_diferente_scientificNameAuthorship'] = $currentTaxon->scientificNameAuthorship;
-       $spp['taxonomia_diferente_scientificName'] = $currentTaxon->scientificNameWithoutAuthorship . ';' . $currentTaxon->scientificNameAuthorship;
+      //  $currentTaxon = $this->getCurrentTaxon($db, $spp['scientificNameWithoutAuthorship']);
+      //  $taxonomia_diferente = ($currentTaxon->scientificNameWithoutAuthorship != $spp['scientificNameWithoutAuthorship']);
+      //  $spp['taxonomia_diferente'] = $taxonomia_diferente;
+      //  $spp['taxonomia_diferente_scientificNameWithoutAuthorship'] = $currentTaxon->scientificNameWithoutAuthorship;
+      //  $spp['taxonomia_diferente_scientificNameAuthorship'] = $currentTaxon->scientificNameAuthorship;
+      //  $spp['taxonomia_diferente_scientificName'] = $currentTaxon->scientificNameWithoutAuthorship . ';' . $currentTaxon->scientificNameAuthorship;
        $spps[$i] = array_merge($spp,$repoOcc->getStats($occs,false));
     }
 

@@ -51,6 +51,13 @@ class Workflow {
        list($s,$a,$v) = \cncflora\ACL::listPermissions($user,$db,$spp);
        if($s || $a || $v) {
          $occs = $repoOcc->listOccurrences($spp['scientificNameWithoutAuthorship'],false);
+        //  $name = trim($spp['scientificNameWithoutAuthorship']);
+        //  $currentTaxon = json_decode(file_get_contents(FLORADATA."/api/v1/specie?scientificName=".rawurlencode($name)))->result;
+        //  $taxonomia_diferente = ($currentTaxon->scientificNameWithoutAuthorship != $spp['scientificNameWithoutAuthorship']);
+        //  $spp['taxonomia_diferente'] = $taxonomia_diferente;
+        //  $spp['taxonomia_diferente_scientificNameWithoutAuthorship'] = $currentTaxon->scientificNameWithoutAuthorship;
+        //  $spp['taxonomia_diferente_scientificNameAuthorship'] = $currentTaxon->scientificNameAuthorship;
+        //  $spp['taxonomia_diferente_scientificName'] = $currentTaxon->scientificNameWithoutAuthorship . ';' . $currentTaxon->scientificNameAuthorship;
          $spps[$i] = array_merge($spp,$repoOcc->getStats($occs,false));
        } else {
          unset($spps[$i]);
@@ -66,5 +73,3 @@ class Workflow {
   }
 
 }
-
-

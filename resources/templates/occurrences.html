@@ -10,12 +10,7 @@
   </a>
 </h3>
 <h2 class='col-md-12'>
-  {{#taxonomia_diferente}}
-    <i>{{taxonomia_diferente_scientificNameWithoutAuthorship}}</i> {{ taxonomia_diferente_scientificNameAuthorship }}
-  {{/taxonomia_diferente}}
-  {{^taxonomia_diferente}}
-    <i>{{specie.scientificNameWithoutAuthorship}}</i> {{ specie.scientificNameAuthorship }}
-  {{/taxonomia_diferente}}
+  <i>{{specie.scientificNameWithoutAuthorship}}</i> {{ specie.scientificNameAuthorship }}
   {{#stats}}
   {{#sig_done}}
   <span class="glyphicon glyphicon-globe done"></span>

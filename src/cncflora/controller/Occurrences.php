@@ -189,15 +189,26 @@ class Occurrences {
   public function analysis($req,$res,$args) {
     $db = $args['db'];
     $id = urldecode($args['id']);
+    $flag_occurrence_id = false;
 
     $repo = new \cncflora\repository\Occurrences($db,$_SESSION['user']);
     $occ = $repo->getOccurrence($id);
+    if(isset($occ['error']) && $occ['error'] == "not_found"){
+      $occ_t = $repo->getOccurrence("occurrence:".$id);
+      if(!isset($occ_t['error'])){
+          $occ = $occ_t;
+          $flag_occurrence_id = true;
+      }
+    }
 
     foreach($_POST as $k=>$v) {
       $occ[$k]=$v;
     }
 
-    $repo->updateOccurrence($occ);
+    if($flag_occurrence_id)
+      $occ['_id'] = "occurrence:".$occ['_id'];
+
+    $repo->updateOccurrence($occ, $flag_occurrence_id);
 
     header('Location: '.$_SERVER['HTTP_REFERER'],true,303);
     die();

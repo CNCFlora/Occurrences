@@ -142,9 +142,12 @@ class Occurrences {
     return array_values($occurrences);
   }
 
-  public function updateOccurrence($occurrence) {
+  public function updateOccurrence($occurrence,$flag_occurrence_id=false) {
     if($occurrence == null || isset($occurrence['error'])) return false;
     $occurrence=$this->metalog($this->fix($occurrence));
+    if($flag_occurrence_id)
+      $occurrence['_id'] = "occurrence:".$occurrence['_id'];
+
     try {
       $r=$this->couchdb->postDocument($occurrence);
       $occurrence['_rev']=$r[1];

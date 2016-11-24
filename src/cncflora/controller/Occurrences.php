@@ -218,10 +218,18 @@ class Occurrences {
   public function sig($req,$res,$args) {
     $db = $args['db'];
     $id = urldecode($args['id']);
+    $flag_occurrence_id = false;
 
     $user = $_SESSION['user'];
     $repo = new \cncflora\repository\Occurrences($db,$_SESSION['user']);
     $occ = $repo->getOccurrence($id);
+    if(isset($occ['error']) && $occ['error'] == "not_found"){
+      $occ_t = $repo->getOccurrence("occurrence:".$id);
+      if(!isset($occ_t['error'])){
+          $occ = $occ_t;
+          $flag_occurrence_id = true;
+      }
+    }
 
     $occ['georeferenceVerificationStatus'] = $_POST['status'];
     $occ['decimalLatitude']= str_replace(",",".",$_POST['decimalLatitude']);
@@ -229,10 +237,11 @@ class Occurrences {
     $occ['georeferenceProtocol'] =$_POST['georeferenceProtocol'];
     $occ['georeferenceRemarks'] =$_POST['georeferenceRemarks'];
     $occ['georeferencePrecision'] =$_POST['georeferencePrecision'];
-    $occ['coordinateUncertaintyInMeters'] =$_POST['coordinateUncertaintyInMeters'];
+    if(isset($_POST['coordinateUncertaintyInMeters']))
+      $occ['coordinateUncertaintyInMeters'] =$_POST['coordinateUncertaintyInMeters'];
     $occ['georeferencedBy'] = $user->name;
 
-    $back=$repo->updateOccurrence($occ);
+    $back=$repo->updateOccurrence($occ, $flag_occurrence_id);
 
     if($_GET['raw']) {
       header('Content-Type: application/json');
@@ -247,17 +256,25 @@ class Occurrences {
   public function validate($req,$res,$args){
     $db = $args['db'];
     $id = urldecode($args['id']);
+    $flag_occurrence_id = false;
 
     $user = $_SESSION['user'];
     $repo = new \cncflora\repository\Occurrences($db,$_SESSION['user']);
     $occ = $repo->getOccurrence($id);
+    if(isset($occ['error']) && $occ['error'] == "not_found"){
+      $occ_t = $repo->getOccurrence("occurrence:".$id);
+      if(!isset($occ_t['error'])){
+          $occ = $occ_t;
+          $flag_occurrence_id = true;
+      }
+    }
 
     $occ['validation']['by'] = $user->name;
     foreach($_POST as $k=>$v) {
       $occ['validation'][$k]=$v;
     }
 
-    $back=$repo->updateOccurrence($occ);
+    $back=$repo->updateOccurrence($occ, $flag_occurrence_id);
 
     if($_GET['raw']) {
       header('Content-Type: application/json');

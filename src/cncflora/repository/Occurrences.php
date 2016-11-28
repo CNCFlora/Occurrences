@@ -58,7 +58,7 @@ class Occurrences {
     foreach($result['hits']['hits'] as $hit) {
       if(isset($hit['_source']['deleted'])) continue;
       if(isset($hit['_source']['coordinateUncertaintyInMeters']) && $hit['_source']['coordinateUncertaintyInMeters'] != ""
-         && (!isset($hit['_source']['coordinateUncertaintyInMeters']) || $hit['_source']['georeferencePrecision'] == ""))
+         && (!isset($hit['_source']['georeferencePrecision']) || $hit['_source']['georeferencePrecision'] == ""))
         $hit['_source']['georeferencePrecision'] = $hit['_source']['coordinateUncertaintyInMeters'];
       $occs[]=$hit['_source'];
     }

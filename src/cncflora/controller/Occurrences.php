@@ -51,6 +51,7 @@ class Occurrences {
     $specie =  (new \cncflora\repository\Taxon($db))->getSpecie($name);
     $repo = new \cncflora\repository\Occurrences($db);
     $occurrences = $repo->listOccurrences($name);
+
     $stats = $repo->getStats($occurrences);
     $stats['eoo']=number_format($stats['eoo'],2)."km²";
     $stats['aoo']=number_format($stats['aoo'],2)."km²";
@@ -220,6 +221,9 @@ class Occurrences {
     $id = urldecode($args['id']);
     $flag_occurrence_id = false;
 
+    if( !(strpos($id, 'çÇpOp0') === false))
+      $id = str_replace('çÇpOp0', '/', $id);
+
     $user = $_SESSION['user'];
     $repo = new \cncflora\repository\Occurrences($db,$_SESSION['user']);
     $occ = $repo->getOccurrence($id);
@@ -231,7 +235,8 @@ class Occurrences {
       }
     }
 
-    $occ['georeferenceVerificationStatus'] = $_POST['status'];
+    if(isset($_POST['status']))
+      $occ['georeferenceVerificationStatus'] = $_POST['status'];
     $occ['decimalLatitude']= str_replace(",",".",$_POST['decimalLatitude']);
     $occ['decimalLongitude']= str_replace(",",".",$_POST['decimalLongitude']);
     $occ['georeferenceProtocol'] =$_POST['georeferenceProtocol'];
@@ -242,6 +247,8 @@ class Occurrences {
     $occ['georeferencedBy'] = $user->name;
 
     $back=$repo->updateOccurrence($occ, $flag_occurrence_id);
+    if( !(strpos($back['occurrenceID'], '/') === false))
+      $back['occurrenceID'] = str_replace('/', 'çÇpOp0', $back['occurrenceID']);
 
     if($_GET['raw']) {
       header('Content-Type: application/json');

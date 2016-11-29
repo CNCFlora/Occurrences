@@ -93,7 +93,12 @@
       {{#metadata}}
       <h4 class='col-md-12'>{{strings.metadata}}</h4>
       <div class="col-md-10">
+      {{#occurrenceIDAux}}
+      <p><strong>{{strings.identifier}}</strong>: {{occurrenceIDAux}}</p>
+      {{/occurrenceIDAux}}
+      {{^occurrenceIDAux}}
       <p><strong>{{strings.identifier}}</strong>: {{occurrenceID}}</p>
+      {{/occurrenceIDAux}}
       <p><strong>{{strings.creator}}</strong>: <Br>{{creator}}</p>
       <p><strong>{{strings.contributor}}</strong>: {{contributor}}</p>
       <p><strong>{{strings.contact}}</strong>: {{contact}}</p>

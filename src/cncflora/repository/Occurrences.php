@@ -58,8 +58,13 @@ class Occurrences {
     foreach($result['hits']['hits'] as $hit) {
       if(isset($hit['_source']['deleted'])) continue;
       if(isset($hit['_source']['coordinateUncertaintyInMeters']) && $hit['_source']['coordinateUncertaintyInMeters'] != ""
-         && (!isset($hit['_source']['georeferencePrecision']) || $hit['_source']['georeferencePrecision'] == ""))
-        $hit['_source']['georeferencePrecision'] = $hit['_source']['coordinateUncertaintyInMeters'];
+         && (!isset($hit['_source']['georeferencePrecision']) || $hit['_source']['georeferencePrecision'] == "")){
+           $hit['_source']['georeferencePrecision'] = $hit['_source']['coordinateUncertaintyInMeters'];
+      }
+      if(isset($hit['_source']['occurrenceID']) && !(strpos($hit['_source']['occurrenceID'], '/') === false)){
+        $hit['_source']['occurrenceIDAux'] = $hit['_source']['occurrenceID'];
+        $hit['_source']['occurrenceID'] = str_replace('/', 'çÇpOp0', $hit['_source']['occurrenceID']);
+      }
       $occs[]=$hit['_source'];
     }
     $occs=$this->prepareAll($occs,$fix);

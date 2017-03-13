@@ -5,10 +5,11 @@
     <title>{{strings.occurrences}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="{{base}}/css/bootstrap.min.css" rel="stylesheet" >
+		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA8msc6c6CGR0yNwrxfHQQ8ejOMjDWfixw" type="text/javascript"></script>
     <link href="{{base}}/css/app.css" rel="stylesheet" >
     <script type="text/javascript">
       {{#logged}}
-        var logged =true; 
+        var logged =true;
         var user = {{{user_json}}};
       {{/logged}}
       {{^logged}}
@@ -29,7 +30,7 @@
     <div class="container">
         <header class='col-md-12'>
             <h1>{{strings.occurrences}}</h1>
-            <p> <span class='glyphicon glyphicon-chevron-right'></span> {{strings.user}}: 
+            <p> <span class='glyphicon glyphicon-chevron-right'></span> {{strings.user}}:
                 {{#logged}} {{user.name}} {{/logged}} {{^logged}} {{strings.none}} {{/logged}}.</p>
             {{#db}}
             <p><span class='glyphicon glyphicon-chevron-right'></span><span class='db'>{{strings.checklist}}: {{db_name}}</span>.</p>
@@ -53,4 +54,3 @@
                 {{/logged}}
             </ul>
         </nav>
-

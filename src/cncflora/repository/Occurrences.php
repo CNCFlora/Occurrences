@@ -675,7 +675,23 @@ class Occurrences {
         $spps[] = $spp;
       }
 
-      if(count($spps) ==1){
+      #if it founds more than one specie, but only one is accepted and everyone else is synonym
+      #then it is the one
+      $specieFound = false;
+      if(count($spps) > 1)
+      {
+        $sppsAux = $spps;
+        if($sppsAux[0]['taxonomicStatus'] == 'accepted'){
+          $specieFound = true;
+          unset($sppsAux[0]);
+        }
+        foreach ($sppsAux as $spp) {
+          if($spp['taxonomicStatus'] == 'accepted')
+            $specieFound = false;
+        }
+      }
+
+      if((count($spps) == 1) || $specieFound){
         if($spps[0]['taxonomicStatus']=='accepted') {
           $occ['specie']=$spps[0];
         } else {
@@ -703,6 +719,7 @@ class Occurrences {
             ]
           ];
           $result = $this->elasticsearch->search($params);
+
           if(isset($result['hits']['hits'][0])) {
             $spp = $result['hits']['hits'][0]['_source'];
             $spp['family']=strtoupper(trim($spp['family']));

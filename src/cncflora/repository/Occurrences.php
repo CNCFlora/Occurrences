@@ -677,26 +677,21 @@ class Occurrences {
 
       #if it founds more than one specie, but only one is accepted and everyone else is synonym
       #then it is the one
-      error_log(print_r($spps, TRUE));
-      error_log("OIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
       $specieFound = false;
       if(count($spps) > 1)
       {
-        // while(!$specieFound){
-        //
-        // }
         $sppsAux = $spps;
         if($sppsAux[0]['taxonomicStatus'] == 'accepted'){
           $specieFound = true;
           unset($sppsAux[0]);
-          error_log("TESTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         }
-        foreach ($sppsAux as $spp) {
-          if($spp['taxonomicStatus'] == 'accepted'){
-            $specieFound = true;
-            $spps[0] = $spp;
+        if(!$specieFound){
+          foreach ($sppsAux as $spp) {
+            if($spp['taxonomicStatus'] == 'accepted'){
+              $specieFound = true;
+              $spps[0] = $spp;
+            }
           }
-
         }
       }
 

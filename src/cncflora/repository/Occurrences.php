@@ -18,7 +18,9 @@ class Occurrences {
 
   public function listOccurrences($name,$fix=true) {
     $name_t = $name;
+    $flag_array = false;
     if(is_array($name)) {
+      $flag_array = true;
       $names=$name;
     } else {
       $names = (new Taxon($this->db))->listNames($name);
@@ -59,8 +61,11 @@ class Occurrences {
     foreach($result['hits']['hits'] as $hit) {
       if(isset($hit['_source']['deleted'])) continue;
 
-      if(((isset($hit['_source']['acceptedNameUsage']) && strpos($hit['_source']['acceptedNameUsage'], "var. ") === false))
-        && (strpos($name_t, "var. ") !== false)) continue;
+      if(!$flag_array){
+        if(isset($hit['_source']['acceptedNameUsage']) && ((strpos($hit['_source']['acceptedNameUsage'], "var. ") === false && strpos($name_t, "var. ") !== false)
+        || (strpos($hit['_source']['acceptedNameUsage'], "var. ") !== false && strpos($name_t, "var. ") === false))) continue;
+      }
+
       if(isset($hit['_source']['coordinateUncertaintyInMeters']) && $hit['_source']['coordinateUncertaintyInMeters'] != ""
          && (!isset($hit['_source']['georeferencePrecision']) || $hit['_source']['georeferencePrecision'] == "")){
            $hit['_source']['georeferencePrecision'] = $hit['_source']['coordinateUncertaintyInMeters'];

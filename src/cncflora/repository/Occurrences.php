@@ -17,6 +17,7 @@ class Occurrences {
   }
 
   public function listOccurrences($name,$fix=true) {
+    $name_t = $name;
     if(is_array($name)) {
       $names=$name;
     } else {
@@ -57,6 +58,9 @@ class Occurrences {
     $result = $this->elasticsearch->search($params);
     foreach($result['hits']['hits'] as $hit) {
       if(isset($hit['_source']['deleted'])) continue;
+
+      if(((isset($hit['_source']['acceptedNameUsage']) && strpos($hit['_source']['acceptedNameUsage'], "var. ") === false))
+        && (strpos($name_t, "var. ") !== false)) continue;
       if(isset($hit['_source']['coordinateUncertaintyInMeters']) && $hit['_source']['coordinateUncertaintyInMeters'] != ""
          && (!isset($hit['_source']['georeferencePrecision']) || $hit['_source']['georeferencePrecision'] == "")){
            $hit['_source']['georeferencePrecision'] = $hit['_source']['coordinateUncertaintyInMeters'];

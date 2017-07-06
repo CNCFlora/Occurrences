@@ -99,6 +99,8 @@ class Occurrences {
       unset($occ['id']);
       foreach($occ as $k=>$v) {
         $occ[$k] = utf8_encode($v);
+        if(strpos($v, "Ã") !== false)
+          $occ[$k] = utf8_decode($occ[$k]);
       }
       $occurrences[$i] = $occ;
     }
@@ -126,6 +128,8 @@ class Occurrences {
       unset($occ['id']);
       foreach($occ as $k=>$v) {
         $occ[$k] = utf8_encode($v);
+        if(strpos($v, "Ã") !== false)
+          $occ[$k] = utf8_decode($occ[$k]);
       }
       $occurrences[$i] = $occ;
     }

@@ -213,6 +213,15 @@ class Occurrences {
     if($flag_occurrence_id)
       $occ['_id'] = "occurrence:".$occ['_id'];
 
+    //ocorrências com comentários remarks e occurrenceRemarks
+    if(isset($occ['remarks']) && ($occ['remarks'] != "")){
+      $occ['occurrenceRemarks'] = "";
+    }else if(isset($occ['occurrenceRemarks']) && ($occ['occurrenceRemarks'] != "")
+      && ((isset($occ['remarks']) && ($occ['remarks'] == "")) || (!isset($occ['remarks'])))){
+      $occ['remarks'] = $occ['occurrenceRemarks'];
+      $occ['occurrenceRemarks'] = "";
+    }
+
     $repo->updateOccurrence($occ, $flag_occurrence_id);
 
     header('Location: '.$_SERVER['HTTP_REFERER'],true,303);

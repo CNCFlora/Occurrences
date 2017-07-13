@@ -43,6 +43,8 @@ class Occurrences {
     ];
 
     foreach($names as $name) {
+      if($name == " " || $name == "")
+        continue;
       $params['body']['query']['bool']['should'][]
         = ['match'=>['acceptedNameUsage'=>['query'=>$name,'operator'=>'and']]];
       $params['body']['query']['bool']['should'][]

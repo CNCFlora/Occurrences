@@ -53,8 +53,14 @@ class Occurrences {
     $occurrences = $repo->listOccurrences($name);
 
     $stats = $repo->getStats($occurrences);
-    $stats['eoo']=number_format($stats['eoo'],2)."km²";
     $stats['aoo']=number_format($stats['aoo'],2)."km²";
+
+    //Se EOO < AOO ou type=taxon and metadata.eoo == true
+    //**eoo = aoo
+    if(isset($specie['metadata']['eoo']) && $specie['metadata']['eoo'])
+      $stats['eoo']=$stats['aoo'];
+    else
+      $stats['eoo']=number_format($stats['eoo'],2)."km²";
 
     $user = $_SESSION['user'];
 

@@ -51,6 +51,7 @@ class Occurrences {
     $specie =  (new \cncflora\repository\Taxon($db))->getSpecie($name);
     $repo = new \cncflora\repository\Occurrences($db);
     $occurrences = $repo->listOccurrences($name);
+    $this->sort_by_field($occurrences, 'stateProvince');
 
     $stats = $repo->getStats($occurrences);
     $stats['aoo']=number_format($stats['aoo'],2)."km²";
@@ -82,7 +83,6 @@ class Occurrences {
     $res->setContent($view);
     return $res;
   }
-
 
   public function downloadFamily($req,$res,$args) {
     $db = $args['db'];
@@ -158,6 +158,7 @@ class Occurrences {
 
     $repo = new \cncflora\repository\Occurrences($db);
     $occurrences = $repo->listOccurrences($name);
+    $this->sort_by_field($occurrences, 'stateProvince');
 
     $data =[
       'db'=>$db,
@@ -343,6 +344,7 @@ class Occurrences {
     $res->setContent(json_encode($back));
     return $res;
   }
+
   public function occurrence($req,$res,$args) {
     $db = $args['db'];
     $id = urldecode($args['id']);
@@ -354,5 +356,16 @@ class Occurrences {
     return $res;
   }
 
+  private function sort_by_field(&$array, $field) {
+    usort($array, function ($a, $b) use($field) {
+      if(!isset($a[$field])){
+        $a[$field] = "";
+      }
+      if(!isset($b[$field])){
+        $b[$field] = "";
+      }
+      return strnatcmp($a[$field], $b[$field]);
+    });
+  }
 
 }

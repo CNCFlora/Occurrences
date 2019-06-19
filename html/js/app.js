@@ -124,7 +124,8 @@ $(function(){
           $("#saving").show();
           $.post(to+'?raw=true',datauri,function(r){
             updateStats();
-            var div = document.getElementById('occ-'+r['occurrenceID']+'-unit').querySelector('div:first-child');
+	    var sanitizeOccurrenceID = r['occurrenceID'].replace('/', 'çÇpOp0');
+            var div = document.getElementById('occ-'+sanitizeOccurrenceID+'-unit').querySelector('div:first-child');
             var classes=div.classList;
 
             if(r.valid){

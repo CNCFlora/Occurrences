@@ -202,6 +202,9 @@ class Occurrences {
     $db = $args['db'];
     $id = urldecode($args['id']);
     $flag_occurrence_id = false;
+    
+    if( !(strpos($id, 'çÇpOp0') === false))
+        $id = str_replace('çÇpOp0', '/', $id);
 
     $repo = new \cncflora\repository\Occurrences($db,$_SESSION['user']);
     $occ = $repo->getOccurrence($id);
@@ -284,7 +287,10 @@ class Occurrences {
     $db = $args['db'];
     $id = urldecode($args['id']);
     $flag_occurrence_id = false;
-
+    
+    if( !(strpos($id, 'çÇpOp0') === false))
+        $id = str_replace('çÇpOp0', '/', $id);
+    
     $user = $_SESSION['user'];
     $repo = new \cncflora\repository\Occurrences($db,$_SESSION['user']);
     $occ = $repo->getOccurrence($id);

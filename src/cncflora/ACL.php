@@ -11,7 +11,7 @@ class ACL {
     $validate=false;
 
     foreach($user->roles as $role) {
-      if($role->context == $db) {
+      if(strtolower($role->context) == strtolower($db) ) {
         foreach($role->roles as $sub_role) {
           if(strtolower($sub_role->role) == 'sig') {
             $sig=true;

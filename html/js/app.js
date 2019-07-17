@@ -125,6 +125,8 @@ $(function(){
           $.post(to+'?raw=true',datauri,function(r){
             updateStats();
             var sanitizeOccurrenceID = r['occurrenceID'].replace(/\//g, 'çÇpOp0');
+//	    var sanitizeOccurrenceID = r['occurrenceID'].replace('/', 'çÇpOp0');
+
             var div = document.getElementById('occ-'+sanitizeOccurrenceID+'-unit').querySelector('div:first-child');
             var classes=div.classList;
 
